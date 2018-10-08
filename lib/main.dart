@@ -19,10 +19,127 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      //home: new MyHomePage(title: 'Flutter Demo Home Page'),
+      // MaterialApp contains our top-level Navigator
+     initialRoute: '/',
+     routes: {
+       '/': (BuildContext context) => new MyHomePage(title: 'Flutter Demo Home Page'),
+       '/signup': (BuildContext context) => new SignUpPage(),
+     },
     );
   }
 }
+
+class SignUpPage extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    // SignUpPage builds its own Navigator which ends up being a nested
+    // Navigator in our app.
+    return new Navigator(
+      initialRoute: 'signup/personal_info',
+      onGenerateRoute: (RouteSettings settings) {
+        WidgetBuilder builder;
+        switch (settings.name) {
+          case 'signup/personal_info':
+          // Assume CollectPersonalInfoPage collects personal info and then
+          // navigates to 'signup/choose_credentials'.
+            builder = (BuildContext _) => new CollectPersonalInfoPage();
+            break;
+          case 'signup/choose_credentials':
+          // Assume ChooseCredentialsPage collects new credentials and then
+          // invokes 'onSignupComplete()'.
+            builder = (BuildContext _) => new ChooseCredentialsPage(
+              onSignupComplete: () {
+                // Referencing Navigator.of(context) from here refers to the
+                // top level Navigator because SignUpPage is above the
+                // nested Navigator that it created. Therefore, this pop()
+                // will pop the entire "sign up" journey and return to the
+                // "/" route, AKA HomePage.
+                Navigator.of(context).pop();
+              },
+            );
+            break;
+          default:
+            throw new Exception('Invalid route: ${settings.name}');
+        }
+        return new MaterialPageRoute(builder: builder, settings: settings);
+      },
+    );
+  }
+}
+
+class CollectPersonalInfoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold (
+        body: new Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: new Column(
+            // Column is also layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug paint" (press "p" in the console where you ran
+            // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
+            // window in IntelliJ) to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(
+                'Here is one page',
+              ),
+            ],
+          ),
+        )
+    );
+  }
+}
+
+class ChooseCredentialsPage extends StatelessWidget {
+  ChooseCredentialsPage({Null onSignupComplete()});
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold (
+        appBar: new AppBar(
+      // Here we take the value from the MyHomePage object that was created by
+      // the App.build method, and use it to set our appbar title.
+      title: new Text("URK"),
+    ),
+        body: new Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: new Column(
+            // Column is also layout widget. It takes a list of children and
+            // arranges them vertically. By default, it sizes itself to fit its
+            // children horizontally, and tries to be as tall as its parent.
+            //
+            // Invoke "debug paint" (press "p" in the console where you ran
+            // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
+            // window in IntelliJ) to see the wireframe for each widget.
+            //
+            // Column has various properties to control how it sizes itself and
+            // how it positions its children. Here we use mainAxisAlignment to
+            // center the children vertically; the main axis here is the vertical
+            // axis because Columns are vertical (the cross axis would be
+            // horizontal).
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              new Text(
+                'Here is other page',
+              ),
+            ],
+          ),
+        )
+    );
+  }
+}
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
@@ -54,6 +171,14 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  void _movePage() {
+
+    Navigator.of(context).push(new MaterialPageRoute(
+      builder: new ChooseCredentialsPage().build,
+      settings: new RouteSettings(name:"signup/choose_credentials")
+    ));
   }
 
   @override
@@ -100,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _movePage,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
