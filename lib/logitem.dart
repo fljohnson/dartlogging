@@ -1,47 +1,95 @@
 import 'package:meta/meta.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 import 'pseudoresources.dart';
 
 class Logitem {
 
   static List<Logitem> sampleData = [];
+  static Database database;
+  static String path;
 
-  static void createSampleData() {
-    sampleData.add(new Logitem(
+  static Future<bool> blankDB() async {
+    bool rv = false;
+    var databasesPath = await getDatabasesPath();
+    path = join(databasesPath, "demo.db");
+    await deleteDatabase(path);
+    rv = true;
+    return rv;
+  }
+
+  static Future<bool> initDB() async {
+    bool rv = false;
+    database = await openDatabase(path, version: 1,
+        onCreate: (Database db, int version) async {
+          // When creating the db, create the table
+          await db.execute(
+              "CREATE TABLE Logitem (id INTEGER PRIMARY KEY, what TEXT, category, TEXT, thedate TEXT, amount REAL, details TEXT)"
+          );
+          //and some indexing stuff
+          //index on date
+          await db.execute(
+              "CREATE INDEX whens_IDX_logitem on Logitem(thedate)"
+          );
+
+          //index on category
+          await db.execute(
+              "CREATE INDEX whys_IDX_logitem on Logitem(category)"
+          );
+        });
+    rv=true;
+    return rv;
+  }
+
+  static void createSampleData() async {
+    await blankDB();
+    await initDB();
+    Logitem proto;
+    proto = new Logitem(
       name:"Trader Joe's run",
       amt: 55.82,
       category: "Groceries",
       date:"2018-09-28"
-    ));
-    sampleData.add(new Logitem(
+    );
+    await proto.save();
+    proto = new Logitem(
         name:"Rent",
         amt: 826.85,
         category: "Living expenses",
         date:"2018-10-03"
-    ));
-    sampleData.add(new Logitem(
+    );
+    await proto.save();
+    proto = new Logitem(
         name:"Adding to farecard",
         amt: 10,
         category: "Transportation",
         date:"2018-10-04"
-    ));
-    sampleData.add(new Logitem(
+    );
+    await proto.save();
+    proto = new Logitem(
         name:"Lunch at tavern",
         amt: 34.70,
         category: "Entertainment",
         date:"2018-10-04"
-    ));
-    sampleData.add(new Logitem(
+    );
+    await proto.save();
+    proto = new Logitem(
         name:"Chinese takeout",
         amt: 28.05,
         category: "Entertainment",
         date:"2018-10-07"
-    ));
+    );
+    await proto.save();
   }
-  static List<Logitem> getRange(String isoFrom, String isoTo) {
+  static Future<List<Logitem>> getRange(String isoFrom, String isoTo) async {
     List<Logitem> rv = [];
-    for(int i=sampleData.length-1;i>=0 ;i--)
+
+    List<Map> raw = await database.rawQuery('SELECT * FROM Logitem where thedate >= ? and thedate <= ?',
+        [isoFrom,isoTo]);
+
+    for(int i=raw.length-1;i>=0 ;i--)
       {
-        rv.add(sampleData[i]);
+        rv.add(Logitem.fromMap(raw[i]));
       }
     return rv;
 
@@ -67,6 +115,7 @@ class Logitem {
       return rv;
   }
 
+  int _id = -1;
   String thedate;
   String title;
   num amount;
@@ -101,5 +150,57 @@ class Logitem {
         }
 
     return "\$${parts[0]}.${parts[1]}";
+  }
+
+  Logitem.fromMap(Map<String,dynamic> incoming)
+  {
+    this._id = incoming["id"];
+    this.thedate = incoming["thedate"];
+    this.title = incoming["what"];
+    this.amount = incoming["amount"];
+    this.category = incoming["category"];
+    this.details = incoming["details"];
+  }
+
+  Future<bool> save() async {
+    bool rv = false;
+    if(_id == -1)
+    {
+      //insert. Doing it as a transaction for safety
+      await database.transaction((txn) async {
+        if(details == null || details.isEmpty)
+        {
+          int id1 = await txn.rawInsert(
+              'INSERT INTO Logitem(what,amount,category,thedate) VALUES(?,?,?,?)',
+          [title,amount,category,thedate]);
+        }
+        else
+        {
+          int id1 = await txn.rawInsert(
+              'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
+              [title,amount,category,thedate,details]);
+        }
+      });
+    }
+    else
+    {
+      //do an update
+      if(details == null || details.isEmpty)
+      {
+        int count = await database.rawUpdate(
+            'UPDATE Logitem SET what = ?, amount = ?,category = ?,thedate =? ,details = NULL WHERE id = ?',
+            [title,amount,category,thedate,_id]);
+      }
+      else
+      {
+        int count = await database.rawUpdate(
+            'UPDATE Logitem SET what = ?, amount = ?,category = ?,thedate =? ,details = ? WHERE id = ?',
+            [title,amount,category,thedate,details,_id]);
+      }
+    }
+
+
+    rv = true;
+    return rv;
   }
 }

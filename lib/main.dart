@@ -9,11 +9,40 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
+String monthStart(DateTime monthAtHand)
+{
+  DateTime firstOfMonth = new DateTime(
+      monthAtHand.year,
+      monthAtHand.month,
+      1
+  );
+  List<String> textual = firstOfMonth.toString().split(" ");
+  return textual[0];
+}
+
+String monthEnd(DateTime monthAtHand)
+{
+  DateTime holder = new DateTime(
+      monthAtHand.year,
+      monthAtHand.month + 1,
+      1
+  );
+  holder= holder.subtract(new Duration(days: 1));
+
+  List<String> textual = holder.toString().split(" ");
+  return textual[0];
+}
+
+
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   MyApp() {
+    var ahora = DateTime.now();
+    var date1=fromISOtoUS(monthStart(ahora));
+    var date2=fromISOtoUS(monthEnd(ahora));
+    loggingRange.setDates(date1, date2);
     Logitem.createSampleData();
   }
   @override
@@ -297,6 +326,24 @@ String fromUStoISO(String inDate)
   }
   return datelets[2]+"-"+datelets[0]+"-"+datelets[1];
 }
+
+//yyyy-mm-dd to mm/dd/yyyy
+String fromISOtoUS(String inDate)
+{
+  List<String> datelets = inDate.split("-");
+
+  while(datelets[1].length <2)
+  {
+    datelets[1]= "0" + datelets[1];
+  }
+  while(datelets[2].length <2)
+  {
+    datelets[2]= "0" + datelets[2];
+  }
+
+  return datelets[1]+"/"+datelets[2]+"/"+datelets[0];
+}
+
 class DatePair {
   String _date1;
   String _date2;
@@ -314,7 +361,7 @@ class DatePair {
   {
     setDates(this._date1,date);
   }
-  void setDates(String date1,date2)
+  void setDates(String date1,String date2)
   {
     String comparedate1=fromUStoISO(date1);
     String comparedate2=fromUStoISO(date2);
@@ -370,7 +417,7 @@ class LoggingPage extends StatefulWidget {
 }
 
 class _LoggingPageState extends State<LoggingPage> {
-
+  List<Widget> gottenRows = [];
 
   Future<String> askDate(BuildContext context,String originalDate) async {
     String rv = originalDate;
@@ -386,18 +433,16 @@ class _LoggingPageState extends State<LoggingPage> {
     );
     if(value != null)
     {
-      rv="${value.month}/${value.day}/${value.year}";
+      rv=fromISOtoUS("${value.year}-${value.month}-${value.day}");
     }
     return rv;
   }
 
   @override
-  /*
-  Widget build(BuildContext context){
-    return new ListView(
-          children:fetchRows()
-      );
-  }*/
+  initState() {
+    super.initState();
+    fetchRows();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -452,9 +497,12 @@ class _LoggingPageState extends State<LoggingPage> {
             onPressed:(){
               Future<String> newdate = askDate(context,loggingRange._date1);
               newdate.then((value) {
-                setState(() {
-                  loggingRange.setDate1(value);
-                });
+
+                loggingRange.setDate1(value);
+                fetchRows().then((goods) {
+                  setState(() {});
+                }
+                );
               });
             }
         ),
@@ -469,15 +517,17 @@ class _LoggingPageState extends State<LoggingPage> {
             onPressed:(){
               Future<String> newdate = askDate(context,loggingRange._date2);
               newdate.then((value) {
-                setState(() {
-                  loggingRange.setDate1(value);
-                });
+                  loggingRange.setDate2(value);
+                  fetchRows().then((goods) {
+                    setState(() {});
+                  }
+                  );
               });
             }
             ),
             Expanded(
                child: ListView(
-                    children:fetchRows()
+                    children:gottenRows
                 )
             ),
 
@@ -540,16 +590,20 @@ class _LoggingPageState extends State<LoggingPage> {
 
   }
 
-  List<Widget>fetchRows() {
+  Future<List<Widget>>fetchRows() async {
     List<Widget> rv = [];
     //get the Logitems matching this.range, ordered by date DESC
-    List<Logitem> hits = Logitem.getRange(loggingRange.isoFrom(),loggingRange.isoTo());
-    String dateLabel = hits[0].thedate;
-    Column currentPanel; //rename this to reflect "just completed"
-    List<Widget> panelBody = [];
+    List<Logitem> hits = await Logitem.getRange(
+        loggingRange.isoFrom(), loggingRange.isoTo());
 
-    panelBody.add(dateMark("Date: $dateLabel"));
-    panelBody.add(dataRow(hits[0]));
+    List<Widget> panelBody = [];
+    String dateLabel = "";
+    if (hits.length > 0) {
+      dateLabel = hits[0].thedate;
+      panelBody.add(dateMark("Date: $dateLabel"));
+      panelBody.add(dataRow(hits[0]));
+    }
+
     for(int i=1;i<hits.length;i++)
     {
 
@@ -567,6 +621,7 @@ class _LoggingPageState extends State<LoggingPage> {
         }
       panelBody.add(dataRow(hits[i]));
     }
+    gottenRows = panelBody;
     return panelBody;
   }
 }
