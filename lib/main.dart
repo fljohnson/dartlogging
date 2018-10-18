@@ -9,6 +9,25 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
+Future<String> askDate(BuildContext context,String originalDate) async {
+  String rv = originalDate;
+  List<String> datelets = originalDate.split("/");
+  DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
+  DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
+  DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
+  DateTime value = await showDatePicker(
+      context:context,
+      initialDate:currentDate,
+      firstDate:minDate,
+      lastDate:maxDate
+  );
+  if(value != null)
+  {
+    rv=fromISOtoUS("${value.year}-${value.month}-${value.day}");
+  }
+  return rv;
+}
+
 String monthStart(DateTime monthAtHand)
 {
   DateTime firstOfMonth = new DateTime(
@@ -43,7 +62,7 @@ class MyApp extends StatelessWidget {
     var date1=fromISOtoUS(monthStart(ahora));
     var date2=fromISOtoUS(monthEnd(ahora));
     loggingRange.setDates(date1, date2);
-    Logitem.createSampleData();
+    statsRange.setDates(date1, date2);
   }
   @override
   Widget build(BuildContext context) {
@@ -418,34 +437,19 @@ class LoggingPage extends StatefulWidget {
 
 class _LoggingPageState extends State<LoggingPage> {
   List<Widget> gottenRows = [];
+  bool fired = false;
 
-  Future<String> askDate(BuildContext context,String originalDate) async {
-    String rv = originalDate;
-    List<String> datelets = originalDate.split("/");
-    DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
-    DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
-    DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
-    DateTime value = await showDatePicker(
-        context:context,
-        initialDate:currentDate,
-        firstDate:minDate,
-        lastDate:maxDate
-    );
-    if(value != null)
-    {
-      rv=fromISOtoUS("${value.year}-${value.month}-${value.day}");
-    }
-    return rv;
-  }
 
-  @override
-  initState() {
-    super.initState();
-    fetchRows();
-  }
   
   @override
   Widget build(BuildContext context) {
+    if(!fired)
+    { //this plus a race condition required ditching the custom initState()
+      fired = true;
+      fetchRows().then((goods) {
+        setState(() {});
+      });
+    }
     return new Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -591,12 +595,16 @@ class _LoggingPageState extends State<LoggingPage> {
   }
 
   Future<List<Widget>>fetchRows() async {
-    List<Widget> rv = [];
+    List<Widget> panelBody = [];
+    if(Logitem.database == null)
+      {
+        await Logitem.createSampleData();
+      }
     //get the Logitems matching this.range, ordered by date DESC
     List<Logitem> hits = await Logitem.getRange(
         loggingRange.isoFrom(), loggingRange.isoTo());
 
-    List<Widget> panelBody = [];
+
     String dateLabel = "";
     if (hits.length > 0) {
       dateLabel = hits[0].thedate;
@@ -627,32 +635,75 @@ class _LoggingPageState extends State<LoggingPage> {
 }
 
 
-
-
-class DummyPage extends StatelessWidget {
+class DummyPage extends StatefulWidget {
   DummyPage({Key key}):super(key:key);
 
-  List<Widget> getTotals()
+  @override
+  _DummyPageState createState() {
+    return new _DummyPageState();
+  }
+
+}
+
+class _DummyPageState extends State<DummyPage> {
+  //can you smell the potential for reuse?
+
+
+  List<Widget> gottenRows = [];
+  bool fired = false;
+  Future<bool> getTotals() async
   {
+    bool rv = false;
+    //just in case this page is ever drawn first
+    if(Logitem.database == null)
+    {
+      await Logitem.createSampleData();
+    }
     List<Widget> rows = [];
-    List<Map<String,String>> stats = Logitem.getTotals(statsRange._date1, statsRange._date2);
+    List<Map<String,String>> stats = await Logitem.getTotals(statsRange.isoFrom(), statsRange.isoTo());
     for(int i=0;i<stats.length;i++)
     {
       rows.add(
           Row(
             children: <Widget>[
-              new Text(stats[i].keys.first),
-              new Text(stats[i].values.first)
+              Expanded(
+                flex: 3,
+                child: Container(
+                    child:Text(stats[i].keys.first,style: Theme
+                        .of(context)
+                        .textTheme
+                        .title)
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child:Text(stats[i].values.first,style: Theme
+                    .of(context)
+                    .textTheme
+                    .title,
+                    textAlign: TextAlign.right
+                ),
+              ),
             ],
 
           )
       );
     }
-    return rows;
+    rv = true;
+    gottenRows = rows;
+    return rv;
   }
+
 
   @override
   Widget build(BuildContext context) {
+    if(!fired)
+    {
+      fired = true;
+      getTotals().then((goods) {
+        setState(() {});
+      });
+    }
     return new Center(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
@@ -671,7 +722,54 @@ class DummyPage extends StatelessWidget {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           //mainAxisAlignment: MainAxisAlignment.center,
-          children: getTotals(),
+          children: <Widget>[
+
+            new FlatButton(
+                child:new Text(
+                  'From: ${statsRange._date1}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                ),
+                onPressed:(){
+                  Future<String> newdate = askDate(context,statsRange._date1);
+                  newdate.then((value) {
+
+                    statsRange.setDate1(value);
+                    getTotals().then((goods) {
+                      setState(() {});
+                    }
+                    );
+                  });
+                }
+            ),
+            new FlatButton(
+                child:new Text(
+                  'To: ${statsRange._date2}',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                ),
+                onPressed:(){
+                  Future<String> newdate = askDate(context,statsRange._date2);
+                  newdate.then((value) {
+                    statsRange.setDate2(value);
+                    getTotals().then((goods) {
+                      setState(() {});
+                    }
+                    );
+                  });
+                }
+            ),
+            Expanded(
+                child: ListView(
+                    children:gottenRows
+                )
+            ),
+
+          ],
         )
     );
   }

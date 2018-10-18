@@ -9,6 +9,23 @@ class Logitem {
   static Database database;
   static String path;
 
+  static String toDollarString(num amount) {
+    List<String> parts = ("$amount").split(".");
+    if(parts.length == 1)
+    {
+      parts.add("00");
+    }
+    else
+    {
+      while(parts[1].length<2)
+      {
+        parts[1] += "0";
+      }
+    }
+
+    return "\$${parts[0]}.${parts[1]}";
+  }
+
   static Future<bool> blankDB() async {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
@@ -95,22 +112,24 @@ class Logitem {
 
   }
 
-  static List<Map<String,String>> getTotals(String isoFrom, String isoTo) {
+  static Future<List<Map<String, String>>> getTotals(String isoFrom, String isoTo) async {
     List<Map<String,String>> rv = [];
     for(int i=0;i<categories.length;i++)
       {
         String category = categories[i].keys.first;
         num total=0.0;
-        for(int j=0;j<sampleData.length;j++)
-          {
-            if(sampleData[j].category == category)
-              {
-                total += sampleData[j].amount;
-              }
 
-          }
+        List<Map> raw = await database.rawQuery('SELECT sum(amount) FROM Logitem where category = ? and thedate >= ? and thedate <= ?',
+            [category,isoFrom,isoTo]);
 
-        rv.add({category:"\$$total"});
+        total = raw[0].values.first;
+        if(total == null) {
+          rv.add({category:"\$0.00"});
+        }
+        else {
+          String strval = toDollarString(total);
+          rv.add({category: strval});
+        }
       }
       return rv;
   }
@@ -126,7 +145,7 @@ class Logitem {
     @required String date,
     @required num amt,
     @required String category,
-    String details = null})
+    String details })
   {
     this.thedate = date;
     this.title = name;
@@ -136,7 +155,7 @@ class Logitem {
   }
 
   String stramount() {
-    List<String> parts = ("${amount}").split(".");
+    List<String> parts = ("$amount").split(".");
     if(parts.length == 1)
       {
         parts.add("00");
