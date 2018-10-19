@@ -28,6 +28,7 @@ Future<String> askDate(BuildContext context,String originalDate) async {
   return rv;
 }
 
+_LoggingPageState yakker;
 String monthStart(DateTime monthAtHand)
 {
   DateTime firstOfMonth = new DateTime(
@@ -85,52 +86,16 @@ class MyApp extends StatelessWidget {
      initialRoute: '/',
      routes: {
        '/': (BuildContext context) => new MyHomePage(title: 'Flutter Demo Home Page'),
-       '/signup': (BuildContext context) => new SignUpPage(),
+       '/item': (BuildContext context) => new ItemPage(),
      },
 
     );
   }
 }
 
-class SignUpPage extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    // SignUpPage builds its own Navigator which ends up being a nested
-    // Navigator in our app.
-    return new Navigator(
-      initialRoute: 'signup/personal_info',
-      onGenerateRoute: (RouteSettings settings) {
-        WidgetBuilder builder;
-        switch (settings.name) {
-          case 'signup/personal_info':
-          // Assume CollectPersonalInfoPage collects personal info and then
-          // navigates to 'signup/choose_credentials'.
-            builder = (BuildContext _) => new CollectPersonalInfoPage();
-            break;
-          case 'signup/choose_credentials':
-          // Assume ChooseCredentialsPage collects new credentials and then
-          // invokes 'onSignupComplete()'.
-            builder = (BuildContext _) => new ChooseCredentialsPage(
-              onSignupComplete: () {
-                // Referencing Navigator.of(context) from here refers to the
-                // top level Navigator because SignUpPage is above the
-                // nested Navigator that it created. Therefore, this pop()
-                // will pop the entire "sign up" journey and return to the
-                // "/" route, AKA HomePage.
-                Navigator.of(context).pop();
-              },
-            );
-            break;
-          default:
-            throw new Exception('Invalid route: ${settings.name}');
-        }
-        return new MaterialPageRoute(builder: builder, settings: settings);
-      },
-    );
-  }
-}
 
-class CollectPersonalInfoPage extends StatelessWidget {
+
+class ItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String content = "(new)";
@@ -138,7 +103,49 @@ class CollectPersonalInfoPage extends StatelessWidget {
       {
         content = chosen.title;
       }
+      else
+        {
+          chosen = new Logitem(
+              name:"Test shot 5",
+              amt: 105.82,
+              category: "Groceries",
+              date:"2018-10-28"
+          );
+        }
     return new Scaffold (
+        appBar: new AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: new Text(content),
+            actions: <Widget>[
+        // action button
+          FlatButton(
+              child: Text("CANCEL",
+                style:TextStyle(fontSize:Theme.of(context).textTheme.subtitle.fontSize,
+                    color:Color(0xFFFFFFFF))
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          // action button
+          FlatButton(
+              child: Text("DONE",
+                  style:TextStyle(fontSize:Theme.of(context).textTheme.subtitle.fontSize,
+                      color:Color(0xFFFFFFFF))
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(chosen);
+              },
+            ),
+          ]
+          /*
+          bottom: new TabBar(
+            controller: _tabController,
+            tabs: myTabs,
+          ),
+*/
+        ),
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
@@ -239,15 +246,41 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   List<DatePair> _pageDates;
 
-
+  FloatingActionButton adder;
   TabController _tabController;
-  TabBarView _barTool;
+
   @override
   void initState() {
     super.initState();
+
+    adder = new FloatingActionButton(
+      onPressed: newItem,
+      tooltip: 'Add Item',
+      child: new Icon(Icons.add),
+    );
   //  _pageDates =[new DatePair("09/01/2018","09/30/2018"),new DatePair("09/01/2018","09/30/2018")];
    // _pages = <Widget>[new LoggingPage(owner:this),new DummyPage()];
     _tabController = new TabController(vsync:this,length: myTabs.length);
+    _tabController.addListener((){
+      if(_tabController.index == 1)
+        {
+          adder = null;
+          setState((){
+
+          });
+        }
+      else {
+        adder = new FloatingActionButton(
+          onPressed: newItem,
+          tooltip: 'Add Item',
+          child: new Icon(Icons.add),
+        );
+
+        setState((){
+
+        });
+      }
+    });
     /*
     _barTool = new TabBarView(
         controller: _tabController,
@@ -275,15 +308,30 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   }
 
 
-  void _movePage() {
+  void newItem() async {
 /*
     Navigator.of(context).push(new MaterialPageRoute(
       builder: new ChooseCredentialsPage().build,
       settings: new RouteSettings(name:"signup/choose_credentials")
     ));
     */
-chosen=null;
-Navigator.of(context).pushNamed("/signup");
+      chosen=null;
+      Logitem feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder:ItemPage().build)
+      );
+      //("/item");
+      if(feedback != null)
+      {
+        chosen = feedback;
+        //this looks ridiculous to those used to declarative languages
+        //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
+        chosen.save().then((value) {
+          yakker.fetchRows().then((goods) {
+            setState(() {});
+          });
+
+        });
+      }
   }
 
   @override
@@ -319,11 +367,7 @@ Navigator.of(context).pushNamed("/signup");
         ),
 
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _movePage,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      floatingActionButton: adder, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
   
@@ -450,6 +494,7 @@ class _LoggingPageState extends State<LoggingPage> {
         setState(() {});
       });
     }
+    yakker = this;
     return new Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -586,14 +631,28 @@ class _LoggingPageState extends State<LoggingPage> {
           ]
       )
         ,
-      onPressed: ((){
+      onPressed: (() async {
         chosen = content;
-        Navigator.of(context).pushNamed("/signup");
+        bool feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder:ItemPage().build)
+        );
+        //("/item");
+        if(feedback == true)
+          {
+            //this looks ridiculous to those used to declarative languages
+            //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
+            chosen.save().then((value) {
+              fetchRows().then((goods) {
+                setState(() {});
+              });
+            });
+          }
       }),
     );
 
   }
 
+  //I suspect that this should be a global function
   Future<List<Widget>>fetchRows() async {
     List<Widget> panelBody = [];
     if(Logitem.database == null)

@@ -1,8 +1,8 @@
 List<Map<String,String>> categories =[
-  {"Transportation":"tolls, fuel, fares, parking"},
-  {"Household":"hardware, cleaning supplies, furnishings"},
   {"Living expenses":"housing,telecommunications, utilities"},
-  {"Entertainment":"includes food out"},
   {"Groceries":null},
+  {"Household":"hardware, cleaning supplies, furnishings"},
+  {"Transportation":"tolls, fuel, fares, parking"},
+  {"Entertainment":"includes food out"},
   {"Debts":null}
 ];

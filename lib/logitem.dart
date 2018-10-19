@@ -58,7 +58,7 @@ class Logitem {
     return rv;
   }
 
-  static void createSampleData() async {
+  static Future<void> createSampleData() async {
     await blankDB();
     await initDB();
     Logitem proto;
@@ -185,17 +185,17 @@ class Logitem {
     bool rv = false;
     if(_id == -1)
     {
-      //insert. Doing it as a transaction for safety
+      //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
       await database.transaction((txn) async {
         if(details == null || details.isEmpty)
         {
-          int id1 = await txn.rawInsert(
+          await txn.rawInsert(
               'INSERT INTO Logitem(what,amount,category,thedate) VALUES(?,?,?,?)',
           [title,amount,category,thedate]);
         }
         else
         {
-          int id1 = await txn.rawInsert(
+          await txn.rawInsert(
               'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
               [title,amount,category,thedate,details]);
         }
@@ -203,16 +203,16 @@ class Logitem {
     }
     else
     {
-      //do an update
+      //do an update. rawUpdate returns a count of records changed
       if(details == null || details.isEmpty)
       {
-        int count = await database.rawUpdate(
+        await database.rawUpdate(
             'UPDATE Logitem SET what = ?, amount = ?,category = ?,thedate =? ,details = NULL WHERE id = ?',
             [title,amount,category,thedate,_id]);
       }
       else
       {
-        int count = await database.rawUpdate(
+        await database.rawUpdate(
             'UPDATE Logitem SET what = ?, amount = ?,category = ?,thedate =? ,details = ? WHERE id = ?',
             [title,amount,category,thedate,details,_id]);
       }
