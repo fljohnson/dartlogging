@@ -105,11 +105,24 @@ class ItemPage extends StatelessWidget {
       }
       else
         {
+          var ahora = DateTime.now();
+          String mo = "${ahora.month}";
+          String da = "${ahora.day}";
+          while (da.length < 2)
+          {
+            da = "0" +da;
+          }
+          while (mo.length < 2)
+          {
+            mo = "0" +mo;
+          }
+
+
           chosen = new Logitem(
               name:"Test shot 5",
               amt: 105.82,
               category: "Groceries",
-              date:"2018-10-28"
+              date:"${ahora.year}-$mo-$da"
           );
         }
     return new Scaffold (
@@ -163,11 +176,38 @@ class ItemPage extends StatelessWidget {
             // center the children vertically; the main axis here is the vertical
             // axis because Columns are vertical (the cross axis would be
             // horizontal).
-            mainAxisAlignment: MainAxisAlignment.center,
+
             children: <Widget>[
-              new Text(
-                'Editing $content',
-              ),
+          Row(
+          children:[
+          Expanded(
+              flex: 1,
+              child: RaisedButton(
+                  onPressed:(){
+                    Future<String> newdate = askDate(context,fromISOtoUS(chosen.thedate));
+                    newdate.then((value){
+                      chosen.thedate=fromUStoISO(value);
+                      //setState(() {});
+                      }
+                      );
+                  },
+                  child: Text("Date: ")
+              )
+          )
+            ,
+            Expanded(
+                flex: 3,
+                child: new Text(
+                  fromISOtoUS(chosen.thedate),
+                  textAlign: TextAlign.center,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                )
+            )
+            ]
+        )
             ],
           ),
         )
@@ -499,42 +539,6 @@ class _LoggingPageState extends State<LoggingPage> {
       //mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         /*
-        new GestureDetector(
-          onTap: () {
-            Future<String> newdate = askDate(context,loggingRange._date1);
-            newdate.then((value) {
-              setState(() {
-                loggingRange.setDate1(value);
-              });
-            });
-          },
-          child:new Text(
-            'From: ${loggingRange._date1}',
-            style: Theme
-                .of(context)
-                .textTheme
-                .display1,
-          )
-        ),
-        new GestureDetector(
-            onTap: () {
-              Future<String> newdate = askDate(context,loggingRange._date2);
-              newdate.then((value) {
-                setState(() {
-                  loggingRange.setDate2(value);
-                });
-
-              });
-            },
-            child:new Text(
-              'To: ${loggingRange._date2}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            )
-        ),
-        */
         new FlatButton(
             child:new Text(
               'From: ${loggingRange._date1}',
@@ -555,6 +559,8 @@ class _LoggingPageState extends State<LoggingPage> {
               });
             }
         ),
+        */
+        /*
         new FlatButton(
             child:new Text(
           'To: ${loggingRange._date2}',
@@ -574,6 +580,74 @@ class _LoggingPageState extends State<LoggingPage> {
               });
             }
             ),
+
+            */
+
+        Row(
+            children:[
+              Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                      onPressed:(){
+                        Future<String> newdate = askDate(context,loggingRange._date1);
+                        newdate.then((value) {
+                          loggingRange.setDate1(value);
+                          fetchRows().then((goods) {
+                            setState(() {});
+                          }
+                          );
+                        });
+                      },
+                      child: Text("From: ")
+                  )
+              )
+              ,
+              Expanded(
+                  flex: 3,
+                  child: new Text(
+                    loggingRange._date1,
+                    textAlign: TextAlign.center,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .display1,
+                  )
+              )
+            ]
+        ),
+
+        Row(
+            children:[
+              Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                      onPressed:(){
+                        Future<String> newdate = askDate(context,loggingRange._date2);
+                        newdate.then((value) {
+                          loggingRange.setDate2(value);
+                          fetchRows().then((goods) {
+                            setState(() {});
+                          }
+                          );
+                        });
+                      },
+                      child: Text("To: ")
+                  )
+              )
+              ,
+              Expanded(
+                  flex: 3,
+                  child: new Text(
+                    loggingRange._date2,
+                    textAlign: TextAlign.center,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .display1,
+                  )
+              )
+            ]
+        ),
             Expanded(
                child: ListView(
                     children:gottenRows
@@ -633,11 +707,11 @@ class _LoggingPageState extends State<LoggingPage> {
         ,
       onPressed: (() async {
         chosen = content;
-        bool feedback = await Navigator.of(context).push(
+        Logitem feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:ItemPage().build)
         );
         //("/item");
-        if(feedback == true)
+        if(feedback != null)
           {
             //this looks ridiculous to those used to declarative languages
             //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
