@@ -131,12 +131,7 @@ class ItemPage extends StatelessWidget {
               },
             ),
           ]
-          /*
-          bottom: new TabBar(
-            controller: _tabController,
-            tabs: myTabs,
-          ),
-*/
+
         ),
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -153,6 +148,33 @@ class RealItemPage extends StatefulWidget {
 }
 
 class _RealItemPageState extends State<RealItemPage> {
+
+  Widget menumaker(String currentsel)
+  {
+    List<String> categoryName = [];
+    List<String> categoryNote = [];
+    List<DropdownMenuItem<String>> droplist = [];
+
+    for(int i=0;i<categories.length;i++)
+    {
+      categoryName.add(categories[i].keys.first);
+      categoryNote.add(categories[i].values.first);
+      droplist.add(
+          DropdownMenuItem<String>(
+            value: categoryName[i],
+            child: Text(categoryName[i]),
+          )
+      );
+    }
+    return DropdownButton<String>(
+      items: droplist,
+      value: currentsel,
+      onChanged: (String value){
+        chosen.category = value;
+        setState((){});
+      },
+    );
+  }
   @override
   Widget build(BuildContext context)
   {
@@ -211,6 +233,24 @@ class _RealItemPageState extends State<RealItemPage> {
                   )
               )
             ]
+        )
+        ,
+        Row(
+          children:[
+            Expanded(
+              flex:1,
+              child:new Text(
+                "Category:"
+              )
+            ),
+            menumaker(chosen.category)
+            /*
+            Expanded(
+              flex:3,
+              child:
+            )*/
+
+          ]
         )
       ]
     );
@@ -322,14 +362,6 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         });
       }
     });
-    /*
-    _barTool = new TabBarView(
-        controller: _tabController,
-        children:myTabs.map((Tab tab){
-      return _pages[myTabs.indexOf(tab)];
-
-    }).toList()
-    );*/
 
   }
 
@@ -539,51 +571,6 @@ class _LoggingPageState extends State<LoggingPage> {
     return new Column(
       //mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        /*
-        new FlatButton(
-            child:new Text(
-              'From: ${loggingRange._date1}',
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .display1,
-            ),
-            onPressed:(){
-              Future<String> newdate = askDate(context,loggingRange._date1);
-              newdate.then((value) {
-
-                loggingRange.setDate1(value);
-                fetchRows().then((goods) {
-                  setState(() {});
-                }
-                );
-              });
-            }
-        ),
-        */
-        /*
-        new FlatButton(
-            child:new Text(
-          'To: ${loggingRange._date2}',
-          style: Theme
-              .of(context)
-              .textTheme
-              .display1,
-        ),
-            onPressed:(){
-              Future<String> newdate = askDate(context,loggingRange._date2);
-              newdate.then((value) {
-                  loggingRange.setDate2(value);
-                  fetchRows().then((goods) {
-                    setState(() {});
-                  }
-                  );
-              });
-            }
-            ),
-
-            */
-
         Row(
             children:[
               Expanded(
@@ -752,11 +739,6 @@ class _LoggingPageState extends State<LoggingPage> {
       if(hits[i].thedate != dateLabel)
         {
           //flush it
-/*
-          rv.add(
-              Text(hits[i].title)
-          );
-          */
           dateLabel = hits[i].thedate;
 
           panelBody.add(dateMark("Date: $dateLabel"));
@@ -857,47 +839,6 @@ class _DummyPageState extends State<DummyPage> {
           // horizontal).
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            /*
-            new FlatButton(
-                child:new Text(
-                  'From: ${statsRange._date1}',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display1,
-                ),
-                onPressed:(){
-                  Future<String> newdate = askDate(context,statsRange._date1);
-                  newdate.then((value) {
-
-                    statsRange.setDate1(value);
-                    getTotals().then((goods) {
-                      setState(() {});
-                    }
-                    );
-                  });
-                }
-            ),
-            new FlatButton(
-                child:new Text(
-                  'To: ${statsRange._date2}',
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display1,
-                ),
-                onPressed:(){
-                  Future<String> newdate = askDate(context,statsRange._date2);
-                  newdate.then((value) {
-                    statsRange.setDate2(value);
-                    getTotals().then((goods) {
-                      setState(() {});
-                    }
-                    );
-                  });
-                }
-            ),
-            */
             Row(
                 children:[
                   Expanded(
