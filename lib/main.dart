@@ -100,31 +100,10 @@ class ItemPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String content = "(new)";
     if(chosen !=  null)
-      {
-        content = chosen.title;
-      }
-      else
-        {
-          var ahora = DateTime.now();
-          String mo = "${ahora.month}";
-          String da = "${ahora.day}";
-          while (da.length < 2)
-          {
-            da = "0" +da;
-          }
-          while (mo.length < 2)
-          {
-            mo = "0" +mo;
-          }
+    {
+      content = chosen.title;
+    }
 
-
-          chosen = new Logitem(
-              name:"Test shot 5",
-              amt: 105.82,
-              category: "Groceries",
-              date:"${ahora.year}-$mo-$da"
-          );
-        }
     return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -162,59 +141,81 @@ class ItemPage extends StatelessWidget {
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: new Column(
-            // Column is also layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug paint" (press "p" in the console where you ran
-            // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-            // window in IntelliJ) to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-
-            children: <Widget>[
-          Row(
-          children:[
-          Expanded(
-              flex: 1,
-              child: RaisedButton(
-                  onPressed:(){
-                    Future<String> newdate = askDate(context,fromISOtoUS(chosen.thedate));
-                    newdate.then((value){
-                      chosen.thedate=fromUStoISO(value);
-                      //setState(() {});
-                      }
-                      );
-                  },
-                  child: Text("Date: ")
-              )
-          )
-            ,
-            Expanded(
-                flex: 3,
-                child: new Text(
-                  fromISOtoUS(chosen.thedate),
-                  textAlign: TextAlign.center,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display1,
-                )
-            )
-            ]
-        )
-            ],
-          ),
+          child: RealItemPage()
         )
     );
   }
 }
 
+class RealItemPage extends StatefulWidget {
+  @override
+  _RealItemPageState createState() => new _RealItemPageState();
+}
+
+class _RealItemPageState extends State<RealItemPage> {
+  @override
+  Widget build(BuildContext context)
+  {
+
+    if(chosen == null)
+    {
+      var ahora = DateTime.now();
+      String mo = "${ahora.month}";
+      String da = "${ahora.day}";
+      while (da.length < 2)
+      {
+        da = "0" +da;
+      }
+      while (mo.length < 2)
+      {
+        mo = "0" +mo;
+      }
+
+
+      chosen = new Logitem(
+          name:"Test shot 5",
+          amt: 105.82,
+          category: "Groceries",
+          date:"${ahora.year}-$mo-$da"
+      );
+    }
+
+    return Column (
+      children: <Widget>[
+        Row(
+            children:[
+              Expanded(
+                  flex: 1,
+                  child: RaisedButton(
+                      onPressed:(){
+                        Future<String> newdate = askDate(context,fromISOtoUS(chosen.thedate));
+                        newdate.then((value){
+                          chosen.thedate=fromUStoISO(value);
+                          setState(() {});
+                        }
+                        );
+                      },
+                      child: Text("Date: ")
+                  )
+              )
+              ,
+              Expanded(
+                  flex: 3,
+                  child: new Text(
+                    fromISOtoUS(chosen.thedate),
+                    textAlign: TextAlign.center,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .display1,
+                  )
+              )
+            ]
+        )
+      ]
+    );
+  }
+}
 class ChooseCredentialsPage extends StatelessWidget {
   ChooseCredentialsPage({Null onSignupComplete()});
 
@@ -856,7 +857,7 @@ class _DummyPageState extends State<DummyPage> {
           // horizontal).
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
+            /*
             new FlatButton(
                 child:new Text(
                   'From: ${statsRange._date1}',
@@ -896,6 +897,74 @@ class _DummyPageState extends State<DummyPage> {
                   });
                 }
             ),
+            */
+            Row(
+                children:[
+                  Expanded(
+                      flex: 1,
+                      child: RaisedButton(
+                          onPressed:(){
+                            Future<String> newdate = askDate(context,statsRange._date1);
+                            newdate.then((value) {
+                              statsRange.setDate1(value);
+                              getTotals().then((goods) {
+                                setState(() {});
+                              }
+                              );
+                            });
+                          },
+                          child: Text("From: ")
+                      )
+                  )
+                  ,
+                  Expanded(
+                      flex: 3,
+                      child: new Text(
+                        statsRange._date1,
+                        textAlign: TextAlign.center,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .display1,
+                      )
+                  )
+                ]
+            ),
+
+            Row(
+                children:[
+                  Expanded(
+                      flex: 1,
+                      child: RaisedButton(
+                          onPressed:(){
+                            Future<String> newdate = askDate(context,statsRange._date2);
+                            newdate.then((value) {
+                              statsRange.setDate2(value);
+                              getTotals().then((goods) {
+                                setState(() {});
+                              }
+                              );
+                            });
+                          },
+                          child: Text("To: ")
+                      )
+                  )
+                  ,
+                  Expanded(
+                      flex: 3,
+                      child: new Text(
+                        statsRange._date2,
+                        textAlign: TextAlign.center,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .display1,
+                      )
+                  )
+                ]
+            ),
+
+
             Expanded(
                 child: ListView(
                     children:gottenRows
