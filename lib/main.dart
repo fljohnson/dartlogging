@@ -149,6 +149,7 @@ class RealItemPage extends StatefulWidget {
 
 class _RealItemPageState extends State<RealItemPage> {
 
+
   Widget menumaker(String currentsel)
   {
     List<String> categoryName = [];
@@ -162,7 +163,13 @@ class _RealItemPageState extends State<RealItemPage> {
       droplist.add(
           DropdownMenuItem<String>(
             value: categoryName[i],
-            child: Text(categoryName[i]),
+            child: Text(categoryName[i],
+              textAlign: TextAlign.end,
+              style: Theme
+                  .of(context)
+                  .textTheme
+                  .headline
+            ),
           )
       );
     }
@@ -175,10 +182,43 @@ class _RealItemPageState extends State<RealItemPage> {
       },
     );
   }
+
+  Widget saneTextField({String value, String hint, String type}) {
+    TextInputType kbdType = TextInputType.text;
+    TextAlign align = TextAlign.start;
+    int maxLines = 2;
+    if(type == "currency")
+    {
+      maxLines = 1;
+      kbdType = TextInputType.numberWithOptions(signed: false,decimal:true);
+      align = TextAlign.end;
+    }
+    var hintbit = InputDecoration.collapsed(hintText: hint);
+    return Column(
+      children: <Widget>[
+        Text(
+            hint,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.subtitle
+        ),
+        TextFormField(
+          initialValue:value,
+          keyboardType: kbdType,
+          maxLines: maxLines,
+          textAlign:align,
+          style: Theme
+              .of(context)
+              .textTheme
+              .title,
+        ),
+
+      ],
+    )
+    ;
+  }
   @override
   Widget build(BuildContext context)
   {
-
     if(chosen == null)
     {
       var ahora = DateTime.now();
@@ -238,12 +278,37 @@ class _RealItemPageState extends State<RealItemPage> {
         Row(
           children:[
             Expanded(
-              flex:1,
+                flex:1,
+                child:saneTextField(
+                  value:chosen.title,
+                  hint:"What it was"
+                )
+            ),
+            Expanded(
+                flex:1,
+                child:saneTextField(
+                    value:chosen.stramount(),
+                    hint:"\$0.00",
+                  type:"currency"
+                )
+            ),
+          ]
+        ),
+        Row(
+          children:[
+            Expanded(
+              flex:2,
               child:new Text(
-                "Category:"
+                "Category:",
+                textAlign: TextAlign.start,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .headline
               )
             ),
             menumaker(chosen.category)
+
             /*
             Expanded(
               flex:3,
@@ -255,6 +320,8 @@ class _RealItemPageState extends State<RealItemPage> {
       ]
     );
   }
+
+
 }
 class ChooseCredentialsPage extends StatelessWidget {
   ChooseCredentialsPage({Null onSignupComplete()});
