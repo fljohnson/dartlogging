@@ -142,6 +142,7 @@ class ItemPage extends StatelessWidget {
   }
 }
 
+
 class RealItemPage extends StatefulWidget {
   @override
   _RealItemPageState createState() => new _RealItemPageState();
@@ -149,6 +150,27 @@ class RealItemPage extends StatefulWidget {
 
 class _RealItemPageState extends State<RealItemPage> {
 
+  TextEditingController _controllerAmount;
+  TextEditingController _controllerTitle;
+  TextEditingController _controllerDetails;
+
+  @override
+  dispose()
+  {
+    if(_controllerAmount != null)
+    {
+      _controllerAmount.dispose();
+    }
+    if(_controllerTitle != null)
+    {
+      _controllerTitle.dispose();
+    }
+    if(_controllerDetails != null)
+    {
+      _controllerDetails.dispose();
+    }
+    super.dispose();
+  }
 
   Widget menumaker(String currentsel)
   {
@@ -168,7 +190,7 @@ class _RealItemPageState extends State<RealItemPage> {
               style: Theme
                   .of(context)
                   .textTheme
-                  .headline
+                  .title
             ),
           )
       );
@@ -183,17 +205,28 @@ class _RealItemPageState extends State<RealItemPage> {
     );
   }
 
-  Widget saneTextField({String value, String hint, String type}) {
+  Widget saneTextField({TextEditingController controller, String hint, String type,int maxLines = 2}) {
     TextInputType kbdType = TextInputType.text;
     TextAlign align = TextAlign.start;
-    int maxLines = 2;
+    TextStyle editStyle = Theme
+        .of(context)
+        .textTheme
+        .title;
+    if(type == "longedit")
+      {
+        editStyle =Theme
+            .of(context)
+            .textTheme
+            .subtitle;
+
+      }
     if(type == "currency")
     {
       maxLines = 1;
       kbdType = TextInputType.numberWithOptions(signed: false,decimal:true);
       align = TextAlign.end;
     }
-    var hintbit = InputDecoration.collapsed(hintText: hint);
+
     return Column(
       children: <Widget>[
         Text(
@@ -201,15 +234,12 @@ class _RealItemPageState extends State<RealItemPage> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.subtitle
         ),
-        TextFormField(
-          initialValue:value,
+        TextField(
+          controller:controller,
           keyboardType: kbdType,
           maxLines: maxLines,
           textAlign:align,
-          style: Theme
-              .of(context)
-              .textTheme
-              .title,
+          style: editStyle,
         ),
 
       ],
@@ -241,6 +271,18 @@ class _RealItemPageState extends State<RealItemPage> {
           date:"${ahora.year}-$mo-$da"
       );
     }
+
+    _controllerAmount = TextEditingController(text:chosen.stramount());
+    _controllerTitle = TextEditingController(text:chosen.title);
+    if(chosen.details == null ||chosen.details.isEmpty)
+    {
+      _controllerDetails = TextEditingController();
+    }
+    else
+    {
+      _controllerDetails = TextEditingController(text:chosen.details);
+    }
+
 
     return Column (
       children: <Widget>[
@@ -275,25 +317,31 @@ class _RealItemPageState extends State<RealItemPage> {
             ]
         )
         ,
-        Row(
-          children:[
-            Expanded(
-                flex:1,
-                child:saneTextField(
-                  value:chosen.title,
-                  hint:"What it was"
-                )
-            ),
-            Expanded(
-                flex:1,
-                child:saneTextField(
-                    value:chosen.stramount(),
-                    hint:"\$0.00",
-                  type:"currency"
-                )
-            ),
-          ]
-        ),
+        Container(
+        height:90.0,
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children:[
+                Expanded(
+                    flex:2,
+                    child:saneTextField(
+                        controller:_controllerTitle,
+                        hint:"What it was"
+                    )
+                ),
+                Expanded(
+                    flex:1,
+                    child:saneTextField(
+                        controller:_controllerAmount,
+                        hint:"How much",
+                        type:"currency"
+                    )
+                ),
+
+              ]
+          )
+        )
+        ,
         Row(
           children:[
             Expanded(
@@ -304,7 +352,7 @@ class _RealItemPageState extends State<RealItemPage> {
                 style: Theme
                     .of(context)
                     .textTheme
-                    .headline
+                    .title
               )
             ),
             menumaker(chosen.category)
@@ -316,7 +364,13 @@ class _RealItemPageState extends State<RealItemPage> {
             )*/
 
           ]
+        ),
+        saneTextField(
+            controller:_controllerDetails,
+            hint:"Details",
+            type:"longedit"
         )
+
       ]
     );
   }

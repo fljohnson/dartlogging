@@ -87,7 +87,8 @@ class Logitem {
         name:"Lunch at tavern",
         amt: 34.70,
         category: "Entertainment",
-        date:"2018-10-04"
+        date:"2018-10-04",
+        details:"Don't panic. This is only a test. Repeat, this is only a test "
     );
     await proto.save();
     proto = new Logitem(
