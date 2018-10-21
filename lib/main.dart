@@ -153,7 +153,47 @@ class _RealItemPageState extends State<RealItemPage> {
   TextEditingController _controllerAmount;
   TextEditingController _controllerTitle;
   TextEditingController _controllerDetails;
+  GlobalKey _keyAmt = new GlobalKey(debugLabel:"amt");
+  GlobalKey _keyTitle = new GlobalKey(debugLabel:"title");
+  GlobalKey _keyDetails = new GlobalKey(debugLabel:"details");
 
+  @override
+  initState()
+  {
+    if(chosen == null)
+    {
+      var ahora = DateTime.now();
+      String mo = "${ahora.month}";
+      String da = "${ahora.day}";
+      while (da.length < 2)
+      {
+        da = "0" +da;
+      }
+      while (mo.length < 2)
+      {
+        mo = "0" +mo;
+      }
+
+
+      chosen = new Logitem(
+          name:"Test shot 5",
+          amt: 105.82,
+          category: "Groceries",
+          date:"${ahora.year}-$mo-$da"
+      );
+    }
+    _controllerAmount = TextEditingController(text:chosen.stramount());
+    _controllerTitle = TextEditingController(text:chosen.title);
+    if(chosen.details == null ||chosen.details.isEmpty)
+    {
+      _controllerDetails = TextEditingController();
+    }
+    else
+    {
+      _controllerDetails = TextEditingController(text:chosen.details);
+    }
+    super.initState();
+  }
   @override
   dispose()
   {
@@ -169,6 +209,7 @@ class _RealItemPageState extends State<RealItemPage> {
     {
       _controllerDetails.dispose();
     }
+
     super.dispose();
   }
 
@@ -205,7 +246,9 @@ class _RealItemPageState extends State<RealItemPage> {
     );
   }
 
-  Widget saneTextField({TextEditingController controller, String hint, String type,int maxLines = 2}) {
+  Widget saneTextField({GlobalKey key,String inText, TextEditingController controller, String hint, String type,int maxLines = 2,
+    void Function(String newValue) changeHandler } ) {
+
     TextInputType kbdType = TextInputType.text;
     TextAlign align = TextAlign.start;
     TextStyle editStyle = Theme
@@ -218,7 +261,6 @@ class _RealItemPageState extends State<RealItemPage> {
             .of(context)
             .textTheme
             .subtitle;
-
       }
     if(type == "currency")
     {
@@ -227,6 +269,7 @@ class _RealItemPageState extends State<RealItemPage> {
       align = TextAlign.end;
     }
 
+
     return Column(
       children: <Widget>[
         Text(
@@ -234,13 +277,27 @@ class _RealItemPageState extends State<RealItemPage> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.subtitle
         ),
+
         TextField(
           controller:controller,
           keyboardType: kbdType,
           maxLines: maxLines,
           textAlign:align,
           style: editStyle,
+          onChanged: changeHandler,
         ),
+
+/*
+        TextFormField(
+          key: key,
+       //   initialValue:inText,
+          keyboardType: kbdType,
+          maxLines: maxLines,
+          textAlign:align,
+          style: editStyle,
+          controller: controller,
+        )
+        */
 
       ],
     )
@@ -249,39 +306,9 @@ class _RealItemPageState extends State<RealItemPage> {
   @override
   Widget build(BuildContext context)
   {
-    if(chosen == null)
-    {
-      var ahora = DateTime.now();
-      String mo = "${ahora.month}";
-      String da = "${ahora.day}";
-      while (da.length < 2)
-      {
-        da = "0" +da;
-      }
-      while (mo.length < 2)
-      {
-        mo = "0" +mo;
-      }
 
 
-      chosen = new Logitem(
-          name:"Test shot 5",
-          amt: 105.82,
-          category: "Groceries",
-          date:"${ahora.year}-$mo-$da"
-      );
-    }
 
-    _controllerAmount = TextEditingController(text:chosen.stramount());
-    _controllerTitle = TextEditingController(text:chosen.title);
-    if(chosen.details == null ||chosen.details.isEmpty)
-    {
-      _controllerDetails = TextEditingController();
-    }
-    else
-    {
-      _controllerDetails = TextEditingController(text:chosen.details);
-    }
 
 
     return Column (
@@ -326,15 +353,29 @@ class _RealItemPageState extends State<RealItemPage> {
                     flex:2,
                     child:saneTextField(
                         controller:_controllerTitle,
-                        hint:"What it was"
+                        key:_keyTitle,
+                        inText:chosen.title,
+                        hint:"What it was",
+                        changeHandler:(String newValue) {
+                          chosen.title = newValue;
+                        }
                     )
                 ),
                 Expanded(
                     flex:1,
                     child:saneTextField(
                         controller:_controllerAmount,
+                      key:_keyAmt,
+                        inText:chosen.stramount(),
                         hint:"How much",
-                        type:"currency"
+                        type:"currency",
+                        changeHandler:(String newValue) {
+                          var auldSel = _controllerAmount.selection;
+                          num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+                          _controllerAmount.text = Logitem.toDollarString(goodNumber);
+                          chosen.amount = goodNumber;
+                          _controllerAmount.selection = auldSel;
+                        }
                     )
                 ),
 
@@ -367,8 +408,13 @@ class _RealItemPageState extends State<RealItemPage> {
         ),
         saneTextField(
             controller:_controllerDetails,
+          key:_keyDetails,
+          inText:chosen.details,
             hint:"Details",
-            type:"longedit"
+            type:"longedit",
+            changeHandler:(String newValue) {
+              chosen.details = newValue;
+            }
         )
 
       ]
@@ -376,42 +422,6 @@ class _RealItemPageState extends State<RealItemPage> {
   }
 
 
-}
-class ChooseCredentialsPage extends StatelessWidget {
-  ChooseCredentialsPage({Null onSignupComplete()});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold (
-        appBar: new AppBar(
-      // Here we take the value from the MyHomePage object that was created by
-      // the App.build method, and use it to set our appbar title.
-      title: new Text("URK"),
-    ),
-        body: new Center(
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: new Column(
-            // Column is also layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug paint" (press "p" in the console where you ran
-            // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-            // window in IntelliJ) to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            //mainAxisAlignment: MainAxisAlignment.center,
-            children: [new Text("boo")],
-          ),
-        )
-    );
-  }
 }
 
 
@@ -526,6 +536,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
         });
       }
+
   }
 
   @override
@@ -830,6 +841,15 @@ class _LoggingPageState extends State<LoggingPage> {
               });
             });
           }
+        else
+        {
+          chosen.revert().then((value) {
+            fetchRows().then((goods) {
+              setState(() {});
+            });
+
+          });
+        }
       }),
     );
 

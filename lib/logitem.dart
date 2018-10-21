@@ -25,6 +25,21 @@ class Logitem {
 
     return "\$${parts[0]}.${parts[1]}";
   }
+  
+  static num toNumber(String textAmount)
+  {
+    List<String> parts = textAmount.split(".");
+    int cents = 0;
+    int dollars = 0;
+    if(parts.length > 1)
+    {
+      cents = int.parse((parts[1]+"00").substring(0,2));
+    }
+    dollars = int.parse("0"+parts[0]);
+
+    return (dollars+(cents/100)); //this would've been a little more complicated in Java
+
+  }
 
   static Future<bool> blankDB() async {
     bool rv = false;
@@ -180,6 +195,23 @@ class Logitem {
     this.amount = incoming["amount"];
     this.category = incoming["category"];
     this.details = incoming["details"];
+  }
+
+  Future<bool> revert() async {
+    bool rv = false;
+    List<Map<String,dynamic>> raw = await database.rawQuery('SELECT * FROM Logitem where id = ?',
+        [this._id]);
+
+    var incoming = raw.first;
+    this.thedate = incoming["thedate"];
+    this.title = incoming["what"];
+    this.amount = incoming["amount"];
+    this.category = incoming["category"];
+    this.details = incoming["details"];
+
+
+    rv = true;
+    return rv;
   }
 
   Future<bool> save() async {
