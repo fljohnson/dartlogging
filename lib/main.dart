@@ -113,7 +113,7 @@ class ItemPage extends StatelessWidget {
         // action button
           FlatButton(
               child: Text("CANCEL",
-                style:TextStyle(fontSize:Theme.of(context).textTheme.subtitle.fontSize,
+                style:TextStyle(fontSize:Theme.of(context).textTheme.headline.fontSize,
                     color:Color(0xFFFFFFFF))
               ),
               onPressed: () {
@@ -123,7 +123,7 @@ class ItemPage extends StatelessWidget {
           // action button
           FlatButton(
               child: Text("DONE",
-                  style:TextStyle(fontSize:Theme.of(context).textTheme.subtitle.fontSize,
+                  style:TextStyle(fontSize:Theme.of(context).textTheme.headline.fontSize,
                       color:Color(0xFFFFFFFF))
               ),
               onPressed: () {
@@ -260,7 +260,7 @@ class _RealItemPageState extends State<RealItemPage> {
         editStyle =Theme
             .of(context)
             .textTheme
-            .subtitle;
+            .headline;
       }
     if(type == "currency")
     {
@@ -275,7 +275,7 @@ class _RealItemPageState extends State<RealItemPage> {
         Text(
             hint,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.subtitle
+            style: Theme.of(context).textTheme.headline
         ),
 
         TextField(

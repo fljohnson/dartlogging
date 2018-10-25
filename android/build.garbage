@@ -1,0 +1,31 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version'
+    }
+}
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-android-compiler-plugin:0.10.1316'
+}
