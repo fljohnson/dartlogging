@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "logitem.dart";
 import "pseudoresources.dart";
@@ -9,22 +11,64 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
+/*
+void _setDate() {
+//  Navigator.of(context).pop();
+
+   var datemess = (dobKey.currentState.dobStrMonth +
+      ' ${dobKey.currentState.dobDate}' +
+      ' ${dobKey.currentState.dobYear}');
+
+}
+*/
+
+void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
+{
+  String rv = originalDate;
+  List<String> datelets = originalDate.split("/");
+  DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
+  DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
+  DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
+
+
+
+  DatePicker.showDatePicker(
+      context,
+      minYear:minDate.year,
+      maxYear:maxDate.year,
+      initialYear:currentDate.year,
+      initialMonth: currentDate.month,
+      initialDate: currentDate.day,
+      locale:'en_US',
+      showTitleActions:true,
+      onConfirm:((int year, int month, int date){
+        rv=fromISOtoUS("$year-$month-$date");
+        actOnDate(rv);
+      })
+  );
+}
+
 Future<String> askDate(BuildContext context,String originalDate) async {
   String rv = originalDate;
   List<String> datelets = originalDate.split("/");
   DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
   DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
   DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
+
+
   DateTime value = await showDatePicker(
       context:context,
       initialDate:currentDate,
       firstDate:minDate,
       lastDate:maxDate
   );
+
+
   if(value != null)
   {
     rv=fromISOtoUS("${value.year}-${value.month}-${value.day}");
   }
+
   return rv;
 }
 
@@ -142,7 +186,34 @@ class ItemPage extends StatelessWidget {
   }
 }
 
+class CupertinoItemPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    String content = "(new)";
+    if (chosen != null) {
+      content = chosen.title;
+    }
 
+
+    return CupertinoPageScaffold(
+        navigationBar: new CupertinoNavigationBar(
+            automaticallyImplyLeading: true,
+            trailing: CupertinoButton(
+              child:Text("Done"),
+              onPressed: (){
+                Navigator.of(context).pop(chosen);
+            }
+            ),
+            backgroundColor: CupertinoColors.white
+        )
+        ,
+        child: RealItemPage()
+    );
+  }
+}
+/*
+
+ */
 class RealItemPage extends StatefulWidget {
   @override
   _RealItemPageState createState() => new _RealItemPageState();
@@ -246,6 +317,99 @@ class _RealItemPageState extends State<RealItemPage> {
     );
   }
 
+  Widget menumakerCupertino(BuildContext context,String currentsel)
+  {
+    List<Widget> visualCategories = [
+      /*
+      CupertinoButton(
+          onPressed:((){
+            //not quite right
+            Navigator.of(context).pop();
+          }) ,
+          child: Text("Cancel")
+
+      )*/
+    ];
+    for(int i=0; i<categories.length;i++)
+    {
+      List<Widget> interieur =[
+        CupertinoButton(
+            onPressed:(categories[i].keys.first == currentsel)?null:((){
+        //not quite right
+        Navigator.of(context).pop(categories[i].keys.first);
+      }) ,
+            child: Text(categories[i].keys.first)
+
+        )
+      ];
+      if(categories[i].values.first != null)
+      {
+        interieur.add(
+            Text(categories[i].values.first)
+        );
+      }
+      visualCategories.add(
+          Column(
+              children:interieur
+          )
+
+      );
+    }
+    return CupertinoButton(
+      child: Text(currentsel),
+      onPressed:((){
+        //run that bottom sheet thing, containing a CupertinoPicker
+        Future<String> newvalue = showModalBottomSheet<String>(
+          context:context,
+          builder:((context){
+            return Column(
+              children: [
+                CupertinoButton(
+                  onPressed:((){
+                    Navigator.of(context).pop();
+                  }),
+                  child:Text("Cancel")
+
+                )
+                ,
+                Expanded(
+                  child: ListView(
+                      shrinkWrap: true,
+                      children:visualCategories
+                  ),
+                )
+
+                /*
+                */
+              ]
+            );
+
+          /*
+            return ListView(
+              children:visualCategories
+            );
+        */
+  })
+        );
+        newvalue.then((String value)
+        {
+          if(value != null)
+          {
+            chosen.category = value;
+            setState((){});
+          }
+        });
+
+      })
+      /*
+      onChanged: (String value){
+        chosen.category = value;
+        setState((){});
+      },
+      */
+    );
+  }
+
   Widget saneTextField({GlobalKey key,String inText, TextEditingController controller, String hint, String type,int maxLines = 2,
     void Function(String newValue) changeHandler } ) {
 
@@ -277,16 +441,17 @@ class _RealItemPageState extends State<RealItemPage> {
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headline
         ),
-
-        TextField(
-          controller:controller,
-          keyboardType: kbdType,
-          maxLines: maxLines,
-          textAlign:align,
-          style: editStyle,
-          onChanged: changeHandler,
-        ),
-
+Material(
+    child:
+TextField(
+controller:controller,
+    keyboardType: kbdType,
+    maxLines: maxLines,
+    textAlign:align,
+    style: editStyle,
+    onChanged: changeHandler,
+    )
+),
 /*
         TextFormField(
           key: key,
@@ -310,21 +475,30 @@ class _RealItemPageState extends State<RealItemPage> {
 
 
 
-
-    return Column (
+//went from Column to ListView for all platforms
+    return ListView (
       children: <Widget>[
         Row(
             children:[
               Expanded(
                   flex: 1,
-                  child: RaisedButton(
+                  child: CupertinoButton(
                       onPressed:(){
+                        askCupertinoDate(context,fromISOtoUS(chosen.thedate),((String value)
+                        {
+                          chosen.thedate=fromUStoISO(value);
+                          setState(() {});
+                        })
+                        );
+
+                        /*
                         Future<String> newdate = askDate(context,fromISOtoUS(chosen.thedate));
                         newdate.then((value){
                           chosen.thedate=fromUStoISO(value);
                           setState(() {});
                         }
                         );
+                        */
                       },
                       child: Text("Date: ")
                   )
@@ -344,43 +518,45 @@ class _RealItemPageState extends State<RealItemPage> {
             ]
         )
         ,
+        /*
         Container(
         height:90.0,
-          child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children:[
-                Expanded(
-                    flex:2,
-                    child:saneTextField(
-                        controller:_controllerTitle,
-                        key:_keyTitle,
-                        inText:chosen.title,
-                        hint:"What it was",
-                        changeHandler:(String newValue) {
-                          chosen.title = newValue;
-                        }
-                    )
-                ),
-                Expanded(
-                    flex:1,
-                    child:saneTextField(
-                        controller:_controllerAmount,
+          child:
+        )*/
+        Row(
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
+            children:[
+              Expanded(
+                  flex:2,
+                  child:saneTextField(
+                      controller:_controllerTitle,
+                      key:_keyTitle,
+                      inText:chosen.title,
+                      hint:"What it was",
+                      changeHandler:(String newValue) {
+                        chosen.title = newValue;
+                      }
+                  )
+              ),
+              Expanded(
+                  flex:1,
+                  child:saneTextField(
+                      controller:_controllerAmount,
                       key:_keyAmt,
-                        inText:chosen.stramount(),
-                        hint:"How much",
-                        type:"currency",
-                        changeHandler:(String newValue) {
-                          var auldSel = _controllerAmount.selection;
-                          num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
-                          _controllerAmount.text = Logitem.toDollarString(goodNumber);
-                          chosen.amount = goodNumber;
-                          _controllerAmount.selection = auldSel;
-                        }
-                    )
-                ),
+                      inText:chosen.stramount(),
+                      hint:"How much",
+                      type:"currency",
+                      changeHandler:(String newValue) {
+                        var auldSel = _controllerAmount.selection;
+                        num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+                        _controllerAmount.text = Logitem.toDollarString(goodNumber);
+                        chosen.amount = goodNumber;
+                        _controllerAmount.selection = auldSel;
+                      }
+                  )
+              ),
 
-              ]
-          )
+            ]
         )
         ,
         Row(
@@ -396,8 +572,8 @@ class _RealItemPageState extends State<RealItemPage> {
                     .title
               )
             ),
-            menumaker(chosen.category)
-
+          //  menumaker(chosen.category)
+              menumakerCupertino(context,chosen.category)
             /*
             Expanded(
               flex:3,
@@ -456,9 +632,24 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     new Tab(text: 'Stats'),
   ];
 
+  //hey Cupertino
+  List<BottomNavigationBarItem> myTabBarItems = <BottomNavigationBarItem> [
+    new BottomNavigationBarItem(
+        icon:Icon(CupertinoIcons.folder_open),
+        activeIcon: Icon(CupertinoIcons.folder_solid),
+        title: Text("Logging")
+      ),
+    new BottomNavigationBarItem(
+        icon:Icon(CupertinoIcons.check_mark_circled),
+        activeIcon: Icon(CupertinoIcons.check_mark_circled_solid),
+        title: Text("Stats")
+    )
+  ];
+
   List<DatePair> _pageDates;
 
   FloatingActionButton adder;
+  CupertinoButton cupertinoAdder;
   TabController _tabController;
 
   @override
@@ -469,6 +660,11 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       onPressed: newItem,
       tooltip: 'Add Item',
       child: new Icon(Icons.add),
+    );
+
+    cupertinoAdder = CupertinoButton(
+      onPressed: newItem,
+      child: new Icon(CupertinoIcons.add)
     );
   //  _pageDates =[new DatePair("09/01/2018","09/30/2018"),new DatePair("09/01/2018","09/30/2018")];
    // _pages = <Widget>[new LoggingPage(owner:this),new DummyPage()];
@@ -520,8 +716,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     ));
     */
       chosen=null;
+      /*
       Logitem feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:ItemPage().build)
+      );
+      */
+      Logitem feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder:CupertinoItemPage().build)
       );
       //("/item");
       if(feedback != null)
@@ -547,6 +748,22 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
+    //hey Cupertino
+    return new CupertinoTabScaffold(
+        tabBar: CupertinoTabBar(
+          items:myTabBarItems
+        ),
+        tabBuilder: (BuildContext context, int index) {
+          return CupertinoTabView(
+            builder: (BuildContext context) {
+              return theTabPage(context,index);
+            }
+          );
+        }
+
+    );
+    /*
     return new Scaffold(
       appBar: new AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -574,6 +791,33 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       ),
       floatingActionButton: adder, // This trailing comma makes auto-formatting nicer for build methods.
     );
+    */
+  }
+
+  CupertinoPageScaffold theTabPage(BuildContext context, int index) {
+    if(index == 0)
+    {
+      return CupertinoPageScaffold(
+        navigationBar: new CupertinoNavigationBar(
+          middle:Text("Logging"),
+          trailing:cupertinoAdder,
+          backgroundColor:CupertinoColors.white
+        )
+          ,
+        child:LoggingPage()
+      );
+    }
+    else
+    {
+      return CupertinoPageScaffold(
+          navigationBar: new CupertinoNavigationBar(
+              middle:Text("Stats"),//rework the look of that FAB
+              backgroundColor:CupertinoColors.white
+          )
+          ,
+        child:DummyPage()
+      );
+    }
   }
   
 
@@ -707,8 +951,19 @@ class _LoggingPageState extends State<LoggingPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child: RaisedButton(
+                  child: CupertinoButton(
                       onPressed:(){
+                        askCupertinoDate(context,loggingRange._date1,((String value)
+                        {
+                          loggingRange.setDate1(value);
+                          fetchRows().then((goods) {
+                            setState(() {});
+                          }
+                          );
+                        })
+                        );
+
+                        /*
                         Future<String> newdate = askDate(context,loggingRange._date1);
                         newdate.then((value) {
                           loggingRange.setDate1(value);
@@ -717,6 +972,7 @@ class _LoggingPageState extends State<LoggingPage> {
                           }
                           );
                         });
+                        */
                       },
                       child: Text("From: ")
                   )
@@ -740,8 +996,18 @@ class _LoggingPageState extends State<LoggingPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child: RaisedButton(
+                  child: CupertinoButton(
                       onPressed:(){
+                        askCupertinoDate(context,loggingRange._date2,((String value)
+                        {
+                          loggingRange.setDate2(value);
+                            fetchRows().then((goods) {
+                              setState(() {});
+                            }
+                          );
+                        })
+                        );
+                        /*
                         Future<String> newdate = askDate(context,loggingRange._date2);
                         newdate.then((value) {
                           loggingRange.setDate2(value);
@@ -750,6 +1016,7 @@ class _LoggingPageState extends State<LoggingPage> {
                           }
                           );
                         });
+                        */
                       },
                       child: Text("To: ")
                   )
@@ -827,8 +1094,13 @@ class _LoggingPageState extends State<LoggingPage> {
         ,
       onPressed: (() async {
         chosen = content;
+        /*
         Logitem feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:ItemPage().build)
+        );
+         */
+        Logitem feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder:CupertinoItemPage().build)
         );
         //("/item");
         if(feedback != null)
@@ -984,8 +1256,20 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: RaisedButton(
+                      child: CupertinoButton(
                           onPressed:(){
+
+                            askCupertinoDate(context,statsRange._date1,((String value)
+                            {
+                              statsRange.setDate1(value);
+                              getTotals().then((goods) {
+                                setState(() {});
+                              }
+                              );
+                            })
+                            );
+
+                            /*
                             Future<String> newdate = askDate(context,statsRange._date1);
                             newdate.then((value) {
                               statsRange.setDate1(value);
@@ -994,6 +1278,7 @@ class _DummyPageState extends State<DummyPage> {
                               }
                               );
                             });
+                            */
                           },
                           child: Text("From: ")
                       )
@@ -1017,8 +1302,21 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: RaisedButton(
+                      child: CupertinoButton(
                           onPressed:(){
+
+
+                            askCupertinoDate(context,statsRange._date2,((String value)
+                            {
+                              statsRange.setDate2(value);
+                              getTotals().then((goods) {
+                                setState(() {});
+                              }
+                              );
+                            })
+                            );
+
+                            /*
                             Future<String> newdate = askDate(context,statsRange._date2);
                             newdate.then((value) {
                               statsRange.setDate2(value);
@@ -1027,6 +1325,7 @@ class _DummyPageState extends State<DummyPage> {
                               }
                               );
                             });
+                            */
                           },
                           child: Text("To: ")
                       )
