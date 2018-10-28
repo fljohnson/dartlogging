@@ -10,12 +10,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="Got the main logging and stats pages working-latter needs cosmetic work. Up next is the edit page, then bring in DB">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -29,14 +26,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="98">
-              <caret line="664" column="16" selection-start-line="664" selection-start-column="12" selection-end-line="664" selection-end-column="16" />
+            <state relative-caret-position="203">
+              <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="flutter_cupertino_date_picker.dart" pinned="false" current-in-tab="true">
+        <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_cupertino_date_picker-0.0.7/lib/flutter_cupertino_date_picker.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="259">
+              <caret line="639" column="5" lean-forward="true" selection-start-line="639" selection-start-column="5" selection-end-line="639" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -121,13 +127,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>last</find>
-      <find>monthEnd</find>
-      <find>&quot;/&quot;</find>
-      <find>&quot;0&quot;</find>
-      <find>basketnerds</find>
-      <find>setDate</find>
-      <find>onConfirm</find>
       <find>DateChangedCallback</find>
       <find>onconfi</find>
       <find>_renderTitleActionsView</find>
@@ -151,6 +150,13 @@
       <find>Exce</find>
       <find>trail</find>
       <find>oadd</find>
+      <find>dateFormat</find>
+      <find>_renderMonthsPickerComponent</find>
+      <find>monthNames</find>
+      <find>showd</find>
+      <find>_formatMonthComplex</find>
+      <find>_renderDa</find>
+      <find>_localeDay</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -181,18 +187,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="basketnerds" type="1abcf292:AndroidViewProjectNode" />
-              <item name="basketnerds" type="e9137016:NonAndroidModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -210,7 +205,18 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="basketnerds" type="1abcf292:AndroidViewProjectNode" />
+              <item name="basketnerds" type="e9137016:NonAndroidModuleNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -305,7 +311,14 @@
       <option name="project" value="LOCAL" />
       <updated>1539409924109</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Brought in Cupertino underpinnngs, and created a functional iOS version. Up next:&#10;-test this one out&#10;-unify Cupertino and Material(Android) variants">
+      <created>1540741169542</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1540741169542</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -337,11 +350,11 @@
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48501363" visible="true" weight="0.41489363" />
-      <window_info id="Structure" order="1" sideWeight="0.5149864" side_tool="true" visible="true" weight="0.41489363" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4851658" visible="true" weight="0.41489363" />
+      <window_info id="Structure" order="1" sideWeight="0.5148342" side_tool="true" visible="true" weight="0.41489363" />
       <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32998455" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49924013" visible="true" weight="0.35951135" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49924013" weight="0.35951135" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="3" sideWeight="0.49836066" weight="0.32998455" />
       <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49840257" weight="0.32635254" />
@@ -361,11 +374,12 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Got the main logging and stats pages working-latter needs cosmetic work. Up next is the edit page, then bring in DB" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got the main logging and stats pages working-latter needs cosmetic work. Up next is the edit page, then bring in DB" />
+    <MESSAGE value="Brought in Cupertino underpinnngs, and created a functional iOS version. Up next:&#10;-test this one out&#10;-unify Cupertino and Material(Android) variants" />
+    <option name="LAST_COMMIT_MESSAGE" value="Brought in Cupertino underpinnngs, and created a functional iOS version. Up next:&#10;-test this one out&#10;-unify Cupertino and Material(Android) variants" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="26" />
+      <option name="time" value="29" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -699,20 +713,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_cupertino_date_picker-0.0.7/lib/flutter_cupertino_date_picker.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="290" column="10" selection-start-line="290" selection-start-column="10" selection-end-line="290" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="98">
-          <caret line="664" column="16" selection-start-line="664" selection-start-column="12" selection-end-line="664" selection-end-column="16" />
+        <state relative-caret-position="203">
+          <caret line="36" column="31" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="31" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/flutter_cupertino_date_picker-0.0.7/lib/flutter_cupertino_date_picker.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="639" column="5" lean-forward="true" selection-start-line="639" selection-start-column="5" selection-end-line="639" selection-end-column="5" />
         </state>
       </provider>
     </entry>

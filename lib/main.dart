@@ -34,6 +34,7 @@ void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(S
 
   DatePicker.showDatePicker(
       context,
+      dateFormat:"mmm-dd-yyyy",
       minYear:minDate.year,
       maxYear:maxDate.year,
       initialYear:currentDate.year,
