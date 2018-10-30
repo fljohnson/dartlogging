@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:async';
 
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
@@ -249,7 +250,7 @@ class _RealItemPageState extends State<RealItemPage> {
 
       chosen = new Logitem(
           name:"Test shot 5",
-          amt: 105.82,
+          amt: 1.82,
           category: "Groceries",
           date:"${ahora.year}-$mo-$da"
       );

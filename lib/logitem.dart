@@ -29,15 +29,16 @@ class Logitem {
   static num toNumber(String textAmount)
   {
     List<String> parts = textAmount.split(".");
-    int cents = 0;
-    int dollars = 0;
+    num cents = 0;
+    num dollars = 0;
     if(parts.length > 1)
     {
-      cents = int.parse((parts[1]+"00").substring(0,2));
+      cents = (int.parse((parts[1]+"00").substring(0,2))/100);
     }
-    dollars = int.parse("0"+parts[0]);
+    dollars = 100*(int.parse("0"+parts[0])+cents);
+    num toto = dollars.round()/100; //THAT's how to round to a cent
 
-    return (dollars+(cents/100)); //this would've been a little more complicated in Java
+    return toto;
 
   }
 
