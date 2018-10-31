@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -718,15 +719,19 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     ));
     */
       chosen=null;
-      /*
-      Logitem feedback = await Navigator.of(context).push(
+      Logitem feedback;
+      if(!Platform.isIOS) {
+        feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:ItemPage().build)
       );
-      */
-      Logitem feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:CupertinoItemPage().build)
-      );
+      }
+      else {
+        feedback = await Navigator.of(context).push(
+            MaterialPageRoute(builder: CupertinoItemPage().build)
+        );
+      }
       //("/item");
+
       if(feedback != null)
       {
         chosen = feedback;
@@ -752,48 +757,55 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     // than having to individually change instances of widgets.
 
     //hey Cupertino
-    return new CupertinoTabScaffold(
-        tabBar: CupertinoTabBar(
-          items:myTabBarItems
-        ),
-        tabBuilder: (BuildContext context, int index) {
-          return CupertinoTabView(
-            builder: (BuildContext context) {
-              return theTabPage(context,index);
+    if(Platform.isIOS)
+      {
+
+        return new CupertinoTabScaffold(
+            tabBar: CupertinoTabBar(
+                items:myTabBarItems
+            ),
+            tabBuilder: (BuildContext context, int index) {
+              return CupertinoTabView(
+                  builder: (BuildContext context) {
+                    return theTabPage(context,index);
+                  }
+              );
             }
-          );
-        }
 
-    );
-    /*
-    return new Scaffold(
-      appBar: new AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
-        bottom: new TabBar(
-          controller: _tabController,
-          tabs: myTabs,
-        ),
+        );
+      }
+      else
+      {
+        return new Scaffold(
+          appBar: new AppBar(
+            // Here we take the value from the MyHomePage object that was created by
+            // the App.build method, and use it to set our appbar title.
+            title: new Text(widget.title),
+            bottom: new TabBar(
+              controller: _tabController,
+              tabs: myTabs,
+            ),
 
-      ),
-      body: new Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        //child:LoggingPage(),
+          ),
+          body: new Center(
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            //child:LoggingPage(),
 
-        child:TabBarView(
-          controller:_tabController,
-          children:[
-            LoggingPage(),
-            DummyPage()
-          ]
-        ),
+            child:TabBarView(
+                controller:_tabController,
+                children:[
+                  LoggingPage(),
+                  DummyPage()
+                ]
+            ),
 
-      ),
-      floatingActionButton: adder, // This trailing comma makes auto-formatting nicer for build methods.
-    );
-    */
+          ),
+          floatingActionButton: adder, // This trailing comma makes auto-formatting nicer for build methods.
+        );
+
+      }
+
   }
 
   CupertinoPageScaffold theTabPage(BuildContext context, int index) {
@@ -934,6 +946,42 @@ class _LoggingPageState extends State<LoggingPage> {
   List<Widget> gottenRows = [];
   bool fired = false;
 
+  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
+
+    if(Platform.isIOS)
+    {
+      return CupertinoButton(
+          onPressed:(){
+            askCupertinoDate(context,initialDate,actOnDate);
+
+          },
+          child: Text(label)
+      );
+    }
+    else
+    {
+      return RaisedButton(
+        child: Text(label),
+        onPressed:() {
+          Future<String> newdate = askDate(context,initialDate);
+          newdate.then((value)
+          {
+            actOnDate(value);
+          });
+        }
+            /*
+            (value) {
+            loggingRange.setDate1(value);
+            fetchRows().then((goods) {
+              setState(() {});
+            }
+            );
+          }
+             */
+      );
+    }
+  }
+
 
   
   @override
@@ -953,30 +1001,14 @@ class _LoggingPageState extends State<LoggingPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child: CupertinoButton(
-                      onPressed:(){
-                        askCupertinoDate(context,loggingRange._date1,((String value)
-                        {
-                          loggingRange.setDate1(value);
-                          fetchRows().then((goods) {
-                            setState(() {});
-                          }
-                          );
-                        })
-                        );
-
-                        /*
-                        Future<String> newdate = askDate(context,loggingRange._date1);
-                        newdate.then((value) {
-                          loggingRange.setDate1(value);
-                          fetchRows().then((goods) {
-                            setState(() {});
-                          }
-                          );
-                        });
-                        */
-                      },
-                      child: Text("From: ")
+                  child: _getDateButton("From: ",loggingRange._date1,((String value)
+                  {
+                    loggingRange.setDate1(value);
+                    fetchRows().then((goods) {
+                      setState(() {});
+                    }
+                    );
+                  })
                   )
               )
               ,
@@ -998,29 +1030,13 @@ class _LoggingPageState extends State<LoggingPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child: CupertinoButton(
-                      onPressed:(){
-                        askCupertinoDate(context,loggingRange._date2,((String value)
-                        {
-                          loggingRange.setDate2(value);
-                            fetchRows().then((goods) {
-                              setState(() {});
-                            }
-                          );
-                        })
-                        );
-                        /*
-                        Future<String> newdate = askDate(context,loggingRange._date2);
-                        newdate.then((value) {
-                          loggingRange.setDate2(value);
-                          fetchRows().then((goods) {
-                            setState(() {});
-                          }
-                          );
-                        });
-                        */
-                      },
-                      child: Text("To: ")
+                  child: _getDateButton("To: ",loggingRange._date2,((String value)
+                  {
+                    loggingRange.setDate2(value);
+                    fetchRows().then((goods) {
+                      setState(() {});
+                    });
+                  })
                   )
               )
               ,
@@ -1096,14 +1112,21 @@ class _LoggingPageState extends State<LoggingPage> {
         ,
       onPressed: (() async {
         chosen = content;
-        /*
-        Logitem feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:ItemPage().build)
-        );
-         */
-        Logitem feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:CupertinoItemPage().build)
-        );
+        Logitem feedback;
+        if(!Platform.isIOS)
+        {
+          feedback = await Navigator.of(context).push(
+              MaterialPageRoute(builder:ItemPage().build)
+          );
+
+        }
+        else
+        {
+          feedback = await Navigator.of(context).push(
+              MaterialPageRoute(builder:CupertinoItemPage().build)
+          );
+        }
+
         //("/item");
         if(feedback != null)
           {
@@ -1225,6 +1248,42 @@ class _DummyPageState extends State<DummyPage> {
     return rv;
   }
 
+  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
+
+    if(Platform.isIOS)
+    {
+      return CupertinoButton(
+          onPressed:(){
+            askCupertinoDate(context,initialDate,actOnDate);
+
+          },
+          child: Text(label)
+      );
+    }
+    else
+    {
+      return RaisedButton(
+          child: Text(label),
+          onPressed:() {
+            Future<String> newdate = askDate(context,initialDate);
+            newdate.then((value)
+            {
+              actOnDate(value);
+            });
+          }
+        /*
+            (value) {
+            loggingRange.setDate1(value);
+            fetchRows().then((goods) {
+              setState(() {});
+            }
+            );
+          }
+             */
+      );
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -1258,32 +1317,16 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: CupertinoButton(
-                          onPressed:(){
+                      child: _getDateButton("From: ",statsRange._date1,((String value)
+                      {
+                        statsRange.setDate1(value);
+                        getTotals().then((goods) {
+                          setState(() {});
+                        }
+                        );
+                      })),
 
-                            askCupertinoDate(context,statsRange._date1,((String value)
-                            {
-                              statsRange.setDate1(value);
-                              getTotals().then((goods) {
-                                setState(() {});
-                              }
-                              );
-                            })
-                            );
 
-                            /*
-                            Future<String> newdate = askDate(context,statsRange._date1);
-                            newdate.then((value) {
-                              statsRange.setDate1(value);
-                              getTotals().then((goods) {
-                                setState(() {});
-                              }
-                              );
-                            });
-                            */
-                          },
-                          child: Text("From: ")
-                      )
                   )
                   ,
                   Expanded(
@@ -1304,33 +1347,15 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: CupertinoButton(
-                          onPressed:(){
+                      child: _getDateButton("To: ",statsRange._date2,((String value)
+                      {
+                        statsRange.setDate2(value);
+                        getTotals().then((goods) {
+                          setState(() {});
+                        }
+                        );
+                      })),
 
-
-                            askCupertinoDate(context,statsRange._date2,((String value)
-                            {
-                              statsRange.setDate2(value);
-                              getTotals().then((goods) {
-                                setState(() {});
-                              }
-                              );
-                            })
-                            );
-
-                            /*
-                            Future<String> newdate = askDate(context,statsRange._date2);
-                            newdate.then((value) {
-                              statsRange.setDate2(value);
-                              getTotals().then((goods) {
-                                setState(() {});
-                              }
-                              );
-                            });
-                            */
-                          },
-                          child: Text("To: ")
-                      )
                   )
                   ,
                   Expanded(
