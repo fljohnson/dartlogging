@@ -287,7 +287,7 @@ class _RealItemPageState extends State<RealItemPage> {
     super.dispose();
   }
 
-  Widget menumaker(String currentsel)
+  Widget menumakerAndroid(String currentsel)
   {
     List<String> categoryName = [];
     List<String> categoryNote = [];
@@ -413,6 +413,7 @@ class _RealItemPageState extends State<RealItemPage> {
     );
   }
 
+
   Widget saneTextField({GlobalKey key,String inText, TextEditingController controller, String hint, String type,int maxLines = 2,
     void Function(String newValue) changeHandler } ) {
 
@@ -433,28 +434,43 @@ class _RealItemPageState extends State<RealItemPage> {
     {
       maxLines = 1;
       kbdType = TextInputType.numberWithOptions(signed: false,decimal:true);
-      align = TextAlign.end;
+      //align = TextAlign.end;
     }
 
 
-    return Column(
+    return Row(
+
       children: <Widget>[
-        Text(
-            hint,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.headline
+        Expanded(
+          flex:3,
+          child:Text(
+              hint,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline
+          )
+
+        )
+        ,
+        Spacer(
+          flex: 1,
         ),
-Material(
-    child:
-TextField(
-controller:controller,
-    keyboardType: kbdType,
-    maxLines: maxLines,
-    textAlign:align,
-    style: editStyle,
-    onChanged: changeHandler,
-    )
-),
+
+        Expanded(
+          flex:4,
+          child:Material(
+              child:
+              TextField(
+                controller:controller,
+                keyboardType: kbdType,
+                maxLines: maxLines,
+                textAlign:align,
+                style: editStyle,
+                onChanged: changeHandler,
+              )
+          )
+        )
+,
+
 /*
         TextFormField(
           key: key,
@@ -526,6 +542,30 @@ controller:controller,
         height:90.0,
           child:
         )*/
+        saneTextField(
+            controller:_controllerTitle,
+            key:_keyTitle,
+            inText:chosen.title,
+            hint:"What it was",
+            changeHandler:(String newValue) {
+              chosen.title = newValue;
+            }
+        ),
+        saneTextField(
+            controller:_controllerAmount,
+            key:_keyAmt,
+            inText:chosen.stramount(),
+            hint:"How much",
+            type:"currency",
+            changeHandler:(String newValue) {
+              var auldSel = _controllerAmount.selection;
+              num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+              _controllerAmount.text = Logitem.toDollarString(goodNumber);
+              chosen.amount = goodNumber;
+              _controllerAmount.selection = auldSel;
+            }
+        )
+        /*
         Row(
             //crossAxisAlignment: CrossAxisAlignment.stretch,
             children:[
@@ -561,6 +601,7 @@ controller:controller,
 
             ]
         )
+        */
         ,
         Row(
           children:[
@@ -575,8 +616,9 @@ controller:controller,
                     .title
               )
             ),
-          //  menumaker(chosen.category)
-              menumakerCupertino(context,chosen.category)
+            
+              Platform.isIOS ? menumakerCupertino(context,chosen.category) :
+              menumakerAndroid(chosen.category)
             /*
             Expanded(
               flex:3,
@@ -585,6 +627,7 @@ controller:controller,
 
           ]
         ),
+
         saneTextField(
             controller:_controllerDetails,
           key:_keyDetails,

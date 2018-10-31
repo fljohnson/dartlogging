@@ -29,8 +29,8 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
-              <caret line="1386" selection-start-line="1386" selection-end-line="1386" />
+            <state relative-caret-position="104">
+              <caret line="618" column="12" lean-forward="true" selection-start-line="618" selection-start-column="12" selection-end-line="618" selection-end-column="12" />
               <folding>
                 <element signature="e#0#24#0" expanded="true" />
               </folding>
@@ -102,10 +102,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>askCupertinoDate</find>
-      <find>adder</find>
-      <find>itemp</find>
-      <find>ceptio</find>
       <find>Colu</find>
       <find>exc</find>
       <find>menumaker</find>
@@ -132,6 +128,10 @@
       <find>act</find>
       <find>cuper</find>
       <find>_getDateButton</find>
+      <find>exce</find>
+      <find>what</find>
+      <find>menum</find>
+      <find>menumaker(</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -300,7 +300,14 @@
       <option name="project" value="LOCAL" />
       <updated>1540902084294</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Attempt at introducing forks for Cupertino and Material L&amp;F. Said fork works on Android side. Now to test iOS side&#10;-hoping for feedback from iOS users (may submit Android version anyway)">
+      <created>1540944263691</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1540944263692</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TodoView">
@@ -323,7 +330,7 @@
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5007599" side_tool="true" weight="0.35951135" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.32698962" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" weight="0.32984293" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32938856" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.33732533" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32984293" />
@@ -358,7 +365,8 @@
     <MESSAGE value="Got the main logging and stats pages working-latter needs cosmetic work. Up next is the edit page, then bring in DB" />
     <MESSAGE value="Brought in Cupertino underpinnngs, and created a functional iOS version. Up next:&#10;-test this one out&#10;-unify Cupertino and Material(Android) variants" />
     <MESSAGE value="Fixed rounding issue in Logitem.toNumber(). Up next:&#10;-hoping for feedback from iOS users (may submit Android version anyway)&#10;-unify Cupertino and Material(Android) variants" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed rounding issue in Logitem.toNumber(). Up next:&#10;-hoping for feedback from iOS users (may submit Android version anyway)&#10;-unify Cupertino and Material(Android) variants" />
+    <MESSAGE value="Attempt at introducing forks for Cupertino and Material L&amp;F. Said fork works on Android side. Now to test iOS side&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt at introducing forks for Cupertino and Material L&amp;F. Said fork works on Android side. Now to test iOS side&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -705,8 +713,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="1386" selection-start-line="1386" selection-end-line="1386" />
+        <state relative-caret-position="104">
+          <caret line="618" column="12" lean-forward="true" selection-start-line="618" selection-start-column="12" selection-end-line="618" selection-end-column="12" />
           <folding>
             <element signature="e#0#24#0" expanded="true" />
           </folding>
