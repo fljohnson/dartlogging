@@ -616,7 +616,7 @@ class _RealItemPageState extends State<RealItemPage> {
                     .title
               )
             ),
-            
+
               Platform.isIOS ? menumakerCupertino(context,chosen.category) :
               menumakerAndroid(chosen.category)
             /*
@@ -697,11 +697,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   FloatingActionButton adder;
   CupertinoButton cupertinoAdder;
   TabController _tabController;
+  List<String> _popupItems;
 
   @override
   void initState() {
     super.initState();
 
+    _popupItems = ["Import...","Export..."];
     adder = new FloatingActionButton(
       onPressed: newItem,
       tooltip: 'Add Item',
@@ -824,6 +826,23 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
             // Here we take the value from the MyHomePage object that was created by
             // the App.build method, and use it to set our appbar title.
             title: new Text(widget.title),
+            actions:[
+              PopupMenuButton<String>(
+                onSelected: ((String value) {
+                  _handlePopupMenu(value,context);
+                })
+                ,
+                itemBuilder: (BuildContext context) {
+                  return _popupItems.map((String choice){
+                    return PopupMenuItem<String>(
+                      value:choice,
+                      child:Text(choice),
+                    );
+                  }).toList();
+                },
+              )
+            ],
+
             bottom: new TabBar(
               controller: _tabController,
               tabs: myTabs,
@@ -877,6 +896,86 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     }
   }
   
+
+  Future<String> exportProcedure(BuildContext context) async {
+    String prospective;
+    String tailname = await showModalBottomSheet<String>(
+      context:context,
+      builder:((BuildContext context) {
+        return Column(
+          children:[
+            Container(
+              alignment: Alignment.centerLeft,
+              child:Text("Save entries from ${loggingRange._date1} to ${loggingRange._date2} in the public Documents folder",
+                textAlign: TextAlign.start,
+              ),
+            ),
+            TextField(
+              maxLines: 1,
+            decoration: new InputDecoration(hintText: "File Name.csv"),
+              onChanged: ((String value){
+                prospective = value;
+              }),
+
+            ),
+            Row(
+              children:[
+                Flexible(
+                  flex: 0,
+                  child:FlatButton(
+                      child:Text("Save"),
+                      onPressed:((){
+                        Navigator.of(context).pop(prospective.trim());
+                      })
+                  )
+                )
+                ,
+
+              ],
+
+              mainAxisAlignment:MainAxisAlignment.end
+
+
+            )
+
+          ]
+      );
+    }
+
+    )
+    );
+    if(tailname == null || tailname.isEmpty)
+    {
+      return null;
+    }
+    if(!tailname.endsWith(".csv"))
+    {
+      //too simplistic, but it gets the job done
+      tailname += ".csv";
+    }
+    return tailname;
+  }
+
+  void _handlePopupMenu(String value, BuildContext context) {
+    int seleccion = this._popupItems.indexOf(value);
+    switch(seleccion)
+    {
+      case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
+      Future<String> result = exportProcedure(context);
+      result.then((value) {
+        if (value != null)
+          {
+          Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+        }
+      });
+      break;
+      default:
+        {
+          var ls="doh";
+        }
+    }
+  }
+
 
 
 }
