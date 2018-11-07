@@ -898,44 +898,55 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   
 
   Future<String> exportProcedure(BuildContext context) async {
-    String prospective;
-    String tailname = await showModalBottomSheet<String>(
+    String prospective = "";
+    /*
+    var dasaver = FlatButton(
+        child:Text("Save"),
+        onPressed: prospective.isEmpty ? null : ((){
+          Navigator.of(context).pop(prospective.trim());
+        })
+    );
+*/
+    String tailname = await showDialog<String>(
       context:context,
       builder:((BuildContext context) {
-        return Column(
-          children:[
-            Container(
-              alignment: Alignment.centerLeft,
-              child:Text("Save entries from ${loggingRange._date1} to ${loggingRange._date2} in the public Documents folder",
-                textAlign: TextAlign.start,
-              ),
+        return AlertDialog(
+          title: Text("Save entries to your Documents folder"),
+          content:SingleChildScrollView(
+            child: Column(
+                children:[
+                  Text("Entries from ${loggingRange._date1} to ${loggingRange._date2}",
+                    textAlign: TextAlign.start,
+                  ),
+                  TextField(
+                    maxLines: 1,
+                    decoration: new InputDecoration(hintText: "File Name.csv"),
+                    onChanged: ((String value){
+                      prospective = value;
+                      setState((){
+
+                      });
+                    }),
+
+                  ),
+
+                ]
             ),
-            TextField(
-              maxLines: 1,
-            decoration: new InputDecoration(hintText: "File Name.csv"),
-              onChanged: ((String value){
-                prospective = value;
-              }),
+          ),
 
+
+          actions:[
+            FlatButton(
+                child:Text("Cancel"),
+                onPressed:((){
+                  Navigator.of(context).pop("");
+                })
             ),
-            Row(
-              children:[
-                Flexible(
-                  flex: 0,
-                  child:FlatButton(
-                      child:Text("Save"),
-                      onPressed:((){
-                        Navigator.of(context).pop(prospective.trim());
-                      })
-                  )
-                )
-                ,
-
-              ],
-
-              mainAxisAlignment:MainAxisAlignment.end
-
-
+            FlatButton(
+                child:Text("Save"),
+                onPressed: prospective.isEmpty ? null : ((){
+                  Navigator.of(context).pop(prospective.trim());
+                })
             )
 
           ]
