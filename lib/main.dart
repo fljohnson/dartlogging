@@ -971,6 +971,12 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     int seleccion = this._popupItems.indexOf(value);
     switch(seleccion)
     {
+      case 0:
+        Future<String> result = Logitem.getFileToOpen();
+        result.then((value) {
+          var ls = value;
+        });
+        break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
       Future<String> result = exportProcedure(context);
       result.then((value) {

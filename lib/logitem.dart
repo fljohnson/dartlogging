@@ -67,6 +67,22 @@ class Logitem {
     return rv;
   }
 
+  static Future<String> getFileToOpen() async {
+    if(platform == null) //shouldn't be an issue, but..
+    {
+      platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
+    }
+    String rv = "(no data)";
+    try {
+      final String result = await platform.invokeMethod(
+        "getFileToOpen");
+      rv = result;
+    }
+    on PlatformException catch(ecch) {
+      rv = ecch.message;
+    }
+    return rv;
+  }
   static Future<bool> initDB() async {
     bool rv = false;
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
