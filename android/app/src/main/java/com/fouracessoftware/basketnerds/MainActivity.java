@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugin.common.MethodCall;
@@ -51,7 +52,7 @@ public class MainActivity extends FlutterActivity {
 
                   calledAction = 1; //assumes whatever File Picker exists to be asynchronous
                   shippable = result;
-                  performFileSearch();
+                  performFileSearch((Boolean)((ArrayList)call.arguments).get(0));
                 }
                 if(calledAction == -1)
                 {
@@ -106,11 +107,18 @@ private String getExternalDir() {
   /**
    * Fires an intent to spin up the "file chooser" UI and select an image.
    */
-  public void performFileSearch() {
+  public void performFileSearch(Boolean write) {
 
     // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
     // browser.
-    Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+    Intent intent;
+    if(write) {
+      intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+    }
+    else {
+      intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+    }
+
 
     // Filter to only show results that can be "opened", such as a
     // file (as opposed to a list of contacts or timezones)

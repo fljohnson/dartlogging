@@ -974,11 +974,11 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       case 0:
         Future<String> result = Logitem.getFileToOpen();
         result.then((value) {
-          var ls = value;
+          Logitem.doImport(value);
         });
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
-      Future<String> result = exportProcedure(context);
+        Future<String> result = Logitem.getFileToWrite();
       result.then((value) {
         if (value != null)
           {

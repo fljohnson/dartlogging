@@ -18,6 +18,8 @@ class Logitem {
   static Directory docsdir;
   static String docsdir2;
 
+  static String lastError;
+
   static String toDollarString(num amount) {
     List<String> parts = ("$amount").split(".");
     if (parts.length == 1) {
@@ -67,21 +69,26 @@ class Logitem {
     return rv;
   }
 
-  static Future<String> getFileToOpen() async {
+  static Future<String> getFileToOpen({bool write:false}) async {
+    lastError = null;
     if(platform == null) //shouldn't be an issue, but..
     {
       platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
     }
-    String rv = "(no data)";
+    String rv;
     try {
       final String result = await platform.invokeMethod(
-        "getFileToOpen");
+        "getFileToOpen",[write]);
       rv = result;
     }
     on PlatformException catch(ecch) {
-      rv = ecch.message;
+      lastError = ecch.message;
     }
     return rv;
+  }
+
+  static Future<String> getFileToWrite() async {
+    return getFileToOpen(write:true);
   }
   static Future<bool> initDB() async {
     bool rv = false;
@@ -322,5 +329,12 @@ class Logitem {
       rv.add([row._id,row.thedate,row.title,row.amount,row.category,row.details]);
     }
     return rv;
+  }
+
+  static void doImport(String value) {
+    List<String> columns = ["Date","What","Amount","Category","Details"];
+    Map<String,int> indices = Map();
+
+
   }
 }

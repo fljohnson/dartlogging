@@ -12,8 +12,6 @@
   <component name="ChangeListManager">
     <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/logitem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logitem.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
@@ -30,20 +28,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="976" column="17" selection-start-line="976" selection-start-column="17" selection-end-line="976" selection-end-column="17" />
+            <state relative-caret-position="97">
+              <caret line="975" column="25" lean-forward="true" selection-start-line="975" selection-start-column="25" selection-end-line="975" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="56" column="30" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="30" />
+            <state relative-caret-position="73">
+              <caret line="69" column="3" lean-forward="true" selection-start-line="69" selection-start-column="3" selection-end-line="69" selection-end-column="3" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -54,8 +52,8 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="185" column="11" selection-start-line="185" selection-start-column="11" selection-end-line="185" selection-end-column="11" />
+            <state relative-caret-position="145">
+              <caret line="57" column="17" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -63,8 +61,8 @@
       <file leaf-file-name="platform_channel.dart" pinned="false" current-in-tab="false">
         <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/services/platform_channel.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4020">
-              <caret line="277" column="6" selection-start-line="277" selection-start-column="6" selection-end-line="277" selection-end-column="6" />
+            <state relative-caret-position="3975">
+              <caret line="274" column="39" selection-start-line="274" selection-start-column="29" selection-end-line="274" selection-end-column="39" />
             </state>
           </provider>
         </entry>
@@ -80,9 +78,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>dateFormat</find>
-      <find>_renderMonthsPickerComponent</find>
-      <find>monthNames</find>
       <find>showd</find>
       <find>_formatMonthComplex</find>
       <find>_renderDa</find>
@@ -110,6 +105,9 @@
       <find>writeAs</find>
       <find>getExt</find>
       <find>popu</find>
+      <find>cas</find>
+      <find>encodeMethodCall</find>
+      <find>performFileSearch</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -126,9 +124,9 @@
         <option value="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/android/app/src/main/kotlin/com/fouracessoftware/basketnerds/MainActivity.kt" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
-        <option value="$PROJECT_DIR$/lib/logitem.dart" />
-        <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java" />
+        <option value="$PROJECT_DIR$/lib/main.dart" />
+        <option value="$PROJECT_DIR$/lib/logitem.dart" />
       </list>
     </option>
   </component>
@@ -154,6 +152,8 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -232,8 +232,6 @@
         </subPane>
         <option name="show-excluded-files" value="false" />
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -370,7 +368,14 @@
       <option name="project" value="LOCAL" />
       <updated>1541627278248</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Put in the basics of &quot;going native&quot; on file selection...have some finishing to do there&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)">
+      <created>1541696377193</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1541696377199</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TodoView">
@@ -383,7 +388,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="-2" width="1370" height="740" extended-state="6" />
+    <frame x="0" y="0" width="1366" height="736" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
@@ -392,7 +398,7 @@
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50981873" side_tool="true" weight="0.3581315" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32871974" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32698962" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32871974" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.33732533" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32984293" />
@@ -401,9 +407,9 @@
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.42587602" visible="true" weight="0.41465256" />
-      <window_info id="Structure" order="1" sideWeight="0.574124" side_tool="true" visible="true" weight="0.41465256" />
-      <window_info active="true" anchor="right" id="Device File Explorer" order="4" sideWeight="0.50163937" side_tool="true" visible="true" weight="0.32930514" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.42048517" visible="true" weight="0.41465256" />
+      <window_info id="Structure" order="1" sideWeight="0.5795148" side_tool="true" visible="true" weight="0.41465256" />
+      <window_info anchor="right" id="Device File Explorer" order="4" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Theme Preview" order="7" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49018127" visible="true" weight="0.3581315" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -431,7 +437,8 @@
     <MESSAGE value="Made the category menu go platform-specific, and made rows out of the &quot;What did I spend on&quot; and &quot;How much&quot; blocks.&#10;-Need file export/import to make it REALLY useful on the &quot;THIS is where my money goes&quot; tip&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Got export working, but need to deal with &quot;My Documents&quot; vs &quot;Documents&quot;&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Got export working, but need to deal with &quot;My Documents&quot; vs &quot;Documents&quot;&#10;Added Column headers on output, though&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got export working, but need to deal with &quot;My Documents&quot; vs &quot;Documents&quot;&#10;Added Column headers on output, though&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <MESSAGE value="Put in the basics of &quot;going native&quot; on file selection...have some finishing to do there&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Put in the basics of &quot;going native&quot; on file selection...have some finishing to do there&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -441,30 +448,11 @@
           <line>990</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/main.dart</url>
-          <line>976</line>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
       </breakpoints>
       <option name="time" value="47" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3564">
-          <caret line="198" column="8" lean-forward="true" selection-start-line="198" selection-start-column="8" selection-end-line="198" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4464">
-          <caret line="248" column="7" lean-forward="true" selection-start-line="248" selection-start-column="7" selection-end-line="248" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4158">
@@ -714,13 +702,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/services/platform_channel.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4020">
-          <caret line="277" column="6" selection-start-line="277" selection-start-column="6" selection-end-line="277" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/flutterdev/flutter/bin/cache/dart-sdk/lib/async/schedule_microtask.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="630">
@@ -743,27 +724,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/services/message_codec.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="56" column="30" selection-start-line="56" selection-start-column="24" selection-end-line="56" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="118">
+          <caret line="38" column="8" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/services/platform_channel.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3975">
+          <caret line="274" column="39" selection-start-line="274" selection-start-column="29" selection-end-line="274" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/flutterdev/flutter/bin/cache/artifacts/engine/android-arm/flutter.jar!/io/flutter/plugin/common/MethodCall.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="185" column="11" selection-start-line="185" selection-start-column="11" selection-end-line="185" selection-end-column="11" />
+        <state relative-caret-position="145">
+          <caret line="57" column="17" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="976" column="17" selection-start-line="976" selection-start-column="17" selection-end-line="976" selection-end-column="17" />
+        <state relative-caret-position="97">
+          <caret line="975" column="25" lean-forward="true" selection-start-line="975" selection-start-column="25" selection-end-line="975" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="69" column="3" lean-forward="true" selection-start-line="69" selection-start-column="3" selection-end-line="69" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
