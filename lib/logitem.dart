@@ -307,7 +307,7 @@ class Logitem {
         final outstring = const ListToCsvConverter().convert(rows);
 
         //final oot = new File(join(docsdir.path,filename));
-        final oot = new File(join(docsdir2, filename));
+        final oot = new File(filename);
         oot.writeAsString(outstring);
       }
     });
@@ -331,10 +331,127 @@ class Logitem {
     return rv;
   }
 
-  static void doImport(String value) {
+  static void doImport(String filetoread) async {
+
+
+    //problem 1: grab the file contents
+    String readin;
+    String chuckles;
+/*
+    final input = new File(filetoread);
+      Future<String> uhoh= input.readAsString();
+      uhoh.then((value)
+      {
+        readin = value;
+      //  Future<List<List<dynamic>>> toRead = _getCSVImportable(value);
+      }).catchError((oops){
+        var hah = oops;
+      });
+*/
+    try {
+      final input = new File(filetoread);
+      readin = await input.readAsString();
+      _doCSVImport(readin);
+    }
+    catch(ecch)
+    {
+      lastError = ecch.message;
+    }
+  }
+
+  static void _uncorkit(String intake)
+  {
+    var aha = intake;
+  }
+
+  static void _doCSVImport(String incsv) async
+  {
+    List<String> criticalColumns = ["Date","What","Amount","Category"];
     List<String> columns = ["Date","What","Amount","Category","Details"];
     Map<String,int> indices = Map();
+    List<List<dynamic>> raw = CsvToListConverter().convert(incsv);
+    //now, process raw
+    //1. Is there a header row?
+    int toGo = criticalColumns.length;
+    for(int i=raw[0].length-1;i>=0;i--)
+    {
+      int index = columns.indexOf(raw[0][i]);
+      if(index > -1)
+      {
+        if(!indices.containsKey(raw[0][i]))
+        {
+          indices[raw[0][i]] = i;
+        }
+      }
+      if(criticalColumns.indexOf(raw[0][i]) > -1)
+      {
+        toGo--;
+      }
+    }
+    if(toGo > 0)
+    {
+      lastError = 'One of more of columns "Date","What","Amount","Category" is missing from the chosen file';
+      return; //As Seth Meyers would say, "Ya burnt!"
+    }
+    //loop through the data rows
+    int z=raw.length;
+    String possDate;
+    String possWhat;
+    num possAmount;
+    String possCategory;
+    String possDetails;
+    for(int i=1;i<z;i++)
+    {
+      var lah = raw[i][indices["Date"]];
+
+        try {
+          possDate = raw[i][indices["Date"]];
+          possWhat = raw[i][indices["What"]];
+          possAmount = raw[i][indices["Amount"]];
+          possCategory = raw[i][indices["Category"]];
+        }
+        catch (e) {
+          //hopefully, it was an Array out-ouf-bounds error
+          lastError = e as String;
+          continue;
+        }
+
+        //this one's optional
+        try {
+          possDetails = raw[i][indices["Details"]];
+        }
+        catch(e) {
+
+        }
+
+        //if we're here, it's safe to check for preexistence
+        List<Map> presence = await database.rawQuery(
+            'SELECT id FROM Logitem where category = ? and thedate = ? and amount = ? and what = ?',
+            [possCategory, possDate, possAmount,possWhat]);
 
 
+        if(presence.length == 0)
+        {
+          _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
+        }
+
+    }
+  }
+
+  static void _insertFromCSV(String title,num amount, String category,String thedate,String details) async
+  {
+    //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
+    await database.transaction((txn) async {
+      if (details == null || details.isEmpty) {
+        await txn.rawInsert(
+            'INSERT INTO Logitem(what,amount,category,thedate) VALUES(?,?,?,?)',
+            [title, amount, category, thedate]);
+      }
+      else {
+        await txn.rawInsert(
+            'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
+            [title, amount, category, thedate, details]);
+      }
+    });
   }
 }
