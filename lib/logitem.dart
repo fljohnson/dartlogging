@@ -331,40 +331,30 @@ class Logitem {
     return rv;
   }
 
-  static void doImport(String filetoread) async {
+  static Future<int> doImport(String filetoread) async {
+    int rv = 0;
 
 
     //problem 1: grab the file contents
     String readin;
-    String chuckles;
-/*
-    final input = new File(filetoread);
-      Future<String> uhoh= input.readAsString();
-      uhoh.then((value)
-      {
-        readin = value;
-      //  Future<List<List<dynamic>>> toRead = _getCSVImportable(value);
-      }).catchError((oops){
-        var hah = oops;
-      });
-*/
+
     try {
       final input = new File(filetoread);
       readin = await input.readAsString();
-      _doCSVImport(readin);
+      await _doCSVImport(readin);
+      rv = 1; //consider setting this to number of rows actually inserted
     }
     catch(ecch)
     {
       lastError = ecch.message;
+      rv = -1;
     }
+    return rv;
   }
 
-  static void _uncorkit(String intake)
-  {
-    var aha = intake;
-  }
 
-  static void _doCSVImport(String incsv) async
+
+  static Future<void> _doCSVImport(String incsv) async
   {
     List<String> criticalColumns = ["Date","What","Amount","Category"];
     List<String> columns = ["Date","What","Amount","Category","Details"];
@@ -393,7 +383,7 @@ class Logitem {
       lastError = 'One of more of columns "Date","What","Amount","Category" is missing from the chosen file';
       return; //As Seth Meyers would say, "Ya burnt!"
     }
-    //loop through the data rows
+    //2. loop through the data rows, and those found admissible go in.
     int z=raw.length;
     String possDate;
     String possWhat;
@@ -402,8 +392,6 @@ class Logitem {
     String possDetails;
     for(int i=1;i<z;i++)
     {
-      var lah = raw[i][indices["Date"]];
-
         try {
           possDate = raw[i][indices["Date"]];
           possWhat = raw[i][indices["What"]];
@@ -432,13 +420,13 @@ class Logitem {
 
         if(presence.length == 0)
         {
-          _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
+          await _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
         }
 
     }
   }
 
-  static void _insertFromCSV(String title,num amount, String category,String thedate,String details) async
+  static Future<void> _insertFromCSV(String title,num amount, String category,String thedate,String details) async
   {
     //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
     await database.transaction((txn) async {

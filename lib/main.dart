@@ -974,7 +974,24 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       case 0:
         Future<String> result = Logitem.getFileToOpen();
         result.then((value) {
-          Logitem.doImport(value);
+          Future<int> importResult = Logitem.doImport(value);
+          importResult.then((int value) {
+            if(value == -1)
+            {
+              //alert(Logitem.lastError)
+            }
+            else
+            {
+
+              if(yakker != null)
+              {
+                yakker.refresh();
+              }
+
+            }
+
+          });
+
         });
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
@@ -1344,6 +1361,12 @@ class _LoggingPageState extends State<LoggingPage> {
     }
     gottenRows = panelBody;
     return panelBody;
+  }
+
+  void refresh() {
+    fetchRows().then((goods) {
+      setState(() {});
+    });
   }
 }
 
