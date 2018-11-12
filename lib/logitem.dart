@@ -333,7 +333,12 @@ class Logitem {
 
   static Future<int> doImport(String filetoread) async {
     int rv = 0;
-
+    lastError = "";
+    final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
+    if(res != PermissionStatus.authorized)
+    {
+      return rv;
+    }
 
     //problem 1: grab the file contents
     String readin;
@@ -346,7 +351,9 @@ class Logitem {
     }
     catch(ecch)
     {
-      lastError = ecch.message;
+      if(lastError.length == 0) {
+        lastError = ecch.message;
+      }
       rv = -1;
     }
     return rv;
@@ -393,15 +400,23 @@ class Logitem {
     for(int i=1;i<z;i++)
     {
         try {
-          possDate = raw[i][indices["Date"]];
+          possDate = Datademunger.isoifyDate(raw[i][indices["Date"]]);
           possWhat = raw[i][indices["What"]];
           possAmount = raw[i][indices["Amount"]];
           possCategory = raw[i][indices["Category"]];
         }
         catch (e) {
-          //hopefully, it was an Array out-ouf-bounds error
-          lastError = e as String;
-          continue;
+          //hopefully, it was an Array out-ouf-bounds exception ; this may cover TypeError
+          lastError = e.toString();
+          if(lastError.indexOf("type") >-1 && lastError.indexOf("'num'") > -1 )
+          {
+            lastError = "Problem encountered on line $i:Expected a numeric amount";
+            throw FormatException(lastError);
+          }
+          lastError = "Problem encountered on line $i:"+lastError;
+          //really need to alert the user to screwed-up input, and therefore bail like Mr. Organa
+
+            throw e;
         }
 
         //this one's optional

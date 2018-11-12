@@ -1,4 +1,4 @@
-import 'dart:developer';
+//import 'dart:developer';
 import 'dart:async';
 import 'dart:io' show Platform;
 
@@ -192,11 +192,17 @@ class ItemPage extends StatelessWidget {
 class CupertinoItemPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String content = "(new)";
+    /*
+    String content;
+
     if (chosen != null) {
       content = chosen.title;
     }
-
+    else
+    {
+      content  = "(new)";
+    }
+    */
 
     return CupertinoPageScaffold(
         navigationBar: new CupertinoNavigationBar(
@@ -897,76 +903,6 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   }
   
 
-  Future<String> exportProcedure(BuildContext context) async {
-    String prospective = "";
-    /*
-    var dasaver = FlatButton(
-        child:Text("Save"),
-        onPressed: prospective.isEmpty ? null : ((){
-          Navigator.of(context).pop(prospective.trim());
-        })
-    );
-*/
-    String tailname = await showDialog<String>(
-      context:context,
-      builder:((BuildContext context) {
-        return AlertDialog(
-          title: Text("Save entries to your Documents folder"),
-          content:SingleChildScrollView(
-            child: Column(
-                children:[
-                  Text("Entries from ${loggingRange._date1} to ${loggingRange._date2}",
-                    textAlign: TextAlign.start,
-                  ),
-                  TextField(
-                    maxLines: 1,
-                    decoration: new InputDecoration(hintText: "File Name.csv"),
-                    onChanged: ((String value){
-                      prospective = value;
-                      setState((){
-
-                      });
-                    }),
-
-                  ),
-
-                ]
-            ),
-          ),
-
-
-          actions:[
-            FlatButton(
-                child:Text("Cancel"),
-                onPressed:((){
-                  Navigator.of(context).pop("");
-                })
-            ),
-            FlatButton(
-                child:Text("Save"),
-                onPressed: prospective.isEmpty ? null : ((){
-                  Navigator.of(context).pop(prospective.trim());
-                })
-            )
-
-          ]
-      );
-    }
-
-    )
-    );
-    if(tailname == null || tailname.isEmpty)
-    {
-      return null;
-    }
-    if(!tailname.endsWith(".csv"))
-    {
-      //too simplistic, but it gets the job done
-      tailname += ".csv";
-    }
-    return tailname;
-  }
-
   void _handlePopupMenu(String value, BuildContext context) {
     int seleccion = this._popupItems.indexOf(value);
     switch(seleccion)
@@ -978,7 +914,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
           importResult.then((int value) {
             if(value == -1)
             {
-              //alert(Logitem.lastError)
+              doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
             }
             else
             {
@@ -1005,7 +941,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       break;
       default:
         {
-          var ls="doh";
+          doAlert(context,"Menu item ${seleccion+1} is missing");
         }
     }
   }
@@ -1565,4 +1501,27 @@ class _DummyPageState extends State<DummyPage> {
         )
     );
   }
+}
+
+void doAlert(BuildContext context,String what) {
+  showDialog(
+    context:context,
+    barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Money Logs ran into trouble"),
+          content: SingleChildScrollView(
+            child: Text(what)
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('DISMISS'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
+  );
 }
