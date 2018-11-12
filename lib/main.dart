@@ -115,7 +115,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
+      title: 'The Money Logs',
       theme: new ThemeData(
         // This is the theme of your application.
         //
@@ -132,7 +132,7 @@ class MyApp extends StatelessWidget {
 
      initialRoute: '/',
      routes: {
-       '/': (BuildContext context) => new MyHomePage(title: 'Flutter Demo Home Page'),
+       '/': (BuildContext context) => new MyHomePage(title: 'The Money Logs'),
        '/item': (BuildContext context) => new ItemPage(),
      },
 
@@ -160,7 +160,7 @@ class ItemPage extends StatelessWidget {
         // action button
           FlatButton(
               child: Text("CANCEL",
-                style:TextStyle(fontSize:Theme.of(context).textTheme.headline.fontSize,
+                style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
                     color:Color(0xFFFFFFFF))
               ),
               onPressed: () {
@@ -170,7 +170,7 @@ class ItemPage extends StatelessWidget {
           // action button
           FlatButton(
               child: Text("DONE",
-                  style:TextStyle(fontSize:Theme.of(context).textTheme.headline.fontSize,
+                  style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
                       color:Color(0xFFFFFFFF))
               ),
               onPressed: () {
@@ -319,6 +319,7 @@ class _RealItemPageState extends State<RealItemPage> {
     return DropdownButton<String>(
       items: droplist,
       value: currentsel,
+      isExpanded: true, //puts down-arrow at end of enclosing space
       onChanged: (String value){
         chosen.category = value;
         setState((){});
@@ -448,7 +449,7 @@ class _RealItemPageState extends State<RealItemPage> {
 
       children: <Widget>[
         Expanded(
-          flex:3,
+          flex:6,
           child:Text(
               hint,
               textAlign: TextAlign.center,
@@ -462,7 +463,7 @@ class _RealItemPageState extends State<RealItemPage> {
         ),
 
         Expanded(
-          flex:4,
+          flex:10,
           child:Material(
               child:
               TextField(
@@ -493,6 +494,43 @@ class _RealItemPageState extends State<RealItemPage> {
     )
     ;
   }
+//provisionally here...this needs to be common to all pages
+  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
+
+    if(Platform.isIOS)
+    {
+      return CupertinoButton(
+          onPressed:(){
+            askCupertinoDate(context,initialDate,actOnDate);
+
+          },
+          child: Text(label)
+      );
+    }
+    else
+    {
+      return RaisedButton(
+          child: Text(label),
+          onPressed:() {
+            Future<String> newdate = askDate(context,initialDate);
+            newdate.then((value)
+            {
+              actOnDate(value);
+            });
+          }
+        /*
+            (value) {
+            loggingRange.setDate1(value);
+            fetchRows().then((goods) {
+              setState(() {});
+            }
+            );
+          }
+             */
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context)
   {
@@ -507,7 +545,16 @@ class _RealItemPageState extends State<RealItemPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child: CupertinoButton(
+                  child:_getDateButton(
+                    "Date: ",
+                    fromISOtoUS(chosen.thedate),
+                      ((String value){
+                        chosen.thedate=fromUStoISO(value);
+                        setState(() {});
+                      })
+                  )
+                  /*
+                  CupertinoButton(
                       onPressed:(){
                         askCupertinoDate(context,fromISOtoUS(chosen.thedate),((String value)
                         {
@@ -527,6 +574,7 @@ class _RealItemPageState extends State<RealItemPage> {
                       },
                       child: Text("Date: ")
                   )
+                  */
               )
               ,
               Expanded(
@@ -611,6 +659,7 @@ class _RealItemPageState extends State<RealItemPage> {
         ,
         Row(
           children:[
+            /*
             Expanded(
               flex:2,
               child:new Text(
@@ -622,9 +671,24 @@ class _RealItemPageState extends State<RealItemPage> {
                     .title
               )
             ),
+            */
+            Expanded(
+                flex:6,
+                child:Text(
+                    "Category:",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline
+                )
 
-              Platform.isIOS ? menumakerCupertino(context,chosen.category) :
-              menumakerAndroid(chosen.category)
+            )
+            ,
+            Spacer(
+              flex: 1,
+            ),
+
+
+            Platform.isIOS ? menumakerCupertino(context,chosen.category) :
+              Expanded(flex:10,child:menumakerAndroid(chosen.category))
             /*
             Expanded(
               flex:3,
