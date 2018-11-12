@@ -10,9 +10,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/release.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/main_dart.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/debug.xml" afterDir="false" />
+    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="Explanatory text now shows on Android when the category selection changes.&#10;-Would like to indicate multiple-line capability on ItemPage, probably should baseline-align &quot;field hints&quot; and fields.&#10;-hoping for feedback from iOS users (may submit Android version anyway)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
@@ -31,11 +29,20 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="279">
-              <caret line="576" column="20" lean-forward="true" selection-start-line="576" selection-start-column="20" selection-end-line="576" selection-end-column="20" />
+            <state relative-caret-position="144">
+              <caret line="486" column="41" selection-start-line="486" selection-start-column="41" selection-end-line="486" selection-end-column="41" />
               <folding>
                 <element signature="e#26866#27550#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="basic.dart" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/widgets/basic.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="112">
+              <caret line="3693" column="23" selection-start-line="3693" selection-start-column="23" selection-end-line="3693" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -78,9 +85,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_id</find>
-      <find>cep</find>
-      <find>import</find>
       <find>LoggingPage</find>
       <find>refre</find>
       <find>fetchRows</find>
@@ -108,6 +112,9 @@
       <find>exce</find>
       <find>main</find>
       <find>main.</find>
+      <find>menum</find>
+      <find>crossA</find>
+      <find>sane</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -398,7 +405,14 @@
       <option name="project" value="LOCAL" />
       <updated>1541981724317</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Fixed errant use of CupertinoButton. Addressed too-wide gap between datum titles and controls. Made dropdown look consistent with other rows.  &#10;-Need to show explanatory text when the category selection changes.&#10;-Would like to indicate multiple-line capability on ItemPage, probably should baseline-align &quot;field hints&quot; and fields.&#10;-hoping for feedback from iOS users (may submit Android version anyway)">
+      <created>1541990821154</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1541990821156</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView">
@@ -491,7 +505,8 @@
     <MESSAGE value="Import seems to be working right, but may need a setState() call. &#10;-Would like to believe that after that comes some decrufting and chroming &#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="setState() call after import required the database inserts definitely finish first. Dealt with it by await modifiers.    &#10;-Would like to believe that after that comes some decrufting and chroming &#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="made the date import read mm/dd/yyyy format as well as ISO; removed one dead function.   &#10;-Entry page suddenly looks haywire. &#10;--Need to show explanatory text when the category selection changes.&#10;--Huge space between datum titles and controls&#10;-Would like to believe that after that comes further decrufting and cosmetic stuff.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
-    <option name="LAST_COMMIT_MESSAGE" value="made the date import read mm/dd/yyyy format as well as ISO; removed one dead function.   &#10;-Entry page suddenly looks haywire. &#10;--Need to show explanatory text when the category selection changes.&#10;--Huge space between datum titles and controls&#10;-Would like to believe that after that comes further decrufting and cosmetic stuff.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <MESSAGE value="Fixed errant use of CupertinoButton. Addressed too-wide gap between datum titles and controls. Made dropdown look consistent with other rows.  &#10;-Need to show explanatory text when the category selection changes.&#10;-Would like to indicate multiple-line capability on ItemPage, probably should baseline-align &quot;field hints&quot; and fields.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed errant use of CupertinoButton. Addressed too-wide gap between datum titles and controls. Made dropdown look consistent with other rows.  &#10;-Need to show explanatory text when the category selection changes.&#10;-Would like to indicate multiple-line capability on ItemPage, probably should baseline-align &quot;field hints&quot; and fields.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -682,13 +697,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/widgets/basic.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="3672" column="22" selection-start-line="3672" selection-start-column="22" selection-end-line="3672" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/bug-report_2.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-290" />
@@ -810,10 +818,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/widgets/basic.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="3693" column="23" selection-start-line="3693" selection-start-column="23" selection-end-line="3693" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="279">
-          <caret line="576" column="20" lean-forward="true" selection-start-line="576" selection-start-column="20" selection-end-line="576" selection-end-column="20" />
+        <state relative-caret-position="144">
+          <caret line="486" column="41" selection-start-line="486" selection-start-column="41" selection-end-line="486" selection-end-column="41" />
           <folding>
             <element signature="e#26866#27550#0" />
           </folding>

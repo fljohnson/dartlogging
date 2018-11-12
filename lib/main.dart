@@ -237,9 +237,19 @@ class _RealItemPageState extends State<RealItemPage> {
   GlobalKey _keyTitle = new GlobalKey(debugLabel:"title");
   GlobalKey _keyDetails = new GlobalKey(debugLabel:"details");
 
+  List<String> categoryName = [];
+  List<String> categoryNote = [];
+
+
   @override
   initState()
   {
+
+    for(int i=0;i<categories.length;i++) {
+      categoryName.add(categories[i].keys.first);
+      categoryNote.add(categories[i].values.first);
+    }
+
     if(chosen == null)
     {
       var ahora = DateTime.now();
@@ -293,38 +303,61 @@ class _RealItemPageState extends State<RealItemPage> {
     super.dispose();
   }
 
+  Widget explainCategory(String sel)
+  {
+    String explainer = categoryNote[categoryName.indexOf(sel)];
+    if(explainer == null)
+    {
+      explainer = "";
+    }
+    return Text(explainer,
+        textAlign: TextAlign.end,
+        style: Theme
+            .of(context)
+            .textTheme
+            .caption
+    );
+  }
+
   Widget menumakerAndroid(String currentsel)
   {
-    List<String> categoryName = [];
-    List<String> categoryNote = [];
+
     List<DropdownMenuItem<String>> droplist = [];
 
     for(int i=0;i<categories.length;i++)
     {
-      categoryName.add(categories[i].keys.first);
-      categoryNote.add(categories[i].values.first);
       droplist.add(
           DropdownMenuItem<String>(
             value: categoryName[i],
             child: Text(categoryName[i],
-              textAlign: TextAlign.end,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .title
-            ),
+                textAlign: TextAlign.end,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .title
+            )
           )
       );
     }
-    return DropdownButton<String>(
-      items: droplist,
-      value: currentsel,
-      isExpanded: true, //puts down-arrow at end of enclosing space
-      onChanged: (String value){
-        chosen.category = value;
-        setState((){});
-      },
+
+    return Column (
+      children:[
+        DropdownButton<String>(
+          items: droplist,
+          value: currentsel,
+          isExpanded: true, //puts down-arrow at end of enclosing space
+          onChanged: (String value){
+            chosen.category = value;
+
+            setState((){});
+          },
+        )
+        ,
+        explainCategory(currentsel)
+      ]
     );
+    //return ;
+
   }
 
   Widget menumakerCupertino(BuildContext context,String currentsel)
@@ -446,14 +479,19 @@ class _RealItemPageState extends State<RealItemPage> {
 
 
     return Row(
-
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Expanded(
           flex:6,
-          child:Text(
+          child:Padding(
+            padding:EdgeInsets.only(top:9.0),
+            child: Text(
               hint,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline
+              style: Theme.of(context).textTheme.headline,
+
+            )
+
           )
 
         )
