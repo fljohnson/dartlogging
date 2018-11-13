@@ -10,13 +10,14 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
-	private func startFileDlg() {
+	private func startFileDlg(controller:FlutterViewController, result:FlutterResult) {
+		shippable = result
 		var transfer = kUTTypeCommaSeparatedText as NSString
-		var utiCSV : String = transfer
-		var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [utiCSV], inMode: UIDocumentPickerMode.import)
+		var utiCSV : String = transfer as String
+		var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
 		documentPicker.delegate = self
-		documentPicker.modalPresentationStyle = UIModalPresentationStyle.FullScreen
-		self.presentViewController(documentPicker, animated: true, completion: nil)
+		documentPicker.modalPresentationStyle = UIModalPresentationStyle.ullScreen
+		controller.presentViewController(documentPicker, animated: true, completion: nil)
 	}
 	
 	func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
@@ -28,7 +29,7 @@ import Flutter
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
-		shippable?(null)
+		shippable?(nil)
     }
 }
 	
@@ -42,7 +43,7 @@ import Flutter
                                               binaryMessenger: controller)
     sysChannel.setMethodCallHandler({
       (call: FlutterMethodCall, result: FlutterResult) -> Void in
-      calledAction = -1
+      calledAction : Int = -1
       if(call.method == "getFileToOpen")
       {
 		calledAction = 1
@@ -52,10 +53,10 @@ import Flutter
 		result(FlutterMethodNotImplemented)
 		return
       }
-      shippable = result
+      
       if(calledAction == 1)
       {
-			startFileDlg()
+			self.startFileDlg(controller,result)
 		}
     })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
