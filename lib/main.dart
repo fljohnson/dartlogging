@@ -17,17 +17,6 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
-/*
-void _setDate() {
-//  Navigator.of(context).pop();
-
-   var datemess = (dobKey.currentState.dobStrMonth +
-      ' ${dobKey.currentState.dobDate}' +
-      ' ${dobKey.currentState.dobYear}');
-
-}
-*/
-
 void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
 {
   String rv = originalDate;
