@@ -20,12 +20,12 @@ import Flutter
 		controller.presentViewController(documentPicker, animated: true, completion: nil)
 	}
 	
-	func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentAtURL url: NSURL) {
+	func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     if controller.documentPickerMode == UIDocumentPickerMode.open {
         // This is what it should be
         //self.newNoteBody.text = String(contentsOfFile: url.path!)
         //call.arguments as! Int
-        shippable?(url.path)
+        shippable?(urls[0].path)
     }
     
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
