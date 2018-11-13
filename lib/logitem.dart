@@ -17,7 +17,7 @@ class Logitem {
   static String path;
   static Directory docsdir;
   static String docsdir2;
-
+  static List<String> categoryNames = [];
   static String lastError;
 
   static String toDollarString(num amount) {
@@ -51,7 +51,7 @@ class Logitem {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
     path = join(databasesPath, "demo.db");
-    await deleteDatabase(path);
+   // await deleteDatabase(path);
     rv = true;
     return rv;
   }
@@ -92,9 +92,14 @@ class Logitem {
   }
   static Future<bool> initDB() async {
     bool rv = false;
+
+    for(int i=0;i<categories.length;i++)
+    {
+      categoryNames.add(categories[i].keys.first);
+    }
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
 
-    docsdir2 = await getExtDir("My Documents");
+   // docsdir2 = await getExtDir("My Documents");
     database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
@@ -120,6 +125,7 @@ class Logitem {
     docsdir = await getExternalStorageDirectory();
     await blankDB();
     await initDB();
+    /*
     Logitem proto;
     proto = new Logitem(
         name: "Trader Joe's run",
@@ -157,6 +163,7 @@ class Logitem {
         date: "2018-10-07"
     );
     await proto.save();
+    */
   }
 
   static Future<List<Logitem>> getRange(String isoFrom, String isoTo) async {
@@ -326,7 +333,16 @@ class Logitem {
     ];
     for(Logitem row in rawGoods)
     {
-      rv.add([row._id,row.thedate,row.title,row.amount,row.category,row.details]);
+      if(row.details == null){
+          rv.add([
+            row._id, row.thedate, row.title, row.amount, row.category
+          ]);
+        }
+        else {
+        rv.add([
+          row._id, row.thedate, row.title, row.amount, row.category, row.details
+        ]);
+      }
     }
     return rv;
   }
@@ -341,11 +357,12 @@ class Logitem {
     }
 
     //problem 1: grab the file contents
-    String readin;
+    List<String> readin;
 
     try {
       final input = new File(filetoread);
-      readin = await input.readAsString();
+      //readin = await input.readAsString();
+      readin = input.readAsLinesSync();
       await _doCSVImport(readin);
       rv = 1; //consider setting this to number of rows actually inserted
     }
@@ -361,12 +378,17 @@ class Logitem {
 
 
 
-  static Future<void> _doCSVImport(String incsv) async
+  static Future<void> _doCSVImport(List<String> incsv) async
   {
     List<String> criticalColumns = ["Date","What","Amount","Category"];
     List<String> columns = ["Date","What","Amount","Category","Details"];
     Map<String,int> indices = Map();
-    List<List<dynamic>> raw = CsvToListConverter().convert(incsv);
+    //List<List<dynamic>> raw = CsvToListConverter().convert(incsv);
+    List<List<dynamic>> raw = [];
+    for(int j=0;j<incsv.length;j++)
+    {
+      raw.add(CsvToListConverter().convert(incsv[j])[0]);
+    }
     //now, process raw
     //1. Is there a header row?
     int toGo = criticalColumns.length;
@@ -425,6 +447,22 @@ class Logitem {
         }
         catch(e) {
 
+        }
+
+        //forgot to ask if the category exists
+        //is there even a category value?
+        if(possCategory == null || possCategory.length ==0)
+        {
+          lastError = "Problem encountered on line $i: Category field is blank";
+          throw FormatException(lastError);
+        }
+        String upcase =possCategory.toUpperCase();
+        possCategory = upcase.substring(0,1) + possCategory.toLowerCase().substring(1);
+        //is the incoming category value among those known to the app?
+        if(categoryNames.indexOf(possCategory) == -1)
+        {
+          lastError = "Problem encountered on line $i: unknown category \"$possCategory\"";
+          throw FormatException(lastError);
         }
 
         //if we're here, it's safe to check for preexistence

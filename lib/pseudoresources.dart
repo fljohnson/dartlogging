@@ -1,17 +1,20 @@
 import 'dart:io';
 
 List<Map<String,String>> categories =[
-  {"Living expenses":"housing,telecommunications, utilities"},
+  {"Living expenses":"housing,telecommunications, utilities, insurance"},
   {"Groceries":null},
   {"Household":"hardware, cleaning supplies, furnishings"},
   {"Transportation":"tolls, fuel, fares, parking"},
+  {"Medical":"office visits,prescriptions"},
   {"Entertainment":"includes food out"},
-  {"Debts":null}
+  {"Debts":null},
+  {"Savings":null},
 ];
 
 List<RegExp> patterns = [
   new RegExp(r"\d\d\d\d-\d\d?-\d\d?"),
   new RegExp(r"\d\d?[-/]\d\d?[-/]\d\d\d\d"),
+  new RegExp(r"\d\d?[-/]\d\d?[-/]\d\d"),
 ];
 class Datademunger {
 	static String isoifyDate(String input)
@@ -35,6 +38,8 @@ class Datademunger {
         return _straightISO(toParse);
       case 1:
         return _slashesToISO(toParse);
+      case 2:
+        return _shortdateToISO(toParse);
       default:
         throw FormatException("Could not interpret date '$toParse'.");
     }
@@ -52,6 +57,22 @@ class Datademunger {
       dateparts[2] = "0" + dateparts[2];
     }
     return dateparts[0]+"-"+dateparts[1]+"-"+dateparts[2];
+  }
+
+  static String _shortdateToISO(String toParse) {
+    List<String> dateparts = toParse.split(new RegExp(r"[-/]"));
+    int yr = int.parse(dateparts[2]);
+    var now = DateTime.now();
+    int century = (now.year/100).floor();
+    //if the two-digit year is < 50, use the current century, otherwise, use the preceding one
+    //this originated from the "Y2K" issue that came to popular attention in the late '90s
+    if(yr >50)
+    {
+      century = century - 1;
+    }
+    dateparts[2] = "$century" + dateparts[2];
+    return _slashesToISO(dateparts.join("/"));
+
   }
 
   static String _slashesToISO(String toParse)

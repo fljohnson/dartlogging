@@ -8,7 +8,11 @@ import 'package:flutter/material.dart';
 import "logitem.dart";
 import "pseudoresources.dart";
 
-
+TextStyle mainTextStyle = TextStyle(
+    color:Colors.black,
+  fontSize: 18.0,
+  fontStyle: FontStyle.normal
+);
 DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
@@ -266,9 +270,9 @@ class _RealItemPageState extends State<RealItemPage> {
 
 
       chosen = new Logitem(
-          name:"Test shot 5",
-          amt: 1.82,
-          category: "Groceries",
+          name:"",
+          amt: 0,
+          category: "",
           date:"${ahora.year}-$mo-$da"
       );
     }
@@ -311,7 +315,7 @@ class _RealItemPageState extends State<RealItemPage> {
       explainer = "";
     }
     return Text(explainer,
-        textAlign: TextAlign.end,
+        textAlign: TextAlign.start,
         style: Theme
             .of(context)
             .textTheme
@@ -324,13 +328,18 @@ class _RealItemPageState extends State<RealItemPage> {
 
     List<DropdownMenuItem<String>> droplist = [];
 
+    if(currentsel == null || currentsel.length == 0)
+    {
+      currentsel = categoryName[0];
+    }
+
     for(int i=0;i<categories.length;i++)
     {
       droplist.add(
           DropdownMenuItem<String>(
             value: categoryName[i],
             child: Text(categoryName[i],
-                textAlign: TextAlign.end,
+                textAlign: TextAlign.start,
                 style: Theme
                     .of(context)
                     .textTheme
@@ -341,6 +350,7 @@ class _RealItemPageState extends State<RealItemPage> {
     }
 
     return Column (
+      crossAxisAlignment: CrossAxisAlignment.start,
       children:[
         DropdownButton<String>(
           items: droplist,
@@ -478,58 +488,54 @@ class _RealItemPageState extends State<RealItemPage> {
     }
 
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          flex:6,
-          child:Padding(
-            padding:EdgeInsets.only(top:9.0),
-            child: Text(
-              hint,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline,
+    return Container(
+      margin:EdgeInsets.symmetric(vertical:4.5),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+              flex:6,
+              child:Padding(
+                  padding:EdgeInsets.only(top:9.0),
+                  child: Text(
+                    hint,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headline,
 
-            )
+                  )
+
+              )
 
           )
+          ,
+          Spacer(
+            flex: 1,
+          ),
 
-        )
-        ,
-        Spacer(
-          flex: 1,
-        ),
+          Expanded(
+              flex:10,
+              child:Material(
+                  child:Container(
+                      decoration: BoxDecoration(color:Colors.black12),
+                      child:TextField(
+                        controller:controller,
+                        keyboardType: kbdType,
+                        maxLines: maxLines,
+                        textAlign:align,
+                        style: editStyle,
+                        onChanged: changeHandler,
+                      )
+                  )
 
-        Expanded(
-          flex:10,
-          child:Material(
-              child:
-              TextField(
-                controller:controller,
-                keyboardType: kbdType,
-                maxLines: maxLines,
-                textAlign:align,
-                style: editStyle,
-                onChanged: changeHandler,
               )
           )
-        )
-,
 
-/*
-        TextFormField(
-          key: key,
-       //   initialValue:inText,
-          keyboardType: kbdType,
-          maxLines: maxLines,
-          textAlign:align,
-          style: editStyle,
-          controller: controller,
-        )
-        */
 
-      ],
+        ],
+      )
     )
+
+
     ;
   }
 //provisionally here...this needs to be common to all pages
@@ -650,11 +656,11 @@ class _RealItemPageState extends State<RealItemPage> {
             hint:"How much",
             type:"currency",
             changeHandler:(String newValue) {
-              var auldSel = _controllerAmount.selection;
+              //var auldSel = _controllerAmount.selection;
               num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
-              _controllerAmount.text = Logitem.toDollarString(goodNumber);
+              //_controllerAmount.text = Logitem.toDollarString(goodNumber);
               chosen.amount = goodNumber;
-              _controllerAmount.selection = auldSel;
+              //_controllerAmount.selection = auldSel;
             }
         )
         /*
@@ -695,46 +701,51 @@ class _RealItemPageState extends State<RealItemPage> {
         )
         */
         ,
-        Row(
-          children:[
-            /*
-            Expanded(
-              flex:2,
-              child:new Text(
-                "Category:",
-                textAlign: TextAlign.start,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .title
+        Container(
+          margin:EdgeInsets.symmetric(vertical:4.5),
+          child: Row(
+              children:[
+              /*
+                        Expanded(
+                          flex:2,
+                          child:new Text(
+                            "Category:",
+                            textAlign: TextAlign.start,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title
+                          )
+                        ),
+                        */
+              Expanded(
+              flex:6,
+              child:Text(
+              "Category",
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline
               )
-            ),
-            */
-            Expanded(
-                flex:6,
-                child:Text(
-                    "Category:",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headline
-                )
 
-            )
-            ,
-            Spacer(
+              )
+              ,
+              Spacer(
               flex: 1,
-            ),
+              ),
 
 
-            Platform.isIOS ? menumakerCupertino(context,chosen.category) :
-              Expanded(flex:10,child:menumakerAndroid(chosen.category))
-            /*
-            Expanded(
-              flex:3,
-              child:
-            )*/
+              Platform.isIOS ? menumakerCupertino(context,chosen.category) :
+              Expanded(flex:12,child:menumakerAndroid(chosen.category))
+              /*
+                        Expanded(
+                          flex:3,
+                          child:
+                        )*/
 
-          ]
+              ]
+          )
         ),
+
+
 
         saneTextField(
             controller:_controllerDetails,
@@ -1018,14 +1029,10 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
             {
               doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
             }
-            else
+            //should do in any event
+            if(yakker != null)
             {
-
-              if(yakker != null)
-              {
-                yakker.refresh();
-              }
-
+              yakker.refresh();
             }
 
           });
@@ -1292,32 +1299,48 @@ class _LoggingPageState extends State<LoggingPage> {
       child:new Row(
           children:[
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
-                  child:Text(content.title,style: Theme
+                margin: EdgeInsets.only(right:5.0),
+                  child:Text(content.title,
+                      style:mainTextStyle,
+                      /*
+                      style: Theme
                       .of(context)
-                      .textTheme
-                      .title)
+                      .primaryTextTheme
+                      .title*/
+                  )
               ),
             ),
+
 
 
             Expanded(
               flex: 4,
               child: Container(
-                  //margin: EdgeInsets.symmetric(horizontal:10.0),
-                  child:Text(content.category,style: Theme
+                  //margin: EdgeInsets.only(left:5.0),
+                  child:Text(content.category,
+                      style: mainTextStyle,
+                      /*
+                      style: Theme
                       .of(context)
                       .textTheme
-                      .title)
+                      .subtitle
+                      */
+                  )
               ),
             ),
             Expanded(
-              flex: 2,
-            child:Text(content.stramount(),style: Theme
+              flex: 3,
+            child:Text(content.stramount(),
+                style:mainTextStyle
+                ,
+                /*
+                style: Theme
                         .of(context)
                         .textTheme
-                        .title,
+                        .subtitle,
+                      */
                       textAlign: TextAlign.right
                           ),
             ),
