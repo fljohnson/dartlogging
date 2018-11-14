@@ -186,6 +186,13 @@ class Logitem {
       String isoTo) async {
     List<Map<String, String>> rv = [];
     lastError = "";
+
+    List<Map> miss = await database.rawQuery(
+        'SELECT category,thedate FROM Logitem where thedate >= ? and thedate <= ?',
+        [isoFrom, isoTo]);
+    lastError += "Got: \""+miss[0].values.first+"\" ;";
+    //lastError += "Got: \""+miss[0].values.first+"\" and \""+ miss[1].values.first+"\" ;";
+
     for (int i = 0; i < categories.length; i++) {
       String category = categories[i].keys.first;
       num total = 0.0;
@@ -193,10 +200,7 @@ class Logitem {
       List<Map> raw = await database.rawQuery(
           'SELECT sum(amount) FROM Logitem where category = ? and thedate >= ? and thedate <= ?',
           [category, isoFrom, isoTo]);
-      List<Map> miss = await database.rawQuery(
-          'SELECT category,thedate FROM Logitem where thedate >= ? and thedate <= ?',
-          [isoFrom, isoTo]);
-      lastError += "Got: \"${miss[0].values.toString()}\" and \"${miss[1].values.toString()}\" ;";
+
       total = raw[0].values.first;
       if (total == null) {
         rv.add({category: "\$0.00"});
