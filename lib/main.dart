@@ -1,8 +1,7 @@
 //import 'dart:developer';
 /*
 Multiple problems on iOS:
-1. database does not seem to be getting written to, probably crashing on either IO operation 
-2. A possible DB crash may explain the no-show on Stats page
+
 3. There does not seem to be a general-purpose directory on a stock iOS file system, the expectation apparently being "iCloud, dude" for that OR storage space devoted to the application
 
 "iOS apps should always save files to known locations inside their sandbox, and apps should use a custom interface when presenting those documents to the user" -> "ineffective on roadrunners"
@@ -1275,7 +1274,12 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       result.then((value) {
         if (value != null)
           {
+			  doAlert(context,"Target URL is $value");
           Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+          if(Logitem.lastError != null)
+          {
+			  doAlert(context,"result of doExport():${Logitem.lastError}");
+		  }
         }
       });
       break;

@@ -304,6 +304,7 @@ class Logitem {
   }
 
   static void doExport(String filename, String isoFrom, String isoTo) {
+	  lastError = null;
     Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
     toWrite.then((rows) {
       if(rows != null) {
@@ -315,11 +316,16 @@ class Logitem {
       final stream = new Stream.fromIterable(rows);
       final csvRowStream = stream.transform(csvCodec.encoder);
       */
+      try {
         final outstring = const ListToCsvConverter().convert(rows);
 
         //final oot = new File(join(docsdir.path,filename));
         final oot = new File(filename);
         oot.writeAsString(outstring);
+	}
+	catch(e) {
+		lastError = e.toString();
+	}
       }
     });
   }

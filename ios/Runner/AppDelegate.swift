@@ -10,13 +10,23 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
-	private func startFileDlg(controller:FlutterViewController,  result: @escaping FlutterResult) {
+	private func startFileDlg(controller:FlutterViewController, save: Bool, result: @escaping FlutterResult) {
 		shippable = result
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
-		var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
+		var documentPicker: UIDocumentPickerViewController?
 		documentPicker.delegate = self
 		documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+		
+		if(save) 
+		{
+			var toMove = URL(fileURLWithPath:"output.csv")
+			documentPicker = UIDocumentPickerViewController(url: toMove, in: UIDocumentPickerMode.exportToService)
+		}
+		else
+		{
+		 	documentPicker = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
+		 }
 		controller.present(documentPicker, animated: true, completion: nil)
 	}
 	
@@ -44,9 +54,17 @@ import Flutter
     sysChannel.setMethodCallHandler({
       (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       var calledAction : Int = -1
+      var write : Bool = false
       if(call.method == "getFileToOpen")
       {
 		calledAction = 1
+		if let args = call.arguments as? [Bool] 
+		{
+			if(args.count > 0)
+			{
+				write = args[0]
+			}
+		}
       }
       if(calledAction == -1)
       {
@@ -56,7 +74,7 @@ import Flutter
       
       if(calledAction == 1)
       {
-			self.startFileDlg(controller:controller,result: result)
+			self.startFileDlg(controller:controller,save: write,result: result)
 		}
     })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
