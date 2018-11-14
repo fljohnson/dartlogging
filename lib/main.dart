@@ -405,8 +405,8 @@ String cupertinoCategory;
     List<Widget> visualCategories = [
       CupertinoPicker(
 		itemExtent:1.0,
-		onSelectedItemChanged((int value){
-				cupertinoCategory = categoryName[i];
+		onSelectedItemChanged:((int value){
+				cupertinoCategory = categoryName[value];
 			}),
 		
 			
