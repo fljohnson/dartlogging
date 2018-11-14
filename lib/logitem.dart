@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:csv/csv.dart';
@@ -17,8 +17,8 @@ class Logitem {
   static List<Logitem> sampleData = [];
   static Database database;
   static String path;
-  static Directory docsdir;
-  static String docsdir2;
+  //static Directory docsdir;
+ // static String docsdir2;
   static List<String> categoryNames = [];
   static String lastError;
 
@@ -125,7 +125,7 @@ class Logitem {
   }
 
   static Future<void> createSampleData() async {
-    docsdir = await getExternalStorageDirectory();
+    //docsdir = await getExternalStorageDirectory();
     await blankDB();
     await initDB();
     /*
