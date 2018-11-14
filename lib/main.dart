@@ -1635,15 +1635,7 @@ class _DummyPageState extends State<DummyPage> {
     if(!fired)
     {
       fired = true;
-      doAlert(context, "Init:the span is from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
       getTotals().then((goods) {
-        if(gottenRows == null) {
-          doAlert(context, "got no rows");
-        }
-        else
-          {
-            doAlert(context, "got ${gottenRows.length}");
-          }
         setState(() {});
       });
     }
@@ -1674,6 +1666,15 @@ class _DummyPageState extends State<DummyPage> {
                       {
                         statsRange.setDate1(value);
                         getTotals().then((goods) {
+
+
+                          if(gottenRows == null) {
+                            doAlert(context, "No content from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
+                          }
+                          else
+                          {
+                            doAlert(context, "got ${gottenRows.length} from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
+                          }
                           setState(() {});
                         }
                         );
