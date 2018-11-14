@@ -361,6 +361,10 @@ class _RealItemPageState extends State<RealItemPage> {
 
   Widget menumakerCupertino(BuildContext context,String currentsel)
   {
+  if(currentsel == null || currentsel.length == 0)
+  {
+	currentsel = categoryName[0];
+  }
     List<Widget> visualCategories = [
       /*
       CupertinoButton(
@@ -376,18 +380,18 @@ class _RealItemPageState extends State<RealItemPage> {
     {
       List<Widget> interieur =[
         CupertinoButton(
-            onPressed:(categories[i].keys.first == currentsel)?null:((){
+            onPressed:(categoryName[i] == currentsel)?null:((){
         //not quite right
-        Navigator.of(context).pop(categories[i].keys.first);
+        Navigator.of(context).pop(categoryName[i]);
       }) ,
-            child: Text(categories[i].keys.first)
+            child: Text(categoryName[i])
 
         )
       ];
-      if(categories[i].values.first != null)
+      if(categoryNote[i] != null)
       {
         interieur.add(
-            Text(categories[i].values.first)
+            Text(categoryNote[i])
         );
       }
       visualCategories.add(
@@ -1307,10 +1311,7 @@ class _LoggingPageState extends State<LoggingPage> {
                     children:gottenRows
                 )
             ),
-      Platform.isIOS ? Row(
-        children:[]
-      )
-      : null
+      Platform.isIOS ? cupertinoToolbar : null
       ],
     );
   }
