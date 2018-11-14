@@ -10,17 +10,17 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
-	private func startFileDlg(controller:FlutterViewController, result:FlutterResult) {
+	private func startFileDlg(controller:FlutterViewController, @escaping result:FlutterResult) {
 		shippable = result
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
 		var documentPicker: UIDocumentPickerViewController = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
 		documentPicker.delegate = self
-		documentPicker.modalPresentationStyle = UIModalPresentationStyle.ullScreen
-		controller.presentViewController(documentPicker, animated: true, completion: nil)
+		documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+		controller.present(documentPicker, animated: true, completion: nil)
 	}
 	
-	func documentPicker(controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+	func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
     if controller.documentPickerMode == UIDocumentPickerMode.open {
         // This is what it should be
         //self.newNoteBody.text = String(contentsOfFile: url.path!)
@@ -43,7 +43,7 @@ import Flutter
                                               binaryMessenger: controller)
     sysChannel.setMethodCallHandler({
       (call: FlutterMethodCall, result: FlutterResult) -> Void in
-      calledAction : Int = -1
+      var calledAction : Int = -1
       if(call.method == "getFileToOpen")
       {
 		calledAction = 1
@@ -56,7 +56,7 @@ import Flutter
       
       if(calledAction == 1)
       {
-			self.startFileDlg(controller,result)
+			self.startFileDlg(controller:controller,result:result)
 		}
     })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
