@@ -410,7 +410,7 @@ String cupertinoCategory;
 			}),
 		
 			
-      );
+      )
     ];
     
     /*
