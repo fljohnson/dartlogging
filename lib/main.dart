@@ -1224,7 +1224,44 @@ class _LoggingPageState extends State<LoggingPage> {
     }
   }
 
+void _handleCupertinoMenu(int seleccion, BuildContext context) {
+    //int seleccion = this._popupItems.indexOf(value);
+    switch(seleccion)
+    {
+      case 0:
+        Future<String> result = Logitem.getFileToOpen();
+        result.then((value) {
+          Future<int> importResult = Logitem.doImport(value);
+          importResult.then((int value) {
+            if(value == -1)
+            {
+              doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
+            }
+            //should do in any event
+            if(yakker != null)
+            {
+              yakker.refresh();
+            }
 
+          });
+
+        });
+        break;
+      case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
+        Future<String> result = Logitem.getFileToWrite();
+      result.then((value) {
+        if (value != null)
+          {
+          Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+        }
+      });
+      break;
+      default:
+        {
+          doAlert(context,"Menu item ${seleccion+1} is missing");
+        }
+    }
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -1232,13 +1269,13 @@ class _LoggingPageState extends State<LoggingPage> {
           new CupertinoButton(
           child:Text("Import..."),
           onPressed:((){
-            _handlePopupMenu("Import...",context);
+            _handleCupertinoMenu(0,context);
           })
           ),
           new CupertinoButton(
             child:Text("Export..."),
             onPressed:((){
-            _handlePopupMenu("Export...",context);
+            _handleCupertinoMenu(1,context);
             })
           )
         ];
