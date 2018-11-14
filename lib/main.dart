@@ -800,12 +800,16 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     )
   ];
 
+  List<CupertinoButton> cupertinoToolbar;
   List<DatePair> _pageDates;
 
   FloatingActionButton adder;
   CupertinoButton cupertinoAdder;
   TabController _tabController;
   List<String> _popupItems;
+
+  int cupertinoCurrentTab;
+  
 
   @override
   void initState() {
@@ -912,7 +916,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     //hey Cupertino
     if(Platform.isIOS)
       {
-
+/*
         return new CupertinoTabScaffold(
             tabBar: CupertinoTabBar(
                 items:myTabBarItems
@@ -926,6 +930,22 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
             }
 
         );
+*/
+        this.cupertinoToolbar = [
+          new CupertinoButton(
+          child:Text("Import..."),
+          onPressed:((){
+            _handlePopupMenu("Import...",context);
+          })
+          ),
+          new CupertinoButton(
+            child:Text("Export..."),
+            onPressed:((){
+            _handlePopupMenu("Export...",context);
+            })
+          )
+        ];
+        return theTabPage(context,cupertinoCurrentTab);
       }
       else
       {
@@ -978,17 +998,39 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   }
 
+  CupertinoSegmentedControl pageSelector(int index) {
+    Map<int,Widget> botons = {
+      0:Text("Logging"),
+      1:Text("Stats")
+    };
+    return CupertinoSegmentedControl<int>(
+      children:botons,
+      groupValue:index,
+      onValueChanged:((int value) {
+        this.cupertinoCurrentTab = value;
+        setState((){});
+      })
+    );
+  }
+
   CupertinoPageScaffold theTabPage(BuildContext context, int index) {
     if(index == 0)
     {
       return CupertinoPageScaffold(
         navigationBar: new CupertinoNavigationBar(
           middle:Text("Logging"),
+          //middle:CupertinoSegmentedControl
           trailing:cupertinoAdder,
           backgroundColor:CupertinoColors.white
         )
           ,
-        child:LoggingPage()
+        child:Column (
+          children:
+          [
+            pageSelector(index),
+            LoggingPage()
+          ]
+        )
       );
     }
     else
@@ -999,7 +1041,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
               backgroundColor:CupertinoColors.white
           )
           ,
-        child:DummyPage()
+        child:Column (
+            children:
+            [
+              pageSelector(index),
+              DummyPage()
+            ]
+        )
       );
     }
   }
@@ -1043,6 +1091,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         }
     }
   }
+
+
 
 
 
@@ -1268,7 +1318,10 @@ class _LoggingPageState extends State<LoggingPage> {
                     children:gottenRows
                 )
             ),
-
+      Platform.isIOS ? Row(
+        children:[]
+      )
+      : null
       ],
     );
   }
