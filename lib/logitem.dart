@@ -7,7 +7,9 @@ import 'package:csv/csv.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'pseudoresources.dart';
-
+/*
+Find out how Dart handles errors returned by await-ed async functions
+*/
 class Logitem {
 
   static MethodChannel platform;
@@ -51,7 +53,8 @@ class Logitem {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
     path = join(databasesPath, "demo.db");
-   // await deleteDatabase(path);
+    await deleteDatabase(path); //remove before going live
+    //throw PathException("intentional bombout");
     rv = true;
     return rv;
   }

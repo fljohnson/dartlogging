@@ -1,4 +1,12 @@
 //import 'dart:developer';
+/*
+Multiple problems on iOS:
+1. database does not seem to be getting written to, probably crashing on either IO operation 
+2. A possible DB crash may explain the no-show on Stats page
+3. There does not seem to be a general-purpose directory on a stock iOS file system, the expectation apparently being "iCloud, dude" for that OR storage space devoted to the application
+
+"iOS apps should always save files to known locations inside their sandbox, and apps should use a custom interface when presenting those documents to the user" -> "ineffective on roadrunners"
+*/
 import 'dart:async';
 import 'dart:io' show Platform;
 
@@ -107,6 +115,10 @@ class MyApp extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+
+
+
+
     return new MaterialApp(
       title: 'The Money Logs',
       theme: new ThemeData(
@@ -813,11 +825,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   List<String> _popupItems;
 
   int cupertinoCurrentTab;
-  
+
+
 
   @override
   void initState() {
     super.initState();
+
 
     _popupItems = ["Import...","Export..."];
     adder = new FloatingActionButton(
@@ -910,12 +924,19 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   @override
   Widget build(BuildContext context) {
+    if (Logitem.database == null) {
+      Future<void> result = Logitem.createSampleData();
+      result.then((void value){},onError: (e){
+        doAlert(context,e.toString());
+      });
+    }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+
 
     //hey Cupertino
     if(Platform.isIOS)
@@ -1290,72 +1311,78 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       });
     }
     yakker = this;
+
+    List<Widget> columnContents = <Widget>[
+      Row(
+          children:[
+            Expanded(
+                flex: 1,
+                child: _getDateButton("From: ",loggingRange._date1,((String value)
+                {
+                  loggingRange.setDate1(value);
+                  fetchRows().then((goods) {
+                    setState(() {});
+                  }
+                  );
+                })
+                )
+            )
+            ,
+            Expanded(
+                flex: 3,
+                child: new Text(
+                  loggingRange._date1,
+                  textAlign: TextAlign.center,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                )
+            )
+          ]
+      ),
+
+      Row(
+          children:[
+            Expanded(
+                flex: 1,
+                child: _getDateButton("To: ",loggingRange._date2,((String value)
+                {
+                  loggingRange.setDate2(value);
+                  fetchRows().then((goods) {
+                    setState(() {});
+                  });
+                })
+                )
+            )
+            ,
+            Expanded(
+                flex: 3,
+                child: new Text(
+                  loggingRange._date2,
+                  textAlign: TextAlign.center,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                )
+            )
+          ]
+      ),
+      Expanded(
+          child: ListView(
+              children:gottenRows
+          )
+      ),
+
+    ];
+
+    if(Platform.isIOS){
+      columnContents.add(cupertinoToolbar);
+    }
     return new Column(
       //mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Row(
-            children:[
-              Expanded(
-                  flex: 1,
-                  child: _getDateButton("From: ",loggingRange._date1,((String value)
-                  {
-                    loggingRange.setDate1(value);
-                    fetchRows().then((goods) {
-                      setState(() {});
-                    }
-                    );
-                  })
-                  )
-              )
-              ,
-              Expanded(
-                  flex: 3,
-                  child: new Text(
-                    loggingRange._date1,
-                    textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .display1,
-                  )
-              )
-            ]
-        ),
-
-        Row(
-            children:[
-              Expanded(
-                  flex: 1,
-                  child: _getDateButton("To: ",loggingRange._date2,((String value)
-                  {
-                    loggingRange.setDate2(value);
-                    fetchRows().then((goods) {
-                      setState(() {});
-                    });
-                  })
-                  )
-              )
-              ,
-              Expanded(
-                  flex: 3,
-                  child: new Text(
-                    loggingRange._date2,
-                    textAlign: TextAlign.center,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .display1,
-                  )
-              )
-            ]
-        ),
-            Expanded(
-               child: ListView(
-                    children:gottenRows
-                )
-            ),
-      Platform.isIOS ? cupertinoToolbar : null
-      ],
+      children: columnContents,
     );
   }
 
@@ -1467,10 +1494,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
   //I suspect that this should be a global function
   Future<List<Widget>>fetchRows() async {
     List<Widget> panelBody = [];
-    if(Logitem.database == null)
-      {
-        await Logitem.createSampleData();
-      }
+
     //get the Logitems matching this.range, ordered by date DESC
     List<Logitem> hits = await Logitem.getRange(
         loggingRange.isoFrom(), loggingRange.isoTo());
