@@ -1018,36 +1018,25 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     {
       return CupertinoPageScaffold(
         navigationBar: new CupertinoNavigationBar(
-          middle:Text("Logging"),
-          //middle:CupertinoSegmentedControl
+          //middle:Text("Logging"),
+          middle:pageSelector(index),
           trailing:cupertinoAdder,
           backgroundColor:CupertinoColors.white
         )
           ,
-        child:Column (
-          children:
-          [
-            pageSelector(index),
-            LoggingPage()
-          ]
-        )
+        child:LoggingPage()
       );
     }
     else
     {
       return CupertinoPageScaffold(
           navigationBar: new CupertinoNavigationBar(
-              middle:Text("Stats"),//rework the look of that FAB
+              //middle:Text("Stats"),//rework the look of that FAB
+              middle:pageSelector(index),
               backgroundColor:CupertinoColors.white
           )
           ,
-        child:Column (
-            children:
-            [
-              pageSelector(index),
-              DummyPage()
-            ]
-        )
+        child:DummyPage()
       );
     }
   }
