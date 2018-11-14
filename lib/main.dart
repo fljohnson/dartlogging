@@ -824,7 +824,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   TabController _tabController;
   List<String> _popupItems;
 
-  int cupertinoCurrentTab;
+  int cupertinoCurrentTab = 0;
 
 
 
@@ -1551,11 +1551,14 @@ class _DummyPageState extends State<DummyPage> {
   {
     bool rv = false;
     //just in case this page is ever drawn first
+    /*
     if(Logitem.database == null)
     {
       await Logitem.createSampleData();
     }
+    */
     List<Widget> rows = [];
+
     List<Map<String,String>> stats = await Logitem.getTotals(statsRange.isoFrom(), statsRange.isoTo());
     for(int i=0;i<stats.length;i++)
     {
@@ -1632,7 +1635,15 @@ class _DummyPageState extends State<DummyPage> {
     if(!fired)
     {
       fired = true;
+      doAlert(context, "Init:the span is from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
       getTotals().then((goods) {
+        if(gottenRows == null) {
+          doAlert(context, "got no rows");
+        }
+        else
+          {
+            doAlert(context, "got ${gottenRows.length}");
+          }
         setState(() {});
       });
     }
