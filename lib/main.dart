@@ -1186,7 +1186,7 @@ class _LoggingPageState extends State<LoggingPage> {
   List<Widget> gottenRows = [];
   bool fired = false;
 
-  List<CupertinoButton> cupertinoToolbar;
+  Widget cupertinoToolbar;
   
   Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
 
