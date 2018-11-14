@@ -244,6 +244,7 @@ class _RealItemPageState extends State<RealItemPage> {
   List<String> categoryName = [];
   List<String> categoryNote = [];
 
+String cupertinoCategory;
 
   @override
   initState()
@@ -376,10 +377,8 @@ class _RealItemPageState extends State<RealItemPage> {
   if(currentsel == null || currentsel.length == 0)
   {
     currentsel = categoryName[0];
-    chosen.category = currentsel;
   }
-    List<Widget> visualCategories = [
-      /*
+  /*
       CupertinoButton(
           onPressed:((){
             //not quite right
@@ -388,19 +387,56 @@ class _RealItemPageState extends State<RealItemPage> {
           child: Text("Cancel")
 
       )*/
+    
+    
+    List<Widget> interieur =[];
+    for(int i=0; i<categories.length;i++) {
+		List<Widget> singleItem =[
+			Text(categoryName[i])
+		];
+		if(categoryNote[i] != null)
+		  {
+			singleItem.add(
+				Text(categoryNote[i])
+			);
+		  }
+		interieur.add(Column(children:singleItem));
+    }
+    List<Widget> visualCategories = [
+      CupertinoPicker(
+		itemExtent:1.0,
+		onSelectedItemChanged((int value){
+				cupertinoCategory = categoryName[i];
+			}),
+		
+			
+      );
     ];
+    
+    /*
     for(int i=0; i<categories.length;i++)
     {
       List<Widget> interieur =[
-        CupertinoButton(
-            onPressed:(categoryName[i] == currentsel)?null:((){
-        //not quite right
-        Navigator.of(context).pop(categoryName[i]);
-      }) ,
-            child: Text(categoryName[i])
-
-        )
+        
       ];
+      if(categoryName[i] == currentsel)
+      {
+		  CupertinoButton(
+				onPressed:null,
+				child: Text(categoryName[i])
+
+			)
+        }
+        else
+        {
+			CupertinoButton(
+				onPressed:((){
+			Navigator.of(context).pop(categoryName[i]);
+		  }) ,
+				child: Text(categoryName[i])
+
+			)
+        }
       if(categoryNote[i] != null)
       {
         interieur.add(
@@ -414,6 +450,7 @@ class _RealItemPageState extends State<RealItemPage> {
 
       );
     }
+    */
     return CupertinoButton(
       child: Text(currentsel),
       onPressed:((){
@@ -428,6 +465,14 @@ class _RealItemPageState extends State<RealItemPage> {
                     Navigator.of(context).pop();
                   }),
                   child:Text("Cancel")
+
+                )
+                ,
+                CupertinoButton(
+                  onPressed:((){
+                    Navigator.of(context).pop(cupertinoCategory);
+                  }),
+                  child:Text("Done")
 
                 )
                 ,
