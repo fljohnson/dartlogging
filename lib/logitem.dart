@@ -188,9 +188,9 @@ class Logitem {
     lastError = "";
 
     List<Map> miss = await database.rawQuery(
-        'SELECT category,thedate FROM Logitem where thedate >= ? and thedate <= ?',
-        [isoFrom, isoTo]);
-    lastError += "Got: \""+miss[0].values.first+"\" ;";
+        'SELECT category,thedate FROM Logitem'
+    );
+    lastError += "Got: \""+miss.toString()+"\" ;";
     //lastError += "Got: \""+miss[0].values.first+"\" and \""+ miss[1].values.first+"\" ;";
 
     for (int i = 0; i < categories.length; i++) {
