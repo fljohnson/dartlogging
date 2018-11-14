@@ -10,7 +10,7 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
-	private func startFileDlg(controller:FlutterViewController, @escaping result:FlutterResult) {
+	private func startFileDlg(controller:FlutterViewController,  result: @escaping FlutterResult) {
 		shippable = result
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
