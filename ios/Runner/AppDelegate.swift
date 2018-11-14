@@ -15,8 +15,7 @@ import Flutter
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
 		var documentPicker: UIDocumentPickerViewController?
-		documentPicker.delegate = self
-		documentPicker.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+		
 		
 		if(save) 
 		{
@@ -27,7 +26,9 @@ import Flutter
 		{
 		 	documentPicker = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
 		 }
-		controller.present(documentPicker, animated: true, completion: nil)
+		 documentPicker?.delegate = self
+		documentPicker?.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+		controller.present(documentPicker!, animated: true, completion: nil)
 	}
 	
 	func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
