@@ -42,7 +42,7 @@ import Flutter
     let sysChannel = FlutterMethodChannel(name: "com.fouracessoftware.basketnerds/filesys",
                                               binaryMessenger: controller)
     sysChannel.setMethodCallHandler({
-      (call: FlutterMethodCall, result: FlutterResult) -> Void in
+      (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
       var calledAction : Int = -1
       if(call.method == "getFileToOpen")
       {
@@ -56,7 +56,7 @@ import Flutter
       
       if(calledAction == 1)
       {
-			self.startFileDlg(controller:controller,result:result)
+			self.startFileDlg(controller:controller,result: result)
 		}
     })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
