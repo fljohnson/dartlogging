@@ -804,7 +804,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     )
   ];
 
-  List<CupertinoButton> cupertinoToolbar;
+  
   List<DatePair> _pageDates;
 
   FloatingActionButton adder;
@@ -935,20 +935,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
         );
 */
-        this.cupertinoToolbar = [
-          new CupertinoButton(
-          child:Text("Import..."),
-          onPressed:((){
-            _handlePopupMenu("Import...",context);
-          })
-          ),
-          new CupertinoButton(
-            child:Text("Export..."),
-            onPressed:((){
-            _handlePopupMenu("Export...",context);
-            })
-          )
-        ];
+        
         return theTabPage(context,cupertinoCurrentTab);
       }
       else
@@ -1199,6 +1186,8 @@ class _LoggingPageState extends State<LoggingPage> {
   List<Widget> gottenRows = [];
   bool fired = false;
 
+  List<CupertinoButton> cupertinoToolbar;
+  
   Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
 
     if(Platform.isIOS)
@@ -1239,6 +1228,21 @@ class _LoggingPageState extends State<LoggingPage> {
   
   @override
   Widget build(BuildContext context) {
+	this.cupertinoToolbar = [
+          new CupertinoButton(
+          child:Text("Import..."),
+          onPressed:((){
+            _handlePopupMenu("Import...",context);
+          })
+          ),
+          new CupertinoButton(
+            child:Text("Export..."),
+            onPressed:((){
+            _handlePopupMenu("Export...",context);
+            })
+          )
+        ];
+        
     if(!fired)
     { //this plus a race condition required ditching the custom initState()
       fired = true;
