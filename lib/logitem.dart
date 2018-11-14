@@ -185,13 +185,6 @@ class Logitem {
   static Future<List<Map<String, String>>> getTotals(String isoFrom,
       String isoTo) async {
     List<Map<String, String>> rv = [];
-    lastError = "";
-
-    List<Map> miss = await database.rawQuery(
-        'SELECT category,thedate FROM Logitem'
-    );
-    lastError += "Got: \""+miss.toString()+"\" ;";
-    //lastError += "Got: \""+miss[0].values.first+"\" and \""+ miss[1].values.first+"\" ;";
 
     for (int i = 0; i < categories.length; i++) {
       String category = categories[i].keys.first;

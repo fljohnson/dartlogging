@@ -332,6 +332,7 @@ class _RealItemPageState extends State<RealItemPage> {
     if(currentsel == null || currentsel.length == 0)
     {
       currentsel = categoryName[0];
+      chosen.category = currentsel;
     }
 
     for(int i=0;i<categories.length;i++)
@@ -375,7 +376,8 @@ class _RealItemPageState extends State<RealItemPage> {
   {
   if(currentsel == null || currentsel.length == 0)
   {
-	currentsel = categoryName[0];
+    currentsel = categoryName[0];
+    chosen.category = currentsel;
   }
     List<Widget> visualCategories = [
       /*
@@ -1666,7 +1668,6 @@ class _DummyPageState extends State<DummyPage> {
                       {
                         statsRange.setDate1(value);
                         getTotals().then((goods) {
-                          doAlert(context, "Feedback: " + Logitem.lastError);
                           setState(() {});
                         }
                         );
