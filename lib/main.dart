@@ -1666,15 +1666,7 @@ class _DummyPageState extends State<DummyPage> {
                       {
                         statsRange.setDate1(value);
                         getTotals().then((goods) {
-
-
-                          if(gottenRows == null) {
-                            doAlert(context, "No content from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
-                          }
-                          else
-                          {
-                            doAlert(context, "got ${gottenRows.length} from " + statsRange.isoFrom() +" to " + statsRange.isoTo());
-                          }
+                          doAlert(context, "Feedback: " + Logitem.lastError);
                           setState(() {});
                         }
                         );
