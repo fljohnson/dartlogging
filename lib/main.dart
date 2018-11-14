@@ -1265,7 +1265,8 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
   
   @override
   Widget build(BuildContext context) {
-	this.cupertinoToolbar = [
+	this.cupertinoToolbar = Row (
+			children:[
           new CupertinoButton(
           child:Text("Import..."),
           onPressed:((){
@@ -1278,7 +1279,8 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
             _handleCupertinoMenu(1,context);
             })
           )
-        ];
+        ]
+       );
         
     if(!fired)
     { //this plus a race condition required ditching the custom initState()
