@@ -73,12 +73,9 @@ import Flutter
 		var documentPicker : UIDocumentPickerViewController?
 		
 		
-		
-		guard let fileURL = fileUrlForDocumentNamed("output.csv") else { 
-				shippable?(FlutterError(code:"EPICFAIL",message:"attempting fileUrlForDocument failed",details:nil))
-				return 
-			}
-		
+		var fileURL = URL(fileURLWithPath:localFileUrl,isDirectory:false)
+		shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor accepted \(localFileUrl)",details:nil))
+			return;
 		documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
 		if(documentPicker == nil)
 		{
@@ -86,12 +83,9 @@ import Flutter
 			return;
 		}
 		
+		
 			 documentPicker?.delegate = self
-			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.fullScreen
-			/*
-			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor accepted \(localFileUrl)",details:nil))
-			return;
-			*/
+			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
 			controller.present(documentPicker!, animated: true, completion: nil)
 		
 			//drat, missed for some other reason
