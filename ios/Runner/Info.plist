@@ -53,5 +53,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Collateral permissions due to relying on image_picker</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Collateral permissions due to relying on image_picker</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Collateral permissions due to relying on image_picker, which apparently also does video</string>
 </dict>
 </plist>

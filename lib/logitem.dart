@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:csv/csv.dart';
@@ -106,6 +107,19 @@ static Future<String> exportToExternal({String localUrl}) async {
       lastError = ecch.message;
     }
     return rv;
+  }
+  
+  static Future<String> getCupertinoFileToOpen({bool write:false}) async {
+	lastError = null;
+	try {
+      String filePath = await FilePicker.getFilePath(type: FileType.PDF);
+      if (filePath == '') {
+        return null;
+      }
+      return filePath;
+    } on PlatformException catch (e) {
+      lastError = e.toString());
+    }
   }
 
   static Future<String> getFileToWrite() async {

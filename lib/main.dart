@@ -1271,7 +1271,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
         });
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
-        Future<String> result = Logitem.getFileToWrite();
+        Future<String> result = Logitem.getCupertinoFileToWrite();
       result.then((value) {
         if (value != null)
           {
@@ -1285,7 +1285,11 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           {
 			  doAlert(context,"result of doExport():${Logitem.lastError}");
 		  }
-		  else
+		  
+        }
+      });
+      /* 
+      else
 		  {
 			/*
 			we now send that path to the native code, which will rebuild the localFileURL, 
@@ -1308,8 +1312,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       });
 			
 		  }
-        }
-      });
+      */
       break;
       default:
         {
