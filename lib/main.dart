@@ -244,7 +244,6 @@ class _RealItemPageState extends State<RealItemPage> {
   List<String> categoryName = [];
   List<String> categoryNote = [];
 
-String cupertinoCategory;
 
   @override
   initState()
@@ -377,8 +376,10 @@ String cupertinoCategory;
   if(currentsel == null || currentsel.length == 0)
   {
     currentsel = categoryName[0];
+    chosen.category = currentsel;
   }
-  /*
+    List<Widget> visualCategories = [
+      /*
       CupertinoButton(
           onPressed:((){
             //not quite right
@@ -387,56 +388,20 @@ String cupertinoCategory;
           child: Text("Cancel")
 
       )*/
-    
-    
-    List<Widget> interieur =[];
-    for(int i=0; i<categories.length;i++) {
-		List<Widget> singleItem =[
-			Text(categoryName[i])
-		];
-		if(categoryNote[i] != null)
-		  {
-			singleItem.add(
-				Text(categoryNote[i])
-			);
-		  }
-		interieur.add(Column(children:singleItem));
-    }
-    List<Widget> visualCategories = [
-      CupertinoPicker(
-		itemExtent:1.0,
-		onSelectedItemChanged:((int value){
-				cupertinoCategory = categoryName[value];
-			}),
-		
-			
-      )
     ];
-    
-    /*
     for(int i=0; i<categories.length;i++)
     {
+		String aha = categoryName[i];
       List<Widget> interieur =[
-        
+        CupertinoButton(
+            onPressed:(categoryName[i] == currentsel)?null:((){
+        //not quite right
+        Navigator.of(context).pop(aha);
+      }) ,
+            child: Text(aha)
+
+        )
       ];
-      if(categoryName[i] == currentsel)
-      {
-		  CupertinoButton(
-				onPressed:null,
-				child: Text(categoryName[i])
-
-			)
-        }
-        else
-        {
-			CupertinoButton(
-				onPressed:((){
-			Navigator.of(context).pop(categoryName[i]);
-		  }) ,
-				child: Text(categoryName[i])
-
-			)
-        }
       if(categoryNote[i] != null)
       {
         interieur.add(
@@ -450,7 +415,6 @@ String cupertinoCategory;
 
       );
     }
-    */
     return CupertinoButton(
       child: Text(currentsel),
       onPressed:((){
@@ -465,14 +429,6 @@ String cupertinoCategory;
                     Navigator.of(context).pop();
                   }),
                   child:Text("Cancel")
-
-                )
-                ,
-                CupertinoButton(
-                  onPressed:((){
-                    Navigator.of(context).pop(cupertinoCategory);
-                  }),
-                  child:Text("Done")
 
                 )
                 ,

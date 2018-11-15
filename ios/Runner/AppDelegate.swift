@@ -10,7 +10,22 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
+	private func fileUrlForDocumentNamed(_ name: String) -> URL? {
+		guard let baseURL = localDocumentsDirectoryURL() else { return nil }
+
+		let protectedName: String
+		if name.isEmpty {
+		  protectedName = "Untitled"
+		} else {
+		  protectedName = name
+		}
+
+		return baseURL.appendingPathComponent(protectedName)
+		  .appendingPathExtension(fileExtension)
+	}
+	
 	private func startFileDlg(controller:FlutterViewController, save: Bool, result: @escaping FlutterResult) {
+		
 		shippable = result
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
@@ -19,8 +34,15 @@ import Flutter
 		
 		if(save) 
 		{
+			guard let fileURL = fileUrlForDocumentNamed("output.csv") else { 
+				shippable?("FAILED")
+				return 
+			}
+			/*
 			var toMove = URL(fileURLWithPath:"output.csv")
-			documentPicker = UIDocumentPickerViewController(url: toMove, in: UIDocumentPickerMode.exportToService)
+			var filePathToUpload = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testing" ofType:@"csv"]]  
+			*/
+			documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
 		}
 		else
 		{
