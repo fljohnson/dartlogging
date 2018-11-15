@@ -1294,7 +1294,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 			Logitem.exportToExternal(localUrl:value).then((String outbound){
 				if(outbound != null)
 				{
-					doAlert(context,"wining result of exportToExternal():$outbound");
+					doAlert(context,"winning result of exportToExternal():$outbound");
 				}
 				else
 				{
