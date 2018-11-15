@@ -81,7 +81,7 @@ import Flutter
 			controller.present(documentPicker!, animated: true, completion: nil)
 		} catch {
 			//drat, missed for some other reason
-			shippable(FlutterError(code:"UNSPECIFIED",message:"DOH!\(error)",details:nil))
+			shippable?(FlutterError(code:"UNSPECIFIED",message:"DOH!\(error)",details:nil))
 		}
 		
 	}
