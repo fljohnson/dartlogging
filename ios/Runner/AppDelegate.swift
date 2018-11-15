@@ -83,7 +83,7 @@ import Flutter
 		}
 		
 			 documentPicker?.delegate = self
-			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
+			//documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor accepted \(localFileUrl)",details:nil))
 			return;
 			//controller.present(documentPicker!, animated: true, completion: nil)
