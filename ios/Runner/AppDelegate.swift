@@ -6,6 +6,11 @@ import MobileCoreServices
 import UIKit
 import Flutter
 
+/*
+Consult https://gitlab.com/theswiftdev/icloud-drive/blob/master/iCloudDrive/Sources/ViewController.swift
+
+for the use of the FileManager singleton. This may cut a ton of BS
+*/
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
