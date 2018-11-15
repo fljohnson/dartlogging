@@ -80,7 +80,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		var fileURL = URL(fileURLWithPath:localFileUrl,isDirectory:false)
 		
-		documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
+		documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.moveToService)
 		if(documentPicker == nil)
 		{
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor disliked \(localFileUrl)",details:nil))
