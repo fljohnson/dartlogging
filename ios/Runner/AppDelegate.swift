@@ -49,7 +49,12 @@ import Flutter
 			var toMove = URL(fileURLWithPath:"output.csv")
 			var filePathToUpload = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testing" ofType:@"csv"]]  
 			*/
+			/*
 			documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
+			*/
+			//for the moment, return the local stuff:
+			shippable?(fileURL.path)
+			return;
 		}
 		else
 		{

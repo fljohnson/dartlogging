@@ -189,7 +189,7 @@ class Logitem {
     for (int i = 0; i < categories.length; i++) {
       String category = categories[i].keys.first;
       num total = 0.0;
-      lastError += "Sought: \"$category\"";
+      //lastError += "Sought: \"$category\"";
       List<Map> raw = await database.rawQuery(
           'SELECT sum(amount) FROM Logitem where category = ? and thedate >= ? and thedate <= ?',
           [category, isoFrom, isoTo]);
