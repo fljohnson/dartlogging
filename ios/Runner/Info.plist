@@ -20,25 +20,6 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>NSExtension</key>
-	<dict>
-		<key>NSExtensionAttributes</key>
-		<dict>
-			<key>UIDocumentPickerModes</key>
-			<array>
-				<string>UIDocumentPickerModeImport</string>
-				<string>UIDocumentPickerModeExportToService</string>
-			</array>
-			<key>UIDocumentPickerSupportedFileTypes</key>
-			<array>
-				<string>public.content</string>
-			</array>
-		</dict>
-		<key>NSExtensionMainStoryboard</key>
-		<string>MainInterface</string>
-		<key>NSExtensionPointIdentifier</key>
-		<string>com.apple.fileprovider-ui</string>
-	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSUbiquitousContainers</key>
