@@ -24,7 +24,7 @@
 	<true/>
 	<key>NSUbiquitousContainers</key>
 	<dict>
-		<key>iCloud.com.fouracessoftwared.basketnerds</key>
+		<key>iCloud.$(CFBundleIdentifier)</key>
 		<dict>
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
