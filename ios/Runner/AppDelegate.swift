@@ -86,7 +86,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		*/
 		do {
 			fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
-		//	documentPicker = UIDocumentPickerViewController(url: fileURL!, in: UIDocumentPickerMode.exportToService)
+			documentPicker = UIDocumentPickerViewController(urls: [fileURL!], in: UIDocumentPickerMode.exportToService)
 		}
 		catch let error {
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"missed \(error)",details:nil))
@@ -98,6 +98,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor disliked localFileUrl",details:nil))
 			return
 		}
+		shippable("CREATED") //remove
 		/*
 			 documentPicker?.delegate = self
 			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
