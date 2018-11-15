@@ -1275,11 +1275,27 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       result.then((value) {
         if (value != null)
           {
-			  doAlert(context,"Target URL is $value");
+          /*
+          value contains the "path" portion of a localFileURL to be created
+          doExport() will write to this file directly
+          */
+			  //doAlert(context,"Target URL is $value");
           Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
           if(Logitem.lastError != null)
           {
 			  doAlert(context,"result of doExport():${Logitem.lastError}");
+		  }
+		  else
+		  {
+			/*
+			we now send that path to the native code, which will rebuild the localFileURL, 
+			and then try to run the Save to External "dialog". The crackpot theory is that now that the local file exists, creating the picker won't crash.
+			*/
+			Logitem.exportToExternal(value);
+			if(Logitem.lastError != null)
+			  {
+				  doAlert(context,"result of exportToExternal():${Logitem.lastError}");
+			  }
 		  }
         }
       });

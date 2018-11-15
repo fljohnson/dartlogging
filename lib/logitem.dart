@@ -72,6 +72,24 @@ class Logitem {
     return rv;
   }
 
+static Future<String> exportToExternal({String localUrl}) async {
+    lastError = null;
+    if(platform == null) //shouldn't be an issue, but..
+    {
+      platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
+    }
+    String rv;
+    try {
+      final String result = await platform.invokeMethod(
+        "exportToExternal",[localUrl]);
+      rv = result;
+    }
+    on PlatformException catch(ecch) {
+      lastError = ecch.message;
+    }
+    return rv;
+  }
+  
   static Future<String> getFileToOpen({bool write:false}) async {
     lastError = null;
     if(platform == null) //shouldn't be an issue, but..

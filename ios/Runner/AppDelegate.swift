@@ -65,18 +65,42 @@ import Flutter
 		controller.present(documentPicker!, animated: true, completion: nil)
 	}
 	
+	private func startExportDlg(controller:FlutterViewController, localFileUrl: String, result: @escaping FlutterResult) {
+		
+		shippable = result
+		var transfer = kUTTypeCommaSeparatedText as NSString
+		var utiCSV : String = transfer as String
+		var documentPicker : UIDocumentPickerViewController?
+		
+		
+		var fileURL = URL(fileURLWithPath:localFileUrl,isDirectory:false)
+		do {
+			try documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
+			 documentPicker?.delegate = self
+			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.fullScreen
+			controller.present(documentPicker!, animated: true, completion: nil)
+		} catch {
+			//drat, missed for some other reason
+			shippable(FlutterError(code:"UNSPECIFIED",message:"DOH!\(error)",details:nil))
+		}
+		
+	}
+	
 	func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-    if controller.documentPickerMode == UIDocumentPickerMode.open {
-        // This is what it should be
-        //self.newNoteBody.text = String(contentsOfFile: url.path!)
-        //call.arguments as! Int
-        shippable?(urls[0].path)
-    }
-    
+		if controller.documentPickerMode == UIDocumentPickerMode.open {
+			// This is what it should be
+			//self.newNoteBody.text = String(contentsOfFile: url.path!)
+			//call.arguments as! Int
+			shippable?(urls[0].path)
+		}
+		if controller.documentPickerMode == UIDocumentPickerMode.exportToService {
+			shippable?(urls[0].path)
+		}
+	}
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) {
 		shippable?(nil)
     }
-}
 	
   override func application(
     _ application: UIApplication,
@@ -101,6 +125,11 @@ import Flutter
 			}
 		}
       }
+      if(call.method == "exportToExternal")
+      {
+		calledAction = 2
+      }
+      //TODO: make a proper switch block out of these
       if(calledAction == -1)
       {
 		result(FlutterMethodNotImplemented)
@@ -110,6 +139,26 @@ import Flutter
       if(calledAction == 1)
       {
 			self.startFileDlg(controller:controller,save: write,result: result)
+		}
+		if(calledAction == 2)
+		{
+			if let args = call.arguments as? [String] 
+			{
+				if(args.count == 1)
+				{
+					self.startExportDlg(controller:controller,localFileUrl: args[0],result: result)
+				}
+				else
+				{
+					result(FlutterError(code:"BADPARAMETER", message:"Needed exactly 1 URL string",details:nil))
+				}
+				
+			}
+			else
+			{
+				result(FlutterError(code:"BADPARAMETER", message:"Failed to receive arguments as String array",details:nil))
+			}
+			
 		}
     })
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
