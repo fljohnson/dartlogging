@@ -10,6 +10,13 @@ import Flutter
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
 	
+	private func localDocumentsDirectoryURL() -> URL? {
+		guard let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return nil }
+		
+		let localDocumentsDirectoryURL = URL(fileURLWithPath: documentPath)
+		return localDocumentsDirectoryURL
+	  }
+	  
 	private func fileUrlForDocumentNamed(_ name: String) -> URL? {
 		guard let baseURL = localDocumentsDirectoryURL() else { return nil }
 
@@ -21,7 +28,7 @@ import Flutter
 		}
 
 		return baseURL.appendingPathComponent(protectedName)
-		  .appendingPathExtension(fileExtension)
+		  .appendingPathExtension("csv")
 	}
 	
 	private func startFileDlg(controller:FlutterViewController, save: Bool, result: @escaping FlutterResult) {
