@@ -74,15 +74,13 @@ import Flutter
 		
 		
 		var fileURL = URL(fileURLWithPath:localFileUrl,isDirectory:false)
-		shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor accepted \(localFileUrl)",details:nil))
-			return;
+		
 		documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
 		if(documentPicker == nil)
 		{
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor disliked \(localFileUrl)",details:nil))
 			return;
 		}
-		
 		
 			 documentPicker?.delegate = self
 			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
