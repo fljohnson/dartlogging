@@ -79,9 +79,10 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		var documentPicker : UIDocumentPickerViewController?
 		
 		
-		var fileURL : URL ? 
+		var fileURL : URL? 
 		
 		shippable?(FlutterError(code:"UNSPECIFIED",message:"intentional bombout 2",details:nil))
+		//shippable?("sanity check")
 		return
 		
 		do {
