@@ -5,6 +5,7 @@ import MobileCoreServices
 
 import UIKit
 import Flutter
+import Picker
 
 /*
 Consult https://gitlab.com/theswiftdev/icloud-drive/blob/master/iCloudDrive/Sources/ViewController.swift
@@ -80,7 +81,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		var fileURL = URL(fileURLWithPath:localFileUrl,isDirectory:false)
 		
-		documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.moveToService)
+		documentPicker = DocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.moveToService)
 		if(documentPicker == nil)
 		{
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor disliked \(localFileUrl)",details:nil))

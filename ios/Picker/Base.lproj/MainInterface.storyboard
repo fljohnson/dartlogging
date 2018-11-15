@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="J6p-g8-CHO">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Document Picker View Controller-->
+        <scene sceneID="Q8I-MS-tKG">
+            <objects>
+                <viewController id="J6p-g8-CHO" customClass="DocumentPickerViewController" customModule="Picker" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hST-wJ-eYy"/>
+                        <viewControllerLayoutGuide type="bottom" id="UQD-kz-Mfv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Vdh-Gp-eV6">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NGV-8c-tDa">
+                                <rect key="frame" x="-4" y="0.0" width="358" height="400"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noteCell" id="yLP-DI-eyq">
+                                        <rect key="frame" x="0.0" y="28" width="358" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yLP-DI-eyq" id="6Yl-Y2-XbP">
+                                            <rect key="frame" x="0.0" y="0.0" width="358" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="J6p-g8-CHO" id="JE4-Y4-2xU"/>
+                                    <outlet property="delegate" destination="J6p-g8-CHO" id="Opa-6n-GKn"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YVy-kz-3Mu">
+                                <rect key="frame" x="-4" y="0.0" width="358" height="400"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CleverNote Only Supports .txt files" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mc9-eV-TtJ">
+                                        <rect key="frame" x="47" y="190" width="265" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M62-2n-4Lt">
+                                        <rect key="frame" x="8" y="185" width="342" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="jMO-KI-39v"/>
+                                        </constraints>
+                                        <state key="normal" title="Confirm"/>
+                                        <connections>
+                                            <action selector="confirmButtonTapped:" destination="J6p-g8-CHO" eventType="touchUpInside" id="BVM-qI-df9"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="M62-2n-4Lt" secondAttribute="trailing" constant="8" id="1X6-rz-smv"/>
+                                    <constraint firstItem="M62-2n-4Lt" firstAttribute="centerX" secondItem="YVy-kz-3Mu" secondAttribute="centerX" id="D8H-ZU-dXn"/>
+                                    <constraint firstItem="M62-2n-4Lt" firstAttribute="leading" secondItem="YVy-kz-3Mu" secondAttribute="leading" constant="8" id="GGv-bD-9t6"/>
+                                    <constraint firstItem="Mc9-eV-TtJ" firstAttribute="centerY" secondItem="YVy-kz-3Mu" secondAttribute="centerY" id="Iah-uY-Dil"/>
+                                    <constraint firstItem="M62-2n-4Lt" firstAttribute="centerY" secondItem="YVy-kz-3Mu" secondAttribute="centerY" id="Qb9-mM-6eX"/>
+                                    <constraint firstItem="Mc9-eV-TtJ" firstAttribute="centerX" secondItem="YVy-kz-3Mu" secondAttribute="centerX" id="ZSF-HS-rir"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="NGV-8c-tDa" firstAttribute="top" secondItem="Vdh-Gp-eV6" secondAttribute="topMargin" id="H3u-AE-IHT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="NGV-8c-tDa" secondAttribute="trailing" constant="-20" id="NS5-cZ-x6G"/>
+                            <constraint firstItem="UQD-kz-Mfv" firstAttribute="top" secondItem="NGV-8c-tDa" secondAttribute="bottom" id="RB1-9c-KgU"/>
+                            <constraint firstItem="YVy-kz-3Mu" firstAttribute="top" secondItem="Vdh-Gp-eV6" secondAttribute="topMargin" id="XBv-bo-l56"/>
+                            <constraint firstItem="UQD-kz-Mfv" firstAttribute="top" secondItem="YVy-kz-3Mu" secondAttribute="bottom" id="XJ6-C9-mm9"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YVy-kz-3Mu" secondAttribute="trailing" constant="-20" id="gjj-of-tV9"/>
+                            <constraint firstItem="NGV-8c-tDa" firstAttribute="leading" secondItem="Vdh-Gp-eV6" secondAttribute="leadingMargin" constant="-20" id="l8z-LH-ZPo"/>
+                            <constraint firstItem="YVy-kz-3Mu" firstAttribute="leading" secondItem="Vdh-Gp-eV6" secondAttribute="leadingMargin" constant="-20" id="qQh-8e-lUb"/>
+                        </constraints>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="400"/>
+                    <connections>
+                        <outlet property="confirmButton" destination="M62-2n-4Lt" id="ORc-Ti-zaG"/>
+                        <outlet property="confirmView" destination="YVy-kz-3Mu" id="AoF-4Q-3I7"/>
+                        <outlet property="extensionWarningLabel" destination="Mc9-eV-TtJ" id="UTE-5x-gO1"/>
+                        <outlet property="tableView" destination="NGV-8c-tDa" id="rdL-tg-yU2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UoZ-ya-W3e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-163" y="-156"/>
+        </scene>
+    </scenes>
+</document>
