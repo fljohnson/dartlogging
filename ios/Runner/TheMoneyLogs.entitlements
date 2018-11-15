@@ -7,7 +7,7 @@
 		<string>iCloud.$(CFBundleIdentifier)</string>
 	</array>
 	<key>com.apple.developer.icloud-services</key>
-	<array>
+	daiii
 		<string>CloudDocuments</string>
 	</array
 	<key>com.apple.developer.ubiquity-kvstore-identifier</key>
