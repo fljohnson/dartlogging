@@ -75,7 +75,7 @@ import Flutter
 		
 		
 		guard let fileURL = fileUrlForDocumentNamed("output.csv") else { 
-				shippable?(FlutterError(code:"EPICFAIL",message:"attempting fileUrlForDocument failed",details:nil)))
+				shippable?(FlutterError(code:"EPICFAIL",message:"attempting fileUrlForDocument failed",details:nil))
 				return 
 			}
 		
