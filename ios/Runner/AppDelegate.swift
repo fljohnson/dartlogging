@@ -92,7 +92,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			return
 		}
 		
-		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl.path ,details:nil))
+		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl!.path ,details:nil))
 		return
 		
 		do {
