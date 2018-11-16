@@ -84,6 +84,17 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		shippable?(FlutterError(code:"UNSPECIFIED",message:"intentional bombout 2",details:nil))
 		return
 		*/
+		var outUrl : URL? = FileManager.default.url(forUbiquityContainerIdentifier:nil)
+		
+		if(outUrl == nil)
+		{
+			shippable?(FlutterError(code:"UNSPECIFIED",message:"we have no ubiquity",details:nil))
+			return
+		}
+		
+		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl.path ,details:nil))
+		return
+		
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
 			fileURL = try fileUrlForDocumentNamed("output.csv")
