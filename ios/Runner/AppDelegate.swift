@@ -92,6 +92,13 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			return
 		}
 		
+		if(FileManager.default.ubiquityIdentityToken == nil)
+		{
+			shippable?(FlutterError(code:"UNSPECIFIED",message:"no identity token" ,details:nil))
+			return
+		}
+		
+		
 		/*
 		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl!.path ,details:nil))
 		return
@@ -100,7 +107,10 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
 			fileURL = try fileUrlForDocumentNamed("output.csv")
+			FileManager.default.setUbiquitous(true,url:fileURL,destinationURL:outURL)
+			/*
 			documentPicker = UIDocumentPickerViewController(url: fileURL!, in: UIDocumentPickerMode.exportToService)
+			*/
 		}
 		catch let error {
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"missed \(error)",details:nil))
