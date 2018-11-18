@@ -56,7 +56,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
 			do {
-				try text.write(to:fileURL!,atomically: false, encoding: .utf8)
+				try text.write(to:fileURL,atomically: false, encoding: .utf8)
 			}
 			catch let error {
 				shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
