@@ -46,20 +46,20 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
 				//shippable?("FAILED")
-				shippable?(FlutterError(code:"PROBE",message:"get fileURL failed \(error)",details:nil))
+				shippable?(FlutterError(code:"PROBE",message:"get fileURL failed",details:nil))
 				return 
 		}
 		
-		var text : String? 
+		var text : String = "" 
 		do {
-			text = try String(contentsOfFile: fileURL.path!)
+			text = try String(contentsOfFile: fileURL?.path)
 		}
 		catch let error {
 			shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
 			return
 		}
 		
-		shippable?(FlutterError(code:"PROBE",message:"brute read WIN \(text)",details:nil))
+		shippable?(FlutterError(code:"PROBE",message:"brute read WIN "+text,details:nil))
 		return
 		
 		
@@ -126,7 +126,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
 		do {
-			try text.write(to:fileURL,atomically: false, encoding: .utf8)
+			try text.write(to:fileURL!,atomically: false, encoding: .utf8)
 		}
 		catch let error {
 			shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
