@@ -97,7 +97,7 @@ static Future<String> exportToExternal({String localUrl}) async {
       platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
     }
     String rv;
-    rv = join(docsdir.path,"shipout.csv")
+    rv = join(docsdir.path,"shipout.csv");
     /*
     try {
       final String result = await platform.invokeMethod(
