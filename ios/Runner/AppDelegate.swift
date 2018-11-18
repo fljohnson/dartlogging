@@ -88,12 +88,14 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		if(outUrl == nil)
 		{
-			shippable?(FlutterError(code:"UNSPECIFIED",message:"we have no ubiquity",details:nil))
+			shippable?(FlutterError(code:"UNSPECIFIED",message:"we have no ubiquity. Try logging into iCloud first",details:nil))
 			return
 		}
 		
+		/*
 		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl!.path ,details:nil))
 		return
+		*/
 		
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
