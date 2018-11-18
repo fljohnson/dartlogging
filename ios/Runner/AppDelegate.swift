@@ -107,7 +107,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
 			fileURL = try fileUrlForDocumentNamed("output.csv")
-			FileManager.default.setUbiquitous(true,url:fileURL,destinationURL:outUrl)
+			FileManager.default.setUbiquitous(true,itemAt:fileURL,destinationURL:outUrl)
 			/*
 			documentPicker = UIDocumentPickerViewController(url: fileURL!, in: UIDocumentPickerMode.exportToService)
 			*/
