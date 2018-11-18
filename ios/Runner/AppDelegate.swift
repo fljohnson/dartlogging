@@ -94,7 +94,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			return
 		}
 		
-		shippable?(FlutterError(code:"PROBE",message:"brute read WIN "+text,details:nil))
+		shippable?("Goods:"+text)
 		return
 		
 		
