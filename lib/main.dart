@@ -1272,7 +1272,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
         Future<String> result = Logitem.getFileToWrite();
-      result.then((value) {
+      result.then((value) async {
         if (value != null)
           {
           /*
@@ -1280,7 +1280,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           doExport() will write to this file directly
           */
 			  doAlert(context,"Target URL is $value");
-          Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+          await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
           if(Logitem.lastError != null)
           {
 			  doAlert(context,"result of doExport():${Logitem.lastError}");
