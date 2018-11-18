@@ -194,7 +194,9 @@ for the use of the FileManager singleton. This may cut a ton of BS
       
       if(calledAction == 1)
       {
-			self.startFileDlg(controller:controller,save: write,result: result)
+			//self.startFileDlg(controller:controller,save: write,result: result)
+			let irker = fileUrlForDocumentNamed("shipout")
+			result(irker.path)
 		}
 		if(calledAction == 2)
 		{
