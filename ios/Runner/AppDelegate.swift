@@ -52,7 +52,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		var text : String = "" 
 		do {
-			text = try String(contentsOfFile: fileURL?.path)
+			text = try String(contentsOfFile: fileURL.path)
 		}
 		catch let error {
 			shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
