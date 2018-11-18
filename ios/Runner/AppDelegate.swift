@@ -47,12 +47,12 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 		if(save) 
 		{
-			guard let fileURL = fileUrlForDocumentNamed("output.csv") else { 
+			guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
 				shippable?("FAILED")
 				return 
 			}
 			/*
-			var toMove = URL(fileURLWithPath:"output.csv")
+			var toMove = URL(fileURLWithPath:"shipout")
 			var filePathToUpload = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testing" ofType:@"csv"]]  
 			*/
 			/*
@@ -104,7 +104,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		return
 		*/
 		
-		fileURL = fileUrlForDocumentNamed("output.csv")
+		fileURL = fileUrlForDocumentNamed("shipout")
 		
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)

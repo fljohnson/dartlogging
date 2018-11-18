@@ -1279,7 +1279,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           value contains the "path" portion of a localFileURL to be created
           doExport() will write to this file directly
           */
-			  //doAlert(context,"Target URL is $value");
+			  doAlert(context,"Target URL is $value");
           Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
           if(Logitem.lastError != null)
           {
@@ -1294,7 +1294,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 			Logitem.exportToExternal(localUrl:value).then((String outbound){
 				if(outbound != null)
 				{
-					doAlert(context,"wining result of exportToExternal():$outbound");
+					doAlert(context,"winning result of exportToExternal():$outbound");
 				}
 				else
 				{
