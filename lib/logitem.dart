@@ -382,11 +382,13 @@ static Future<String> exportToExternal({String localUrl}) async {
   static Future<int> doImport(String filetoread) async {
     int rv = 0;
     lastError = "";
+    /*
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
     if(res != PermissionStatus.authorized)
     {
       return rv;
     }
+    */
 
     //problem 1: grab the file contents
     List<String> readin;
