@@ -77,7 +77,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		var transfer = kUTTypeCommaSeparatedText as NSString
 		var utiCSV : String = transfer as String
 		var documentPicker : UIDocumentPickerViewController?
-		var potential : Bool = false
+		var potential : Bool = true
 		
 		var fileURL : URL? 
 		/*
@@ -104,10 +104,12 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		return
 		*/
 		
+		fileURL = fileUrlForDocumentNamed("output.csv")
+		
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
-			fileURL = fileUrlForDocumentNamed("output.csv")
-			let potential = try? FileManager.default.setUbiquitous(true,itemAt:fileURL!,destinationURL:outUrl!)
+			
+			try FileManager.default.setUbiquitous(true,itemAt:fileURL!,destinationURL:outUrl!)
 			/*
 			documentPicker = UIDocumentPickerViewController(url: fileURL!, in: UIDocumentPickerMode.exportToService)
 			*/
@@ -116,6 +118,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"missed \(error)",details:nil))
 			return
 		}
+		
 		if(potential == false)
 		{
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"could not move file",details:nil))
