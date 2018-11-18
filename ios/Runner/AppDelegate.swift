@@ -44,6 +44,24 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		var utiCSV : String = transfer as String
 		var documentPicker: UIDocumentPickerViewController?
 		
+		guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
+				//shippable?("FAILED")
+				shippable?(FlutterError(code:"PROBE",message:"get fileURL failed \(error)",details:nil))
+				return 
+		}
+		
+		var text : String? 
+		do {
+			text = try String(contentsOfFile: fileURL.path!)
+		}
+		catch let error {
+			shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
+			return
+		}
+		
+		shippable?(FlutterError(code:"PROBE",message:"brute read WIN \(text)",details:nil))
+		return
+		
 		
 		if(save) 
 		{
@@ -105,6 +123,18 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		*/
 		
 		fileURL = fileUrlForDocumentNamed("shipout")
+		let text="Amount,What,Date\n10.00,test,2018-11-05"
+		
+		do {
+			try text.write(to:fileURL,atomically: false, encoding: .utf8)
+		}
+		catch let error {
+			shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
+			return
+		}
+		
+			shippable?(FlutterError(code:"PROBE",message:"crude write seemed to work",details:nil))
+			return
 		
 		do {
 			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
@@ -130,6 +160,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"constructor disliked localFileUrl",details:nil))
 			return
 		}
+		
 		shippable?("CREATED") //remove
 		/*
 			 documentPicker?.delegate = self
@@ -194,16 +225,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
       
       if(calledAction == 1)
       {
-			//self.startFileDlg(controller:controller,save: write,result: result)
-			let irker = self.fileUrlForDocumentNamed("shipout")
-			if(irker != nil)
-			{
-				result(irker?.path)
-			}
-			else
-			{
-				result(FlutterError(code:"TRICKFAILED",message:"whiffed on getting localname",details:nil))
-			}
+			self.startFileDlg(controller:controller,save: write,result: result)
 		}
 		if(calledAction == 2)
 		{

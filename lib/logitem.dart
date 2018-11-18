@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 import 'package:csv/csv.dart';
@@ -17,7 +17,7 @@ class Logitem {
   static List<Logitem> sampleData = [];
   static Database database;
   static String path;
-  static Directory docsdir;
+  //static Directory docsdir;
  // static String docsdir2;
   static List<String> categoryNames = [];
   static String lastError;
@@ -97,8 +97,6 @@ static Future<String> exportToExternal({String localUrl}) async {
       platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
     }
     String rv;
-    rv = join(docsdir.path,"shipout.csv");
-    /*
     try {
       final String result = await platform.invokeMethod(
         "getFileToOpen",[write]);
@@ -107,7 +105,6 @@ static Future<String> exportToExternal({String localUrl}) async {
     on PlatformException catch(ecch) {
       lastError = ecch.message;
     }
-    */
     return rv;
   }
 
@@ -147,7 +144,6 @@ static Future<String> exportToExternal({String localUrl}) async {
 
   static Future<void> createSampleData() async {
     //docsdir = await getExternalStorageDirectory();
-    docsdir = await getApplicationDocumentsDirectory();
     await blankDB();
     await initDB();
     /*
@@ -382,13 +378,11 @@ static Future<String> exportToExternal({String localUrl}) async {
   static Future<int> doImport(String filetoread) async {
     int rv = 0;
     lastError = "";
-    /*
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
     if(res != PermissionStatus.authorized)
     {
       return rv;
     }
-    */
 
     //problem 1: grab the file contents
     List<String> readin;
