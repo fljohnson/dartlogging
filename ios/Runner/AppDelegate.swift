@@ -61,7 +61,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 
 				if let name = alert.textFields?.first?.text {
 					let fileURL = self.fileUrlForDocumentNamed("shipout")
-					shippable?(fileURL?.path)
+					self.shippable?(fileURL?.path)
 				}
 			}))
 
