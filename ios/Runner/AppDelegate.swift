@@ -68,9 +68,9 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			var toMove = URL(fileURLWithPath:"shipout")
 			var filePathToUpload = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testing" ofType:@"csv"]]  
 			*/
-			/*
+			
 			documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
-			*/
+			
 			//for the moment, return the local stuff:
 			shippable?(fileURL.path)
 			return;
