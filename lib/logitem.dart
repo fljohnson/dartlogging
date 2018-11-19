@@ -323,29 +323,30 @@ static Future<String> exportToExternal({String localUrl}) async {
 
   static Future<void> doExport(String filename, String isoFrom, String isoTo) async {
 	  lastError = null;
-    Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
-    toWrite.then((rows) async {
+    //Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
+    rows = await _getCSVExportable(isoFrom, isoTo);
+    //toWrite.then((rows) {
       if(rows != null) {
         //we need a file dialog here
 
         /*
-      final csvCodec = new CsvCodec();
+		  final csvCodec = new CsvCodec();
 
-      final stream = new Stream.fromIterable(rows);
-      final csvRowStream = stream.transform(csvCodec.encoder);
-      */
-      try {
-        final outstring = const ListToCsvConverter().convert(rows);
+		  final stream = new Stream.fromIterable(rows);
+		  final csvRowStream = stream.transform(csvCodec.encoder);
+		  */
+		  try {
+			final outstring = const ListToCsvConverter().convert(rows);
 
-        //final oot = new File(join(docsdir.path,filename));
-        final oot = new File(filename);
-        await oot.writeAsString(outstring, flush:true);
-	}
-	catch(e) {
-		lastError = e.toString();
-	}
+			//final oot = new File(join(docsdir.path,filename));
+			final oot = new File(filename);
+			oot.writeAsStringSync(outstring, flush:true);
+			}
+		catch(e) {
+			lastError = e.toString();
+		}
       }
-    });
+   // });
   }
 
   static Future<List<List<dynamic>>> _getCSVExportable(String from,  String to) async {

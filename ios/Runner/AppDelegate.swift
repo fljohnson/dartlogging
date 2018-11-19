@@ -23,7 +23,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		return localDocumentsDirectoryURL
 	  }
 	  
-	private func fileUrlForDocumentNamed(_ name: String) -> URL? {
+	 func fileUrlForDocumentNamed(_ name: String) -> URL? {
 		guard let baseURL = localDocumentsDirectoryURL() else { return nil }
 
 		let protectedName: String
@@ -37,17 +37,39 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		  .appendingPathExtension("csv")
 	}
 	
-	private func startFileDlg(controller:FlutterViewController, save: Bool, result: @escaping FlutterResult) {
-		
-		shippable = result
-		var transfer = kUTTypeCommaSeparatedText as NSString
-		var utiCSV : String = transfer as String
-		var documentPicker: UIDocumentPickerViewController?
-		
-		
-		
-		if(save) 
+	private func primaryFileDlg(controller:FlutterViewController, save: Bool, result: @escaping FlutterResult) {
+		if(!save)
 		{
+			startOpenDlg(controller:controller,result:result)
+		}
+		else
+		{
+			startSaveDlg(controller:controller,result:result)
+		}
+	}
+	
+	private func startSaveDlg(controller:FlutterViewController, result: @escaping FlutterResult) {
+			shippable = result
+			let alert = UIAlertController(title: "Export as CSV", message: nil, preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+
+			alert.addTextField(configurationHandler: { textField in
+				textField.placeholder = "Give intended filename"
+			})
+
+			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+
+				if let name = alert.textFields?.first?.text {
+					let fileURL = fileUrlForDocumentNamed("shipout")
+					shippable?(fileURL.path)
+				}
+			}))
+
+			controller.present(alert, animated: true)
+
+			/* demonstrates last-resort action
+			
+			
 			guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
 				shippable?("FAILED")
 				return 
@@ -62,44 +84,28 @@ for the use of the FileManager singleton. This may cut a ton of BS
 				shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
 				return
 			}
-			
+			*/
 			
 			/*
 			var toMove = URL(fileURLWithPath:"shipout")
 			var filePathToUpload = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"testing" ofType:@"csv"]]  
 			*/
-			
+			/*
 			documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
+			*/
 			
-			//for the moment, return the local stuff:
-			//shippable?(fileURL.path)
-			//return;
-		}
-		else
-		{
+	}
+	
+	private func startOpenDlg(controller:FlutterViewController, result: @escaping FlutterResult) {
 		
-		
-		guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
-				//shippable?("FAILED")
-				shippable?(FlutterError(code:"PROBE",message:"get fileURL failed",details:nil))
-				return 
-		}
-		
-		var text : String = "" 
-		do {
-			text = try String(contentsOfFile: fileURL.path)
-		}
-		catch let error {
-			shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
-			return
-		}
-		
-		shippable?("Goods:"+text)
-		return
+		shippable = result
+		var transfer = kUTTypeCommaSeparatedText as NSString
+		var utiCSV : String = transfer as String
+		var documentPicker: UIDocumentPickerViewController?
 		
 		
 		 	documentPicker = UIDocumentPickerViewController(documentTypes: [utiCSV], in: UIDocumentPickerMode.import)
-		 }
+		 
 		 documentPicker?.delegate = self
 		documentPicker?.modalPresentationStyle = UIModalPresentationStyle.fullScreen
 		controller.present(documentPicker!, animated: true, completion: nil)
@@ -114,10 +120,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		var potential : Bool = true
 		
 		var fileURL : URL? 
-		/*
-		shippable?(FlutterError(code:"UNSPECIFIED",message:"intentional bombout 2",details:nil))
-		return
-		*/
+		
 		var outUrl : URL? = FileManager.default.url(forUbiquityContainerIdentifier:nil)
 		
 		if(outUrl == nil)
@@ -137,7 +140,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		shippable?(FlutterError(code:"UNSPECIFIED",message:"success:" + outUrl!.path ,details:nil))
 		return
 		*/
-		
+		/* demo of crude write - last-resort tactic
 		fileURL = fileUrlForDocumentNamed("shipout")
 		let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
@@ -151,14 +154,15 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		
 			shippable?(FlutterError(code:"PROBE",message:"crude write seemed to work",details:nil))
 			return
-		
+		*/
+		fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
 		do {
-			//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
+			
 			
 			try FileManager.default.setUbiquitous(true,itemAt:fileURL!,destinationURL:outUrl!)
-			/*
+			
 			documentPicker = UIDocumentPickerViewController(url: fileURL!, in: UIDocumentPickerMode.exportToService)
-			*/
+			
 		}
 		catch let error {
 			shippable?(FlutterError(code:"UNSPECIFIED",message:"missed \(error)",details:nil))
@@ -177,12 +181,12 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			return
 		}
 		
-		shippable?("CREATED") //remove
-		/*
+		//shippable?("CREATED") //remove
+		
 			 documentPicker?.delegate = self
 			documentPicker?.modalPresentationStyle = UIModalPresentationStyle.formSheet
 			controller.present(documentPicker!, animated: true, completion: nil)
-		*/
+		
 			//drat, missed for some other reason
 			
 		
@@ -190,10 +194,31 @@ for the use of the FileManager singleton. This may cut a ton of BS
 	}
 	
 	func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-		if controller.documentPickerMode == UIDocumentPickerMode.open {
+		if controller.documentPickerMode == UIDocumentPickerMode.import {
 			// This is what it should be
 			//self.newNoteBody.text = String(contentsOfFile: url.path!)
 			//call.arguments as! Int
+			
+			/*
+			rough version of last-resort technique
+			guard let fileURL = fileUrlForDocumentNamed("shipout") else { 
+				//shippable?("FAILED")
+				shippable?(FlutterError(code:"PROBE",message:"get fileURL failed",details:nil))
+				return 
+		}
+		
+		var text : String = "" 
+		do {
+			text = try String(contentsOfFile: fileURL.path)
+		}
+		catch let error {
+			shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
+			return
+		}
+		
+		shippable?("Goods:"+text)
+		return
+		*/
 			shippable?(urls[0].path)
 		}
 		if controller.documentPickerMode == UIDocumentPickerMode.exportToService {
@@ -241,7 +266,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
       
       if(calledAction == 1)
       {
-			self.startFileDlg(controller:controller,save: write,result: result)
+			self.primaryFileDlg(controller:controller,save: write,result: result)
 		}
 		if(calledAction == 2)
 		{
