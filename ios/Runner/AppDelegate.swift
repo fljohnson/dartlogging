@@ -72,8 +72,8 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			documentPicker = UIDocumentPickerViewController(url: fileURL, in: UIDocumentPickerMode.exportToService)
 			
 			//for the moment, return the local stuff:
-			shippable?(fileURL.path)
-			return;
+			//shippable?(fileURL.path)
+			//return;
 		}
 		else
 		{
