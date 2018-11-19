@@ -156,6 +156,17 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			return
 		*/
 		fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
+		
+		let text="Amount,What,Date\n10.00,test,2018-11-05"
+		
+		do {
+			try text.write(to:fileURL!,atomically: false, encoding: .utf8)
+		}
+		catch let error {
+			shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
+			return
+		}
+		
 		do {
 			
 			
@@ -219,7 +230,18 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		shippable?("Goods:"+text)
 		return
 		*/
-			shippable?(urls[0].path)
+			//shippable?(urls[0].path) //should've been 
+			
+			var text : String = "" 
+			do {
+				text = try String(contentsOfFile: urls[0].path)
+			}
+			catch let error {
+				shippable?(FlutterError(code:"PROBE",message:"brute read failed \(error)",details:nil))
+				return
+			}
+			
+			shippable?(text)
 		}
 		if controller.documentPickerMode == UIDocumentPickerMode.exportToService {
 			shippable?(urls[0].path)

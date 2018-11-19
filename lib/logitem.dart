@@ -376,6 +376,35 @@ static Future<String> exportToExternal({String localUrl}) async {
     return rv;
   }
 
+static Future<int> doIOSImport(String fileContents) async {
+int rv = 0;
+    lastError = "";
+    final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
+    if(res != PermissionStatus.authorized)
+    {
+      return rv;
+    }
+
+    //problem 1: grab the file contents
+    List<String> readin;
+
+    try {
+      //final input = new File(filetoread);
+      //readin = await input.readAsString();
+      //readin = input.readAsLinesSync();
+      readin = fileContents.split("\n");
+      await _doCSVImport(readin);
+      rv = 1; //consider setting this to number of rows actually inserted
+    }
+    catch(ecch)
+    {
+      if(lastError.length == 0) {
+        lastError = ecch.message;
+      }
+      rv = -1;
+    }
+    return rv;
+}
   static Future<int> doImport(String filetoread) async {
     int rv = 0;
     lastError = "";
