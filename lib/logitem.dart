@@ -324,7 +324,7 @@ static Future<String> exportToExternal({String localUrl}) async {
   static Future<void> doExport(String filename, String isoFrom, String isoTo) async {
 	  lastError = null;
     //Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
-    rows = await _getCSVExportable(isoFrom, isoTo);
+    List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo);
     //toWrite.then((rows) {
       if(rows != null) {
         //we need a file dialog here
