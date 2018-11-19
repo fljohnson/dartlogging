@@ -1281,7 +1281,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           doExport() will write to this file directly
           */
 			  doAlert(context,"Target URL is $value");
-          await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+          //await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
           if(Logitem.lastError != null)
           {
 			  doAlert(context,"result of doExport():${Logitem.lastError}");
