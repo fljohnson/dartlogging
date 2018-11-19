@@ -60,7 +60,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
 
 				if let name = alert.textFields?.first?.text {
-					let fileURL = self.fileUrlForDocumentNamed("shipout")
+					let fileURL = self.fileUrlForDocumentNamed(name)
 					self.shippable?(fileURL?.path)
 				}
 			}))
