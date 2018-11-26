@@ -20,11 +20,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   sqflite: any
-  flutter_cupertino_date_picker: any
-  csv: ^4.0.0
+  csv: ^4.0.1
   path_provider: ^0.4.1
   simple_permissions: ^0.1.9
-
+#flutter_cupertino_date_picker: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

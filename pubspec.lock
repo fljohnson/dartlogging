@@ -35,7 +35,7 @@ packages:
       name: csv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -43,37 +43,16 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
-  file_picker:
-    dependency: "direct main"
-    description:
-      name: file_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.6"
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_cupertino_date_picker:
-    dependency: "direct main"
-    description:
-      name: flutter_cupertino_date_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.7"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
-  image_picker:
-    dependency: transitive
-    description:
-      name: image_picker
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.10"
   matcher:
     dependency: transitive
     description:
@@ -192,5 +171,5 @@ packages:
     source: hosted
     version: "2.0.8"
 sdks:
-  dart: ">=2.0.0 <=2.1.0-dev.9.3.flutter-9c07fb64c4"
-  flutter: ">=0.4.1 <1.0.0"
+  dart: ">=2.0.0 <3.0.0"
+  flutter: ">=0.1.4 <2.0.0"

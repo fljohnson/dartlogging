@@ -9,7 +9,8 @@ Multiple problems on iOS:
 import 'dart:async';
 import 'dart:io' show Platform;
 
-import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+//import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:basketnerds/planning.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "logitem.dart";
@@ -33,8 +34,10 @@ void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(S
   DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
 
 
-
-  DatePicker.showDatePicker(
+/*
+//Todo: Rework this per https://docs.flutter.io/flutter/cupertino/CupertinoDatePicker-class.html
+need a bottom sheet, a row containing cancel and done buttons, and a row containing the Picker
+  CupertinoDatePicker.showDatePicker(
       context,
       dateFormat:"mmm-dd-yyyy",
       minYear:minDate.year,
@@ -49,6 +52,7 @@ void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(S
         actOnDate(rv);
       })
   );
+  */
 }
 
 Future<String> askDate(BuildContext context,String originalDate) async {
@@ -160,8 +164,15 @@ class ItemPage extends StatelessWidget {
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
           title: new Text(content),
+            leading:IconButton(
+              icon:Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+            ),
             actions: <Widget>[
         // action button
+        /*
           FlatButton(
               child: Text("CANCEL",
                 style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
@@ -171,9 +182,10 @@ class ItemPage extends StatelessWidget {
                 Navigator.of(context).pop();
               },
             ),
+          */
           // action button
           FlatButton(
-              child: Text("DONE",
+              child: Text("SAVE",
                   style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
                       color:Color(0xFFFFFFFF))
               ),
@@ -802,6 +814,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   List<Tab> myTabs = <Tab>[
     new Tab(text: 'Logging'),
     new Tab(text: 'Stats'),
+    new Tab(text: 'Planning'),
   ];
 
   //hey Cupertino
@@ -883,7 +896,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   void setDates(DatePair range) {
     setState(() {
       int whichPair=_tabController.index;
-      _pageDates[whichPair].setDates(range._date1, range._date2);
+      _pageDates[whichPair].setDates(range.date1, range.date2);
     });
   }
 
@@ -934,7 +947,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
-    //
+    // u
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
@@ -1000,7 +1013,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
                 controller:_tabController,
                 children:[
                   LoggingPage(),
-                  DummyPage()
+                  DummyPage(),
+                  PlanningPage()
                 ]
             ),
 
@@ -1015,7 +1029,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   CupertinoSegmentedControl pageSelector(int index) {
     Map<int,Widget> botons = {
       0:Text("Logging"),
-      1:Text("Stats")
+      1:Text("Stats"),
+      2:Text("Planning")
     };
     return CupertinoSegmentedControl<int>(
       children:botons,
@@ -1101,6 +1116,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
 }
 
+
+
 //mm/dd/yyyy to yyyy-mm-dd
 String fromUStoISO(String inDate)
 {
@@ -1133,65 +1150,6 @@ String fromISOtoUS(String inDate)
   return datelets[1]+"/"+datelets[2]+"/"+datelets[0];
 }
 
-class DatePair {
-  String _date1;
-  String _date2;
-
-  DatePair(String date1,date2)
-  {
-    setDates(date1,date2);
-  }
-
-  void setDate1(String date)
-  {
-    setDates(date,this._date2);
-  }
-  void setDate2(String date)
-  {
-    setDates(this._date1,date);
-  }
-  void setDates(String date1,String date2)
-  {
-    String comparedate1=fromUStoISO(date1);
-    String comparedate2=fromUStoISO(date2);
-    if (comparedate1.compareTo(comparedate2)<=0)
-    {
-      _date1=date1;
-      _date2=date2;
-    }
-    else
-    {
-      _date1=date2;
-      _date2=date1;
-    }
-  }
-
-  String isoFrom() {
-    String comparedate1=fromUStoISO(_date1);
-    String comparedate2=fromUStoISO(_date2);
-    if (comparedate1.compareTo(comparedate2)<=0)
-    {
-      return comparedate1;
-    }
-    else
-    {
-      return comparedate2;
-    }
-  }
-
-  String isoTo() {
-    String comparedate1=fromUStoISO(_date1);
-    String comparedate2=fromUStoISO(_date2);
-    if (comparedate1.compareTo(comparedate2)<=0)
-    {
-      return comparedate2;
-    }
-    else
-    {
-      return comparedate1;
-    }
-  }
-}
 
 
 class LoggingPage extends StatefulWidget {
@@ -1354,7 +1312,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("From: ",loggingRange._date1,((String value)
+                child: _getDateButton("From: ",loggingRange.date1,((String value)
                 {
                   loggingRange.setDate1(value);
                   fetchRows().then((goods) {
@@ -1368,7 +1326,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
             Expanded(
                 flex: 3,
                 child: new Text(
-                  loggingRange._date1,
+                  loggingRange.date1,
                   textAlign: TextAlign.center,
                   style: Theme
                       .of(context)
@@ -1383,7 +1341,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("To: ",loggingRange._date2,((String value)
+                child: _getDateButton("To: ",loggingRange.date2,((String value)
                 {
                   loggingRange.setDate2(value);
                   fetchRows().then((goods) {
@@ -1396,7 +1354,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
             Expanded(
                 flex: 3,
                 child: new Text(
-                  loggingRange._date2,
+                  loggingRange.date2,
                   textAlign: TextAlign.center,
                   style: Theme
                       .of(context)
@@ -1584,7 +1542,7 @@ class _DummyPageState extends State<DummyPage> {
 
   List<Widget> gottenRows = [];
   bool fired = false;
-  Future<bool> getTotals() async
+  Future<bool> getTotals(BuildContext context) async
   {
     bool rv = false;
     //just in case this page is ever drawn first
@@ -1672,9 +1630,11 @@ class _DummyPageState extends State<DummyPage> {
     if(!fired)
     {
       fired = true;
-      getTotals().then((goods) {
+      /*
+      getTotals(context).then((goods) {
         setState(() {});
       });
+      */
     }
     return new Center(
       // Center is a layout widget. It takes a single child and positions it
@@ -1699,10 +1659,10 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: _getDateButton("From: ",statsRange._date1,((String value)
+                      child: _getDateButton("From: ",statsRange.date1,((String value)
                       {
                         statsRange.setDate1(value);
-                        getTotals().then((goods) {
+                        getTotals(context).then((goods) {
                           setState(() {});
                         }
                         );
@@ -1714,7 +1674,7 @@ class _DummyPageState extends State<DummyPage> {
                   Expanded(
                       flex: 3,
                       child: new Text(
-                        statsRange._date1,
+                        statsRange.date1,
                         textAlign: TextAlign.center,
                         style: Theme
                             .of(context)
@@ -1729,10 +1689,10 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: _getDateButton("To: ",statsRange._date2,((String value)
+                      child: _getDateButton("To: ",statsRange.date2,((String value)
                       {
                         statsRange.setDate2(value);
-                        getTotals().then((goods) {
+                        getTotals(context).then((goods) {
                           setState(() {});
                         }
                         );
@@ -1743,7 +1703,7 @@ class _DummyPageState extends State<DummyPage> {
                   Expanded(
                       flex: 3,
                       child: new Text(
-                        statsRange._date2,
+                        statsRange.date2,
                         textAlign: TextAlign.center,
                         style: Theme
                             .of(context)

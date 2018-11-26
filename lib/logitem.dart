@@ -15,6 +15,7 @@ class Logitem {
   static MethodChannel platform;
 
   static List<Logitem> sampleData = [];
+
   static Database database;
   static String path;
   //static Directory docsdir;
@@ -53,7 +54,7 @@ class Logitem {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
     path = join(databasesPath, "demo.db");
-    await deleteDatabase(path); //remove before going live
+    //await deleteDatabase(path); //remove before going live
     //throw PathException("intentional bombout");
     rv = true;
     return rv;
@@ -188,6 +189,10 @@ static Future<String> exportToExternal({String localUrl}) async {
   }
 
   static Future<List<Logitem>> getRange(String isoFrom, String isoTo) async {
+    if(database == null)
+    {
+      await createSampleData();
+    }
     List<Logitem> rv = [];
 
     List<Map> raw = await database.rawQuery(

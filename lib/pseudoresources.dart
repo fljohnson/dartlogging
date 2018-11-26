@@ -92,12 +92,149 @@ class Datademunger {
         mo = int.parse(dateparts[1]);
         da = int.parse(dateparts[0]);
       }
+    if(yr < 2015)
+    {
+      //how the blazes did we get yy/mm/20dd ?! (FLJ, 11/19/2018)
+      String proto ="20"+toParse.replaceFirst("/20","");
+      return proto.replaceAll("/", "-"); //
+    }
       DateTime sensible = new DateTime(yr,mo,da);
       if(sensible.year != yr || sensible.month != mo) //we got a nonsensical date
       {
         throw FormatException("couldn't interpret date \"$toParse\"");
       }
+
       var result = sensible.toIso8601String().split("T");
       return result[0];
+  }
+
+
+//yyyy-mm-dd to mm/dd/yyyy
+  static String fromISOtoUS(String inDate)
+  {
+    List<String> datelets = inDate.split("-");
+
+    while(datelets[1].length <2)
+    {
+      datelets[1]= "0" + datelets[1];
+    }
+    while(datelets[2].length <2)
+    {
+      datelets[2]= "0" + datelets[2];
+    }
+
+    return datelets[1]+"/"+datelets[2]+"/"+datelets[0];
+  }
+
+  //mm/dd/yyyy to yyyy-mm-dd
+  static String fromUStoISO(String inDate)
+  {
+    List<String> datelets = inDate.split("/");
+    while(datelets[0].length <2)
+    {
+      datelets[0]= "0" + datelets[0];
+    }
+    while(datelets[1].length <2)
+    {
+      datelets[1]= "0" + datelets[1];
+    }
+    return datelets[2]+"-"+datelets[0]+"-"+datelets[1];
+  }
+
+  static String getISOOffset({int dmonths = 0 , int ddays = 0, String fromISODate = null}) {
+	  if(fromISODate == null)
+    {
+      var base = DateTime.now();
+      fromISODate = base.toIso8601String().split("T")[0];
+    }
+    var ymd =fromISODate.split("-");
+    var yr=int.parse(ymd[0]);
+    var mo=int.parse(ymd[1])+dmonths;
+    var da=int.parse(ymd[2])+ddays;
+    var sanity=DateTime(yr,mo,da);
+    return sanity.toIso8601String().split("T")[0];
+  }
+}
+
+class DatePair {
+  String _date1;
+  String _date2;
+
+  String get date1 => _date1;
+  String get date2 => _date2;
+
+  DatePair(String date1,date2)
+  {
+    setDates(date1,date2);
+  }
+
+
+  void setDate1(String date)
+  {
+    setDates(date,this._date2);
+  }
+  void setDate2(String date)
+  {
+    setDates(this._date1,date);
+  }
+  void setDates(String date1,String date2)
+  {
+    String comparedate1;
+    String comparedate2;
+    if(patterns[0].hasMatch(date1))
+    {
+      comparedate1 = date1;
+      date1 = Datademunger.fromISOtoUS(date1);
+    }
+    else
+    {
+      comparedate1 =Datademunger.fromUStoISO(date1);
+    }
+    if(patterns[0].hasMatch(date2))
+    {
+      comparedate2=date2;
+      date2 = Datademunger.fromISOtoUS(date2);
+    }
+    else
+    {
+      comparedate2=Datademunger.fromUStoISO(date2);
+    }
+
+    if (comparedate1.compareTo(comparedate2)<=0)
+    {
+      _date1=date1;
+      _date2=date2;
+    }
+    else
+    {
+      _date1=date2;
+      _date2=date1;
+    }
+  }
+
+  String isoFrom() {
+    String comparedate1=Datademunger.fromUStoISO(_date1);
+    String comparedate2=Datademunger.fromUStoISO(_date2);
+    if (comparedate1.compareTo(comparedate2)<=0)
+    {
+      return comparedate1;
+    }
+    else
+    {
+      return comparedate2;
+    }
+  }
+
+  String isoTo() {
+    String comparedate1=Datademunger.fromUStoISO(_date1);
+    String comparedate2=Datademunger.fromUStoISO(_date2);
+    if (comparedate1.compareTo(comparedate2)<=0)
+    {
+      return comparedate2;
+    }
+    else
+    {
+      return comparedate1;
+    }
   }
 }

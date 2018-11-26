@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="release" type="FlutterRunConfigurationType" factoryName="Flutter" singleton="true">
-    <option name="additionalArgs" value="--release" />
+    <option name="additionalArgs" value="--no-track-widget-creation --release" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
     <method />
   </configuration>

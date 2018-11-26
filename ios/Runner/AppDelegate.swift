@@ -60,8 +60,8 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
 
 				if let name = alert.textFields?.first?.text {
-					let fileURL = self.fileUrlForDocumentNamed(name)
-					self.shippable?(fileURL?.path)
+					//let fileURL = self.fileUrlForDocumentNamed(name)
+					self.shippable?(name)
 				}
 			}))
 
@@ -155,7 +155,8 @@ for the use of the FileManager singleton. This may cut a ton of BS
 			shippable?(FlutterError(code:"PROBE",message:"crude write seemed to work",details:nil))
 			return
 		*/
-		fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
+		//fileURL = try URL(fileURLWithPath:localFileUrl,isDirectory:false)
+		fileURL = self.fileUrlForDocumentNamed(localFileUrl)
 		
 		let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
