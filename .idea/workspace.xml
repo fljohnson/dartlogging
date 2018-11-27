@@ -13,18 +13,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations/release.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/runConfigurations/release.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/generated/i18n.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/generated/i18n.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/logitem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logitem.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/pseudoresources.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pseudoresources.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -41,10 +33,14 @@
       <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="1632" column="8" selection-start-line="1632" selection-start-column="8" selection-end-line="1632" selection-end-column="8" />
+            <state relative-caret-position="92">
+              <caret line="302" column="2" selection-start-line="302" selection-start-column="2" selection-end-line="302" selection-end-column="11" />
               <folding>
                 <element signature="e#439#459#0" expanded="true" />
+                <element signature="e#4881#6244#0" />
+                <element signature="e#15125#20708#0" />
+                <element signature="e#23486#24445#0" />
+                <element signature="e#36014#37369#0" />
               </folding>
             </state>
           </provider>
@@ -53,8 +49,8 @@
       <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="55">
-              <caret line="153" column="4" selection-start-line="153" selection-start-column="4" selection-end-line="153" selection-end-column="4" />
+            <state relative-caret-position="231">
+              <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -65,8 +61,8 @@
       <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="193" column="30" selection-start-line="193" selection-start-column="30" selection-end-line="193" selection-end-column="30" />
+            <state relative-caret-position="30">
+              <caret line="613" selection-start-line="613" selection-end-line="613" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
               </folding>
@@ -77,8 +73,8 @@
       <file leaf-file-name="pseudoresources.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/pseudoresources.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-377">
-              <caret line="116" column="18" selection-start-line="116" selection-start-column="18" selection-end-line="116" selection-end-column="18" />
+            <state relative-caret-position="57">
+              <caret line="164" column="36" selection-start-line="164" selection-start-column="36" selection-end-line="164" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -94,36 +90,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>_keyAmt</find>
-      <find>Dummy</find>
-      <find>myTabBarItems</find>
-      <find>cupertinoAdder</find>
-      <find>theTabPage</find>
-      <find>theTa</find>
-      <find>Expo</find>
-      <find>&quot;Export...&quot;</find>
-      <find>could</find>
-      <find>_getCSVExportable</find>
-      <find>demun</find>
-      <find>myTabs</find>
-      <find>PlanningPage</find>
-      <find>raised</find>
-      <find>fromiso</find>
-      <find>askdate</find>
-      <find>_getDateButton</find>
-      <find>fromUS</find>
-      <find>_date1</find>
-      <find>toIso8601String</find>
-      <find>ex</find>
-      <find>.parse</find>
-      <find>range</find>
-      <find>database</find>
-      <find>initDB</find>
-      <find>sampleDa</find>
-      <find>MyHomePage</find>
-      <find>textTheme</find>
-      <find>.ui</find>
-      <find>getTotals</find>
+      <find>listv</find>
+      <find>.upper</find>
+      <find>build</find>
+      <find>upperlist</find>
+      <find>fine</find>
+      <find>getCateg</find>
+      <find>sets</find>
+      <find>itemp</find>
+      <find>/item</find>
+      <find>onpre</find>
+      <find>newItem(</find>
+      <find>onPressed</find>
+      <find>fine $</find>
+      <find>dataR</find>
+      <find>createState</find>
+      <find>ItemPage</find>
+      <find>newG</find>
+      <find>ItemPage</find>
+      <find>newGross</find>
+      <find>return li</find>
+      <find>grossa</find>
+      <find>_controllerAmount =</find>
+      <find>canister</find>
+      <find>canister[</find>
+      <find>exce</find>
+      <find>push</find>
+      <find>categoryData =</find>
+      <find>categoryData</find>
+      <find>Push(new Ma</find>
+      <find>SAVE&quot;</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -140,11 +136,11 @@
         <option value="$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java" />
         <option value="$USER_HOME$/AndroidStudio/DeviceExplorer/samsung-samsung_sm_j727a-52004128ee1a45b5/sdcard/My Documents/eeyowtch.csv" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
-        <option value="$PROJECT_DIR$/lib/logitem.dart" />
+        <option value="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
+        <option value="$PROJECT_DIR$/lib/logitem.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/planning.dart" />
-        <option value="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" />
       </list>
     </option>
   </component>
@@ -160,6 +156,44 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <expand>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
+              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
+              <item name="android" type="cbb8eebc:String" user="android" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
+              <item name="android" type="cbb8eebc:String" user="android" />
+              <item name="app" type="cbb8eebc:String" user="app" />
+            </path>
+            <path>
+              <item name="Root" type="cbb8eebc:String" user="Root" />
+              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
+              <item name="android" type="cbb8eebc:String" user="android" />
+              <item name="app" type="cbb8eebc:String" user="app" />
+              <item name="src/main" type="cbb8eebc:String" user="src/main" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -199,44 +233,6 @@
             <path>
               <item name="basketnerds" type="1abcf292:AndroidViewProjectNode" />
               <item name="basketnerds" type="e9137016:NonAndroidModuleNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <expand>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
-              <item name="basketnerds" type="cbb8eebc:String" user="basketnerds" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
-              <item name="android" type="cbb8eebc:String" user="android" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
-              <item name="android" type="cbb8eebc:String" user="android" />
-              <item name="app" type="cbb8eebc:String" user="app" />
-            </path>
-            <path>
-              <item name="Root" type="cbb8eebc:String" user="Root" />
-              <item name="basketnerds_android" type="cbb8eebc:String" user="basketnerds_android" />
-              <item name="android" type="cbb8eebc:String" user="android" />
-              <item name="app" type="cbb8eebc:String" user="app" />
-              <item name="src/main" type="cbb8eebc:String" user="src/main" />
             </path>
           </expand>
           <select />
@@ -439,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1542081696540</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added skeleton of PlanningPage, and may have found workaround for libc SEGV at https://stackoverflow.com/questions/35250816/android-fatal-signal-11-sigsegv-code-1-fault-addr-0x0-in-tid-29092">
+      <created>1543207431697</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1543207431703</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TodoView">
@@ -456,39 +459,74 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
-      <window_info anchor="right" id="Palette&#9;" order="5" />
-      <window_info id="Image Layers" order="2" />
       <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50981873" side_tool="true" weight="0.3581315" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32392028" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32871974" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.33564013" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
-      <window_info anchor="right" id="Flutter Outline" order="3" />
+      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
       <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
-      <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.36692506" visible="true" weight="0.41465256" />
-      <window_info anchor="right" id="Assistant" order="9" weight="0.32930514" />
       <window_info id="Structure" order="1" sideWeight="0.63307494" side_tool="true" weight="0.41465256" />
-      <window_info anchor="right" id="Device File Explorer" order="4" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
-      <window_info anchor="right" id="Theme Preview" order="7" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49018127" visible="true" weight="0.35714287" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.49018127" visible="true" weight="0.6611296" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.32392028" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info id="Image Layers" order="2" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32724252" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.33564013" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
+      <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.36692506" weight="0.41465256" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32724252" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="right" id="Flutter Inspector" order="8" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.3252595" />
+      <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="10" side_tool="true" visible="true" weight="0.32930514" />
+      <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32871974" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Designer" order="2" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32392028" />
+      <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32724252" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Captures" order="6" sideWeight="0.49698794" weight="0.32998455" />
+      <window_info id="Capture Tool" order="7" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50981873" side_tool="true" weight="0.3581315" />
+      <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
+      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
+      <window_info anchor="bottom" id="Logcat" order="10" weight="0.6694352" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.33564013" />
+      <window_info anchor="bottom" id="Terminal" order="12" weight="0.32871974" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.36692506" visible="true" weight="0.41465256" />
+      <window_info active="true" anchor="bottom" id="Messages" order="13" sideWeight="0.49471298" visible="true" weight="0.32392028" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
+      <window_info anchor="right" id="Palette&#9;" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info id="Structure" order="1" sideWeight="0.63307494" side_tool="true" weight="0.41465256" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32724252" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49018127" visible="true" weight="0.6611296" />
+    </layout-to-restore>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -535,14 +573,15 @@
     <MESSAGE value="Fixed errant use of CupertinoButton. Addressed too-wide gap between datum titles and controls. Made dropdown look consistent with other rows.  &#10;-Need to show explanatory text when the category selection changes.&#10;-Would like to indicate multiple-line capability on ItemPage, probably should baseline-align &quot;field hints&quot; and fields.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Explanatory text now shows on Android when the category selection changes. Aligned field titles with tops of fields&#10;-Would like to indicate multiple-line capability on ItemPage&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Simplified the valueChanged() for the amount field&#10;Indicated multiple-line capability on ItemPage with a gray background &#10;Added the mm/dd/yy format to import, and added proper handling of null Details field on export. &#10;Surely THIS has to be ready to go to market.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Simplified the valueChanged() for the amount field&#10;Indicated multiple-line capability on ItemPage with a gray background &#10;Added the mm/dd/yy format to import, and added proper handling of null Details field on export. &#10;Surely THIS has to be ready to go to market.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
+    <MESSAGE value="Added skeleton of PlanningPage, and may have found workaround for libc SEGV at https://stackoverflow.com/questions/35250816/android-fatal-signal-11-sigsegv-code-1-fault-addr-0x0-in-tid-29092" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added skeleton of PlanningPage, and may have found workaround for libc SEGV at https://stackoverflow.com/questions/35250816/android-fatal-signal-11-sigsegv-code-1-fault-addr-0x0-in-tid-29092" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="Dart">
           <url>file://$PROJECT_DIR$/lib/logitem.dart</url>
-          <line>369</line>
+          <line>404</line>
           <option name="timeStamp" value="119" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Dart">
@@ -550,17 +589,42 @@
           <line>103</line>
           <option name="timeStamp" value="126" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/planning.dart</url>
+          <line>194</line>
+          <option name="timeStamp" value="173" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="132" />
+      <option name="time" value="174" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
-        <watch expression="categoryNames" language="Dart" />
+        <watch expression="categoryData" language="Dart" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>categoryData</expression-string>
+        <language-id>Dart</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>widget.categoryData</expression-string>
+        <language-id>Dart</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>widget.categoryRows</expression-string>
+        <language-id>Dart</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>categoryRows</expression-string>
+        <language-id>Dart</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>categoryNames</expression-string>
         <language-id>Dart</language-id>
@@ -581,20 +645,6 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6732">
-          <caret line="374" column="2" selection-start-line="374" selection-start-column="2" selection-end-line="374" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7758">
-          <caret line="433" column="17" selection-start-line="433" selection-start-column="17" selection-end-line="433" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
-      <provider selected="true" editor-type-id="text-editor">
         <state />
       </provider>
     </entry>
@@ -606,13 +656,6 @@
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/rendering/box.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33084">
-          <caret line="1849" column="8" selection-start-line="1849" selection-start-column="8" selection-end-line="1849" selection-end-column="8" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1/lib/sqflite.dart" />
@@ -813,16 +856,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="193" column="30" selection-start-line="193" selection-start-column="30" selection-end-line="193" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#17#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/widgets/framework.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -837,34 +870,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+    <entry file="file://$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="1632" column="8" selection-start-line="1632" selection-start-column="8" selection-end-line="1632" selection-end-column="8" />
-          <folding>
-            <element signature="e#439#459#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="100">
+          <caret line="16" column="22" selection-start-line="16" selection-start-column="22" selection-end-line="16" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/flutterdev/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1/lib/src/exception.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1815">
+          <caret line="124" column="6" selection-start-line="124" selection-start-column="6" selection-end-line="124" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/rendering/box.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28335">
+          <caret line="1900" column="8" selection-start-line="1900" selection-start-column="8" selection-end-line="1900" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/pseudoresources.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-377">
-          <caret line="116" column="18" selection-start-line="116" selection-start-column="18" selection-end-line="116" selection-end-column="18" />
+        <state relative-caret-position="57">
+          <caret line="164" column="36" selection-start-line="164" selection-start-column="36" selection-end-line="164" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml">
+    <entry file="file://$USER_HOME$/flutterdev/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1/lib/src/database.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="24" column="46" selection-start-line="24" selection-start-column="46" selection-end-line="24" selection-end-column="46" />
+        <state relative-caret-position="57">
+          <caret line="288" column="2" selection-start-line="288" selection-start-column="2" selection-end-line="288" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="613" selection-start-line="613" selection-end-line="613" />
+          <folding>
+            <element signature="e#0#17#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="302" column="2" selection-start-line="302" selection-start-column="2" selection-end-line="302" selection-end-column="11" />
+          <folding>
+            <element signature="e#439#459#0" expanded="true" />
+            <element signature="e#4881#6244#0" />
+            <element signature="e#15125#20708#0" />
+            <element signature="e#23486#24445#0" />
+            <element signature="e#36014#37369#0" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="55">
-          <caret line="153" column="4" selection-start-line="153" selection-start-column="4" selection-end-line="153" selection-end-column="4" />
+        <state relative-caret-position="231">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
           </folding>

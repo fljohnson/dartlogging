@@ -154,6 +154,16 @@ class Datademunger {
     var sanity=DateTime(yr,mo,da);
     return sanity.toIso8601String().split("T")[0];
   }
+
+  static String toCurrency(num amt, {String symbol=""}) {
+	  var whole = amt.floor();
+	  var fraction = ((amt - whole)*100).round().toString();
+	  while(fraction.length <2)
+    {
+      fraction = "0"+fraction;
+    }
+	  return symbol+"$whole.$fraction";
+  }
 }
 
 class DatePair {

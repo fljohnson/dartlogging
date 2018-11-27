@@ -122,23 +122,58 @@ static Future<String> exportToExternal({String localUrl}) async {
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
 
    // docsdir2 = await getExtDir("My Documents");
-    database = await openDatabase(path, version: 1,
+    database = await openDatabase(path, version: 2,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
-          await db.execute(
-              "CREATE TABLE Logitem (id INTEGER PRIMARY KEY, what TEXT, category, TEXT, thedate TEXT, amount REAL, details TEXT)"
-          );
-          //and some indexing stuff
-          //index on date
-          await db.execute(
-              "CREATE INDEX whens_IDX_logitem on Logitem(thedate)"
-          );
 
-          //index on category
-          await db.execute(
-              "CREATE INDEX whys_IDX_logitem on Logitem(category)"
-          );
-        });
+            await db.execute(
+                "CREATE TABLE Logitem (id INTEGER PRIMARY KEY, what TEXT, category, TEXT, thedate TEXT, amount REAL, details TEXT)"
+            );
+            //and some indexing stuff
+            //index on date
+            await db.execute(
+                "CREATE INDEX whens_IDX_logitem on Logitem(thedate)"
+            );
+
+            //index on category
+            await db.execute(
+                "CREATE INDEX whys_IDX_logitem on Logitem(category)"
+            );
+
+
+        },
+        onUpgrade: (Database db, int oldversion,int newversion) async {
+        for(int i=oldversion;i<newversion;i++)
+        {
+          if(i == 1) //v1 to v2
+          {
+
+            await db.execute(
+              "ALTER TABLE Logitem ADD entryType TEXT DEFAUT NULL"
+            );
+            //possible time-saving alteration
+            await db.execute(
+                "CREATE INDEX etype_IDX_logitem on Logitem(entryType)"
+            );
+
+            //okay, now that new table
+            await db.execute(
+                "CREATE TABLE Planitem (id INTEGER PRIMARY KEY, category, TEXT, thedate TEXT, amount REAL)"
+            );
+            //and some indexing stuff
+            //index on date
+            await db.execute(
+                "CREATE INDEX whens_IDX_planitem on Planitem(thedate)"
+            );
+
+            //index on category
+            await db.execute(
+                "CREATE INDEX whys_IDX_planitem on Planitem(category)"
+            );
+          }
+        }
+      }
+    );
     rv = true;
     return rv;
   }
@@ -188,7 +223,7 @@ static Future<String> exportToExternal({String localUrl}) async {
     */
   }
 
-  static Future<List<Logitem>> getRange(String isoFrom, String isoTo) async {
+  static Future<List<Logitem>> getRange(String isoFrom, String isoTo,{String entrytype = "logging"}) async {
     if(database == null)
     {
       await createSampleData();
@@ -206,7 +241,7 @@ static Future<String> exportToExternal({String localUrl}) async {
   }
 
   static Future<List<Map<String, String>>> getTotals(String isoFrom,
-      String isoTo) async {
+      String isoTo,{String entrytype = "logging"}) async {
     List<Map<String, String>> rv = [];
 
     for (int i = 0; i < categories.length; i++) {
@@ -290,7 +325,7 @@ static Future<String> exportToExternal({String localUrl}) async {
     return rv;
   }
 
-  Future<bool> save() async {
+  Future<bool> save({String entrytype = "logging"}) async {
     bool rv = false;
     if (_id == -1) {
       //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
@@ -557,5 +592,26 @@ int rv = 0;
             [title, amount, category, thedate, details]);
       }
     });
+  }
+
+  static Future<Map<String,num>> getPlannedTotals(String isoFrom, String isoTo) async {
+    Map<String,num> rv = Map<String,num>();
+    try {
+      List<Map> raw = await database.rawQuery(
+          'SELECT category,sum(amount) FROM Planitem where thedate >= ? and thedate <= ?',
+          [isoFrom, isoTo]);
+
+      for (int i = raw.length - 1; i >= 0; i--) {
+        rv.putIfAbsent(raw[i].values.first.toString(), () {
+          raw[i].values.last as num;
+        });
+      }
+    }
+    catch(ohcrap)
+    {
+      var msg=ohcrap.toString();
+    }
+
+    return rv;
   }
 }
