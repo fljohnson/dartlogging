@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:basketnerds/logitem.dart';
@@ -15,7 +16,7 @@ TextStyle dialogStyle(BuildContext context) {
 
 
 TextStyle rowStyle(BuildContext context) {
-  return Theme.of(context).textTheme.subtitle;
+  return Theme.of(context).textTheme.title;
 
 }
 
@@ -100,7 +101,7 @@ class PlanningPage extends StatefulWidget {
 
     }
     
-    var theSet = await Logitem.getPlannedTotals(myRange.isoFrom(),myRange.isoFrom());
+    var theSet = await Logitem.getPlannedTotals(myRange.isoFrom(),myRange.isoTo());
 
     {
       
@@ -324,8 +325,8 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
       children: <Widget>[
         Expanded(flex: 1,child:
         Container(
-            width: 200,
-            height:190,
+            width: 200.0,
+            height:190.0,
             child:Column(
               children:[
                 Expanded(
@@ -363,8 +364,8 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     Widget lowerlist = Expanded(flex: 25,child:Row (
         children:[Expanded(flex:1,child:
         Container(
-            width: 200,
-            height:190,
+            width: 200.0,
+            height:190.0,
             color:Colors.orangeAccent.shade100,
           child: Column(
             children: <Widget>[
@@ -581,7 +582,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     if(!Platform.isIOS) {
 
       feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:GrossallocPage().build,fullscreenDialog: true)
+          MaterialPageRoute(builder:GrossallocPage().build)
       );
       widget.getCategoryData((){
         setState((){});
@@ -652,7 +653,12 @@ class GrossallocPage extends StatelessWidget {
                         color:Color(0xFFFFFFFF))
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop(canister["category"]);
+                  Future<String> proto = Logitem.saveCategoryPlan(category:canister["category"],isoDate:canister["isoDate"],amount:canister["amountString"]);
+                  proto.then((result) {
+                    if (result == "OK") {
+                      Navigator.of(context).pop(canister["category"]);
+                    }
+                  });
                 },
               ),
             ]
@@ -667,24 +673,34 @@ class GrossallocPage extends StatelessWidget {
   }
 
 }
-
+/*
 class RealGrossPage extends StatefulWidget {
   @override
   _RealGrossPageState createState() => new _RealGrossPageState();
 }
 
 class _RealGrossPageState extends State<RealGrossPage> {
+  */
+class RealGrossPage extends StatelessWidget {
+
+
   TextEditingController amtController;
 
   TextInputFormatter formatCurrency;
 
+  RealGrossPage(){
+    formatCurrency = OneDecimalPoint();
+    amtController= TextEditingController(text:canister["amountString"].replaceAll("\$",""));
+  }
+  /*
   @override
   void initState() {
     formatCurrency = OneDecimalPoint();
     amtController= TextEditingController(text:canister["amountString"].replaceAll("\$",""));
     super.initState();
   }
-
+  */
+/*
   @override
   void dispose() {
     if(amtController != null)
@@ -694,6 +710,7 @@ class _RealGrossPageState extends State<RealGrossPage> {
 
     super.dispose();
   }
+  */
 
   @override
   Widget build(BuildContext context)
@@ -725,7 +742,10 @@ class _RealGrossPageState extends State<RealGrossPage> {
                 textAlign: TextAlign.center,
                 inputFormatters: [formatCurrency],
                 style: largeTextFieldStyle(context),
-                keyboardType: TextInputType.numberWithOptions(decimal: true)
+                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                onChanged: ((String value){
+                  canister["amountString"] = value;
+                }),
               ),
 
 

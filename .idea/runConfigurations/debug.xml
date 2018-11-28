@@ -1,5 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="debug" type="FlutterRunConfigurationType" factoryName="Flutter" singleton="true">
+    <option name="additionalArgs" value="--no-hot" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
     <method />
   </configuration>

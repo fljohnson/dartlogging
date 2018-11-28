@@ -1,12 +1,14 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
-import 'package:csv/csv.dart';
+
 import 'package:sqflite/sqflite.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'pseudoresources.dart';
+import 'package:csv/csv.dart';
 /*
 Find out how Dart handles errors returned by await-ed async functions
 */
@@ -595,6 +597,11 @@ int rv = 0;
   }
 
   static Future<Map<String,num>> getPlannedTotals(String isoFrom, String isoTo) async {
+    lastError="";
+    if(database == null)
+    {
+      await createSampleData();
+    }
     Map<String,num> rv = Map<String,num>();
     try {
       List<Map> raw = await database.rawQuery(
@@ -602,15 +609,48 @@ int rv = 0;
           [isoFrom, isoTo]);
 
       for (int i = raw.length - 1; i >= 0; i--) {
-        rv.putIfAbsent(raw[i].values.first.toString(), () {
-          raw[i].values.last as num;
-        });
+        rv[raw[i].values.first] = raw[i].values.last;
       }
     }
     catch(ohcrap)
     {
-      var msg=ohcrap.toString();
+      lastError=ohcrap.toString();
     }
+
+    return rv;
+  }
+
+  static Future<String> saveCategoryPlan({String category, String isoDate, String amount}) async {
+    int result;
+    String rv = "";
+    List<String> parts = amount.replaceAll("\$", "").split(".");
+    num numAmount =  int.parse(parts[0]);
+    if(parts.length > 1)
+    {
+      numAmount += (.01 * int.parse(parts[1].substring(0,2)) );
+    }
+    await database.transaction((txn) async {
+      var mess = await txn.rawQuery("SELECT id FROM Planitem where thedate = ? and category = ?", [isoDate,category]);
+      if(mess.length == 0)
+      {
+        await txn.rawInsert("INSERT INTO Planitem (category,thedate,amount) VALUES(?,?,?)",[category,isoDate,numAmount]);
+        rv="OK";
+      }
+      else
+      {
+        int gottenId = mess[0]["id"];
+        result = await txn.rawUpdate("UPDATE Planitem SET amount = ? WHERE id = ?",[numAmount,gottenId]);
+        if(result == 1)
+        {
+          rv = "OK";
+        }
+        else
+        {
+          rv = "DB UHOH regarding Planitem";
+        }
+      }
+
+    });
 
     return rv;
   }

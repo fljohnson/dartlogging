@@ -368,7 +368,7 @@ class _RealItemPageState extends State<RealItemPage> {
         DropdownButton<String>(
           items: droplist,
           value: currentsel,
-          isExpanded: true, //puts down-arrow at end of enclosing space
+   //puts down-arrow at end of enclosing space
           onChanged: (String value){
             chosen.category = value;
 
