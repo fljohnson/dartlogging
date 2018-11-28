@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Map <String,String> canister;
-Map<String,String> categoryData = {};
+
 
 TextStyle dialogStyle(BuildContext context) {
   return Theme.of(context).textTheme.display2;
@@ -82,48 +82,56 @@ class PlanningPage extends StatefulWidget {
     );
   }
 
-  getCategoryData(VoidCallback followup) async{
-    num amt =0.0;
+
+
+
+}
+
+class _PlanningPageState extends State<PlanningPage>{
+
+  Map<String,String> categoryData = {};
+
+
+
+
+  @override void initState() {
+    primeCategoryData();
+    loadCategoryData();
+    super.initState();
+
+  }
+
+  primeCategoryData()
+  {
+    //called for initial state
     var len = categories.length;
-
-
     for(int i=0;i<len;i++)
     {
-      amt = 0.0;
       var categoryName = categories[i].keys.first.toString();
-
-      /*
-      categoryData.putIfAbsent(categoryName, (){
-
-      });
-      */
-      categoryData[categoryName] = Datademunger.toCurrency(amt,symbol:"\$");
-
+      categoryData[categoryName] = "\$0.00";
     }
-    
-    var theSet = await Logitem.getPlannedTotals(myRange.isoFrom(),myRange.isoTo());
+  }
 
+  loadCategoryData() async{
+    num amt =0.0;
+    var len = categories.length;
+    var theSet = await Logitem.getPlannedTotals(widget.myRange.isoFrom(),widget.myRange.isoTo());
     {
-      
-      
-      for(int i=0;i<len;i++)
-      {
-        amt = 0.0;
-        var categoryName = categories[i].keys.first.toString();
-        if(theSet.containsKey(categoryName))
-        {
-          amt = theSet[categoryName];
+
+      setState(() {
+        for (int i = 0; i < len; i++) {
+          amt = 0.0;
+          var categoryName = categories[i].keys.first.toString();
+          if (theSet.containsKey(categoryName)) {
+            amt = theSet[categoryName];
+          }
+
+          categoryData[categoryName] =
+              Datademunger.toCurrency(amt, symbol: "\$");
+          print("Fire two $i: $categoryName ${theSet[categoryName]}");
         }
+      });
 
-        categoryData[categoryName]=
-          Datademunger.toCurrency(amt,symbol:"\$");
-
-        
-      }
-      if(followup != null)
-      {
-        followup();
-      }
     }
 
 
@@ -160,41 +168,21 @@ class PlanningPage extends StatefulWidget {
     );
     */
   }
-}
-
-class _PlanningPageState extends State<PlanningPage>{
 
 
-
-
-
-
-  @override void initState() {
-    startCategoryData();
-    super.initState();
-
-  }
-
-  startCategoryData() async {
-    widget.getCategoryData((){
-      setState((){});
-    });
-  }
   List<Widget> upperlistView(BuildContext context) {
     List<Widget> items = [];
 
-    
-    
     var len = categories.length;
-    num amt =0.0;
+
     for(int i=0;i<len;i++)
     {
       String categoryName = categories[i].keys.first;
       String amt = categoryData[categoryName];
       if(amt == null)
-        {
-          amt = "flub in $categoryName";
-        }
+      {
+        amt = "flub in $categoryName";
+      }
       items.add(
         FlatButton(
           padding: EdgeInsets.symmetric(vertical:4.0),
@@ -567,7 +555,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     ));
     */
 
-    String feedback;
+
     if(amt =="\$0.00")
     {
       //calculate 1 month before and after myRange.isoStartDate
@@ -581,12 +569,10 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     };
     if(!Platform.isIOS) {
 
-      feedback = await Navigator.of(context).push(
+      String feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:GrossallocPage().build)
       );
-      widget.getCategoryData((){
-        setState((){});
-      });
+      loadCategoryData();
 
     }
     else {
@@ -653,9 +639,10 @@ class GrossallocPage extends StatelessWidget {
                         color:Color(0xFFFFFFFF))
                 ),
                 onPressed: () {
+                  print("sending $canister");
                   Future<String> proto = Logitem.saveCategoryPlan(category:canister["category"],isoDate:canister["isoDate"],amount:canister["amountString"]);
                   proto.then((result) {
-                    if (result == "OK") {
+                    if (result.startsWith("OK")) {
                       Navigator.of(context).pop(canister["category"]);
                     }
                   });
@@ -669,7 +656,7 @@ class GrossallocPage extends StatelessWidget {
           // in the middle of the parent.
             child: RealGrossPage()
         )
-    );;
+    );
   }
 
 }

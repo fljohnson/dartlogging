@@ -124,7 +124,7 @@ static Future<String> exportToExternal({String localUrl}) async {
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
 
    // docsdir2 = await getExtDir("My Documents");
-    database = await openDatabase(path, version: 2,
+    database = await openDatabase(path, version: 3,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
 
@@ -160,7 +160,27 @@ static Future<String> exportToExternal({String localUrl}) async {
 
             //okay, now that new table
             await db.execute(
-                "CREATE TABLE Planitem (id INTEGER PRIMARY KEY, category, TEXT, thedate TEXT, amount REAL)"
+                "CREATE TABLE Planitem (id INTEGER PRIMARY KEY, category TEXT, thedate TEXT, amount REAL)"
+            );
+            //and some indexing stuff
+            //index on date
+            await db.execute(
+                "CREATE INDEX whens_IDX_planitem on Planitem(thedate)"
+            );
+
+            //index on category
+            await db.execute(
+                "CREATE INDEX whys_IDX_planitem on Planitem(category)"
+            );
+          }
+          if(i == 2) //v2 to v3
+          {
+            //fix planitem goof
+            await db.execute(
+                "DROP TABLE Planitem"
+            );
+            await db.execute(
+                "CREATE TABLE Planitem (id INTEGER PRIMARY KEY, category TEXT, thedate TEXT, amount REAL)"
             );
             //and some indexing stuff
             //index on date
@@ -605,16 +625,21 @@ int rv = 0;
     Map<String,num> rv = Map<String,num>();
     try {
       List<Map> raw = await database.rawQuery(
-          'SELECT category,sum(amount) FROM Planitem where thedate >= ? and thedate <= ?',
+          'SELECT category,amount FROM Planitem where thedate >= ? and thedate <= ?',
           [isoFrom, isoTo]);
 
       for (int i = raw.length - 1; i >= 0; i--) {
-        rv[raw[i].values.first] = raw[i].values.last;
+        rv[raw[i].values.first] = 0.0;
+      }
+      for (int i = raw.length - 1; i >= 0; i--) {
+        rv[raw[i].values.first] += raw[i].values.last;
+        print("PEEK in getPlannedTotals $isoFrom-$isoTo :$rv");
       }
     }
     catch(ohcrap)
     {
       lastError=ohcrap.toString();
+      print("MISS in getPlannedTotals $isoFrom-$isoTo :$lastError");
     }
 
     return rv;
@@ -630,25 +655,44 @@ int rv = 0;
       numAmount += (.01 * int.parse(parts[1].substring(0,2)) );
     }
     await database.transaction((txn) async {
-      var mess = await txn.rawQuery("SELECT id FROM Planitem where thedate = ? and category = ?", [isoDate,category]);
-      if(mess.length == 0)
-      {
-        await txn.rawInsert("INSERT INTO Planitem (category,thedate,amount) VALUES(?,?,?)",[category,isoDate,numAmount]);
-        rv="OK";
-      }
-      else
-      {
-        int gottenId = mess[0]["id"];
-        result = await txn.rawUpdate("UPDATE Planitem SET amount = ? WHERE id = ?",[numAmount,gottenId]);
-        if(result == 1)
-        {
-          rv = "OK";
+      try {
+        var mess = await txn.rawQuery("SELECT * FROM Planitem where thedate = ? and category = ?", [isoDate,category]);
+
+        if(mess != null) {
+          print("BOOM! $mess");
         }
         else
         {
-          rv = "DB UHOH regarding Planitem";
+          print("BOOM! got null result");
         }
+
+        if(mess.length == 0)
+        {
+          await txn.rawInsert("INSERT INTO Planitem (category,thedate,amount) VALUES(?,?,?)",[category,isoDate,numAmount]);
+          rv="OK";
+        }
+        else
+        {
+          int gottenId = mess[0]["id"];
+          print("intent: set $gottenId to $numAmount");
+          result = await txn.rawUpdate("UPDATE Planitem SET amount = ? WHERE id = ?",[numAmount,gottenId]);
+          if(result == 1)
+          {
+            rv = "OK $result $gottenId $numAmount";
+          }
+          else
+          {
+            rv = "DB UHOH regarding Planitem";
+          }
+        }
+
       }
+      catch(falta)
+      {
+        lastError = falta.toString();
+        print("FAIL! $lastError");
+      }
+
 
     });
 
