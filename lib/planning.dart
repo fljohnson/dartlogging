@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Map <String,String> canister;
+//Map <String,String> canister;
 
 
 TextStyle dialogStyle(BuildContext context) {
@@ -187,6 +187,7 @@ class _PlanningPageState extends State<PlanningPage>{
         FlatButton(
           padding: EdgeInsets.symmetric(vertical:4.0),
           onPressed: (){
+            //it's already asynchronous
             newGross(categoryName,amt,widget.myRange.isoFrom());
           },
           child:Row(
@@ -286,6 +287,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
       return RaisedButton(
           child: Text(label),
           onPressed:() {
+            //got away with putting all this here by dint of a non-awaited Future
             Future<String> newdate = askDate(context,initialDate);
             newdate.then((value)
             {
@@ -388,13 +390,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
                 child: _getDateButton("From: ",widget.myRange.date1,((String value)
                 {
                   widget.myRange.setDate1(value);
-                  setState(() {});
-                  /*
-                  fetchRows().then((goods) {
-                    setState(() {});
-                  }
-                  );
-                  */
+                  this.loadCategoryData();
                 })
                 )
             )
@@ -419,12 +415,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
                 child: _getDateButton("To: ",widget.myRange.date2,((String value)
                 {
                   widget.myRange.setDate2(value);
-                  setState(() {});
-                  /*
-                  fetchRows().then((goods) {
-                    setState(() {});
-                  });
-                  */
+                  this.loadCategoryData();
                 })
                 )
             )
@@ -555,22 +546,74 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     ));
     */
 
-
-    if(amt =="\$0.00")
-    {
-      //calculate 1 month before and after myRange.isoStartDate
-      //search for existing items in that range,
-      //if any, crank out a SimpleDialog
-    }
+/*
     canister = {
       "category":categoryName,
       "amountString":amt,
       "isoDate":date
     };
+    */
+
+    if(amt =="\$0.00")
+    {
+      //calculate 1 month before and after myRange.isoStartDate
+      String isoEarliest = Datademunger.getISOOffset(dmonths:-1,fromISODate: date);
+      String isoLatest = Datademunger.getISOOffset(dmonths:1,fromISODate: date);
+      print("checking for $categoryName between $isoEarliest and $isoLatest");
+      //search for existing items in that range,
+      List<List<String>> preexisting = await Logitem.getGrossPlanEntries(category:categoryName,
+      from:isoEarliest,to:isoLatest);
+      //if any, crank out a SimpleDialog
+      if(preexisting.length>0)
+      {
+        List<Widget> opciones = [];
+        for(int i=0;i<preexisting.length;i++)
+        {
+          String line =preexisting[i][0]+":"+preexisting[i][1];
+          opciones.add(
+              SimpleDialogOption(
+                onPressed: () { Navigator.pop(context, preexisting[i]); },
+                child:  Text(line),
+              )
+          );
+          print("Already have for $categoryName ${preexisting[i]}");
+
+        }
+        opciones.add(
+            SimpleDialogOption(
+              onPressed: () { Navigator.pop(context, [date,amt]); },
+              child:  Text("Or make a new one"),
+            )
+        );
+        //run that dialog
+
+        var aha = await showDialog<List<String>>(
+            context: context,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: Text('These $categoryName allocations exist and can be edited'),
+                children: opciones,
+              );
+            }
+        );
+        if(aha == null)
+        {
+          print("Backed out");
+          return;
+        }
+        print("edit for $aha");
+        date = aha[0];
+        amt = aha[1];
+      }
+
+
+
+          // end of
+    }
     if(!Platform.isIOS) {
 
       String feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:GrossallocPage().build)
+          MaterialPageRoute(builder:(context) => GrossallocPage(category:categoryName, isoDate:date,strAmount:amt))
       );
       loadCategoryData();
 
@@ -605,14 +648,22 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
 
 
 class GrossallocPage extends StatelessWidget {
+  String category;
+  String isoDate;
+  String strAmount;
+  RealGrossPage actualPage;
+
+  GrossallocPage({Key key,@required this.category,@required this.isoDate,@required this.strAmount}):super(key:key);
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+
+    actualPage = RealGrossPage(category:category,isoDate:isoDate,strAmount:strAmount);
     return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-            title: new Text(canister["category"]),
+            title: new Text(category),
             leading:IconButton(
                 icon:Icon(Icons.close),
                 onPressed: () {
@@ -639,13 +690,8 @@ class GrossallocPage extends StatelessWidget {
                         color:Color(0xFFFFFFFF))
                 ),
                 onPressed: () {
-                  print("sending $canister");
-                  Future<String> proto = Logitem.saveCategoryPlan(category:canister["category"],isoDate:canister["isoDate"],amount:canister["amountString"]);
-                  proto.then((result) {
-                    if (result.startsWith("OK")) {
-                      Navigator.of(context).pop(canister["category"]);
-                    }
-                  });
+                  //there was a ton going on here, so it's now in an async function
+                  this.returnFromSavePlanned(context);
                 },
               ),
             ]
@@ -654,9 +700,27 @@ class GrossallocPage extends StatelessWidget {
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-            child: RealGrossPage()
+            child: actualPage
         )
     );
+  }
+
+  void returnFromSavePlanned(BuildContext context) async {
+    print("sending $category $isoDate, ${actualPage.strAmount}");
+    Future<String> proto = Logitem.saveCategoryPlan(category:category,isoDate:isoDate,amount:actualPage.strAmount);
+    proto.then((result) {
+      /*
+                    if(!Logitem.lastError.isNullOrEmpty())
+                    {
+                      alert(Logitem.lastError); //see main.dart for correct implementation
+                    }
+                    else
+                    {
+                     */
+      if (result.startsWith("OK")) {
+        Navigator.of(context).pop(category);
+      }
+    });
   }
 
 }
@@ -675,9 +739,13 @@ class RealGrossPage extends StatelessWidget {
 
   TextInputFormatter formatCurrency;
 
-  RealGrossPage(){
+  String strAmount;
+  String category;
+  String isoDate;
+
+  RealGrossPage({Key key,@required this.category,@required this.isoDate,@required this.strAmount}){
     formatCurrency = OneDecimalPoint();
-    amtController= TextEditingController(text:canister["amountString"].replaceAll("\$",""));
+    amtController= TextEditingController(text:strAmount.replaceAll("\$",""));
   }
   /*
   @override
@@ -709,7 +777,7 @@ class RealGrossPage extends StatelessWidget {
 
     return Column (
         children: <Widget>[
-          Text("Date: "+ Datademunger.fromISOtoUS(canister["isoDate"]),style:dialogStyle(context))
+          Text("Date: "+ Datademunger.fromISOtoUS(this.isoDate),style:dialogStyle(context))
           ,
           Text(
             "Amount",
@@ -731,7 +799,7 @@ class RealGrossPage extends StatelessWidget {
                 style: largeTextFieldStyle(context),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onChanged: ((String value){
-                  canister["amountString"] = value;
+                  strAmount = value;
                 }),
               ),
 

@@ -12,13 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="Was unable to change dart-sdk, so adopted a &quot;chatty release&quot; strategy to find out what's going on . As such, spotted a bug in saveCategory&#10;Planitem writes work now&#10;--next is the write to Logitem where the entryType is &quot;planned&quot;">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/logitem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logitem.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -45,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="636" column="35" selection-start-line="636" selection-start-column="35" selection-end-line="636" selection-end-column="35" />
+            <state relative-caret-position="47">
+              <caret line="105" column="23" selection-start-line="105" selection-start-column="22" selection-end-line="105" selection-end-column="23" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -57,11 +54,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="634" column="37" selection-start-line="634" selection-start-column="37" selection-end-line="634" selection-end-column="37" />
+            <state relative-caret-position="376">
+              <caret line="711" column="84" selection-start-line="711" selection-start-column="84" selection-end-line="711" selection-end-column="84" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -80,13 +77,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>grossa</find>
-      <find>_controllerAmount =</find>
-      <find>canister</find>
-      <find>canister[</find>
-      <find>exce</find>
-      <find>push</find>
-      <find>categoryData =</find>
       <find>Push(new Ma</find>
       <find>SAVE&quot;</find>
       <find>canister[&quot;</find>
@@ -110,6 +100,13 @@
       <find>create ta</find>
       <find>FAIL</find>
       <find>loadC</find>
+      <find>setState</find>
+      <find>onPresse</find>
+      <find>_getDateButton</find>
+      <find>returnFromSavePlanned</find>
+      <find>onPressed</find>
+      <find>newGross</find>
+      <find>canister</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -131,8 +128,8 @@
         <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/lib/generated/i18n.dart" />
         <option value="$PROJECT_DIR$/android/app/build.gradle" />
-        <option value="$PROJECT_DIR$/lib/planning.dart" />
         <option value="$PROJECT_DIR$/lib/logitem.dart" />
+        <option value="$PROJECT_DIR$/lib/planning.dart" />
       </list>
     </option>
   </component>
@@ -147,6 +144,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -163,8 +161,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -192,6 +188,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -410,7 +407,14 @@
       <option name="project" value="LOCAL" />
       <updated>1543386723894</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Was unable to change dart-sdk, so adopted a &quot;chatty release&quot; strategy to find out what's going on . As such, spotted and fixed a bug in getPlannedTotals() that seemed to throw off saveCategoryPlan(). Up next: &#10;-Write to Logitem where the entryType is &quot;planned&quot;&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1">
+      <created>1543439749599</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1543439749606</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView">
@@ -424,41 +428,42 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-2" width="1370" height="740" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50981873" side_tool="true" weight="0.3581315" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32392028" />
-      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Structure" order="1" sideWeight="0.63307494" side_tool="true" weight="0.41465256" />
-      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.16540785" visible="true" weight="0.6611296" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
-      <window_info anchor="bottom" id="Flutter Performance" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50981873" side_tool="true" weight="0.3581315" />
+      <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32392028" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32724252" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3349917" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
+      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
+      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.36692506" visible="true" weight="0.41465256" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32724252" />
+      <window_info id="Structure" order="1" sideWeight="0.63307494" side_tool="true" weight="0.41465256" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.16540785" visible="true" weight="0.660596" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.32392028" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.32392028" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32724252" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
@@ -544,7 +549,8 @@
     <MESSAGE value="Added skeleton of PlanningPage, and may have found workaround for libc SEGV at https://stackoverflow.com/questions/35250816/android-fatal-signal-11-sigsegv-code-1-fault-addr-0x0-in-tid-29092" />
     <MESSAGE value="(still struggling with apparent null pointer in debug library)&#10;The upper pane of PlanningPage now displays category data, and on an item click, runs a dialog to get the Amount. Remaining is to write the data to the Planitem table.&#10;--DBTransaction will check for preexistence on date and category (select id), and UPDATE or INSERT per the result of that.&#10;--I then need that isoOffsetDate(ddmonths,ddays,isoFrom), and the SimpleDialog" />
     <MESSAGE value="Random crash during debug seems to have been due to a glitch in the Dart version to which Flutter 0.11.0 was bound &#10;Planitem writes work now&#10;--next is the write to Logitem where the entryType is &quot;planned&quot;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Random crash during debug seems to have been due to a glitch in the Dart version to which Flutter 0.11.0 was bound &#10;Planitem writes work now&#10;--next is the write to Logitem where the entryType is &quot;planned&quot;" />
+    <MESSAGE value="Was unable to change dart-sdk, so adopted a &quot;chatty release&quot; strategy to find out what's going on . As such, spotted and fixed a bug in getPlannedTotals() that seemed to throw off saveCategoryPlan(). Up next: &#10;-Write to Logitem where the entryType is &quot;planned&quot;&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Was unable to change dart-sdk, so adopted a &quot;chatty release&quot; strategy to find out what's going on . As such, spotted and fixed a bug in getPlannedTotals() that seemed to throw off saveCategoryPlan(). Up next: &#10;-Write to Logitem where the entryType is &quot;planned&quot;&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -560,7 +566,7 @@
           <option name="timeStamp" value="126" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="217" />
+      <option name="time" value="220" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
@@ -892,20 +898,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
+    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="636" column="35" selection-start-line="636" selection-start-column="35" selection-end-line="636" selection-end-column="35" />
+        <state relative-caret-position="376">
+          <caret line="711" column="84" selection-start-line="711" selection-start-column="84" selection-end-line="711" selection-end-column="84" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="634" column="37" selection-start-line="634" selection-start-column="37" selection-end-line="634" selection-end-column="37" />
+        <state relative-caret-position="47">
+          <caret line="105" column="23" selection-start-line="105" selection-start-column="22" selection-end-line="105" selection-end-column="23" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

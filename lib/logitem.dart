@@ -633,7 +633,7 @@ int rv = 0;
       }
       for (int i = raw.length - 1; i >= 0; i--) {
         rv[raw[i].values.first] += raw[i].values.last;
-        print("PEEK in getPlannedTotals $isoFrom-$isoTo :$rv");
+       /// print("PEEK in getPlannedTotals $isoFrom-$isoTo :$rv");
       }
     }
     catch(ohcrap)
@@ -657,7 +657,7 @@ int rv = 0;
     await database.transaction((txn) async {
       try {
         var mess = await txn.rawQuery("SELECT * FROM Planitem where thedate = ? and category = ?", [isoDate,category]);
-
+/* debugging
         if(mess != null) {
           print("BOOM! $mess");
         }
@@ -665,6 +665,7 @@ int rv = 0;
         {
           print("BOOM! got null result");
         }
+        */
 
         if(mess.length == 0)
         {
@@ -674,7 +675,7 @@ int rv = 0;
         else
         {
           int gottenId = mess[0]["id"];
-          print("intent: set $gottenId to $numAmount");
+          //print("intent: set $gottenId to $numAmount");
           result = await txn.rawUpdate("UPDATE Planitem SET amount = ? WHERE id = ?",[numAmount,gottenId]);
           if(result == 1)
           {
@@ -690,10 +691,26 @@ int rv = 0;
       catch(falta)
       {
         lastError = falta.toString();
-        print("FAIL! $lastError");
+        //print("FAIL! $lastError");
       }
 
 
+    });
+
+    return rv;
+  }
+
+  static Future<List<List<String>>> getGrossPlanEntries({String category, String from, String to}) async {
+    lastError = "";
+    List<List<String>> rv = [];
+    await database.transaction((txn) async {
+      var mess = await txn.rawQuery(
+          'SELECT thedate,amount FROM Planitem where thedate >= ? and thedate <= ? and category = ?',
+          [from, to,category]);
+      for(int i=0;i<mess.length;i++)
+      {
+        rv.add([mess[i]["thedate"],Datademunger.toCurrency(mess[i]["amount"],symbol:"\$")]);
+      }
     });
 
     return rv;
