@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:basketnerds/basepage.dart';
 import 'package:basketnerds/logitem.dart';
 import 'package:basketnerds/pseudoresources.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,26 +24,73 @@ TextStyle rowStyle(BuildContext context) {
 TextStyle largeTextFieldStyle(BuildContext context) {
   return Theme.of(context).textTheme.display2;
 }
-class PlanningPage extends StatefulWidget {
+class PlanningPage extends PageWidget {
   DatePair myRange;
 
   bool ignited;
 
-  @override
-  _PlanningPageState createState() {
-    return _PlanningPageState();
-  }
-
-  PlanningPage(){
+  PlanningPage({Key key}):super(key:key){
     //set the default date range
     String isoStart = Datademunger.getISOOffset(dmonths:1);
     var arry = isoStart.split("-");
     isoStart=arry[0]+"-"+arry[1]+"-01";
     String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
-    
+
     myRange = DatePair(isoStart,isoEnd);
 
   }
+
+
+  @override
+  _PlanningPageState createState() {
+    toUpdate =  _PlanningPageState();
+    return toUpdate;
+  }
+
+  @override
+  fabClicked(BuildContext context) async {
+    Logitem feedback;
+    if(!Platform.isIOS) {
+      feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder: PlanItemPage(defaultDate:myRange.isoFrom()).build)
+      );
+    }
+    else {
+      //TODO: sort out the iOS stuff per above
+      /*
+      feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder: CupertinoItemPage().build)
+      );
+      */
+    }
+    //("/item");
+
+    if(feedback != null)
+    {
+      var chosen = feedback;
+      //this looks ridiculous to those used to declarative languages
+      //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
+      chosen.save(entrytype:"planning").then((value) {
+        if(value)
+          {
+            if(toUpdate == null)
+            {
+              print("FAIL! state is missing");
+            }
+            else
+            {
+              (toUpdate as _PlanningPageState).loadCategoryData();
+            }
+          }
+          else
+          {
+            print("FAIL at save:${Logitem.lastError}");
+          }
+
+      });
+    }
+  }
+
 
 
 
@@ -87,9 +135,13 @@ class PlanningPage extends StatefulWidget {
 
 }
 
+
+
 class _PlanningPageState extends State<PlanningPage>{
 
   Map<String,String> categoryData = {};
+  Map<String,String> categoryMicros = {};
+  List<Logitem> lirows = [];
 
 
 
@@ -109,30 +161,45 @@ class _PlanningPageState extends State<PlanningPage>{
     {
       var categoryName = categories[i].keys.first.toString();
       categoryData[categoryName] = "\$0.00";
+      categoryMicros[categoryName] = "\$0.00";
     }
   }
+
 
   loadCategoryData() async{
     num amt =0.0;
     var len = categories.length;
     var theSet = await Logitem.getPlannedTotals(widget.myRange.isoFrom(),widget.myRange.isoTo());
-    {
+    var muTotals = await Logitem.getTotals(widget.myRange.isoFrom(),widget.myRange.isoTo(),entrytype:"planning");
+    var theRange = await Logitem.getRange(widget.myRange.isoFrom(),widget.myRange.isoTo(), entrytype: "planning");
+    setState(() {
+      for(int i=0;i < muTotals.length;i++)
+      {
+        categoryMicros[muTotals[i].keys.first] = muTotals[i].values.first;
+      }
 
-      setState(() {
-        for (int i = 0; i < len; i++) {
-          amt = 0.0;
-          var categoryName = categories[i].keys.first.toString();
-          if (theSet.containsKey(categoryName)) {
-            amt = theSet[categoryName];
-          }
-
-          categoryData[categoryName] =
-              Datademunger.toCurrency(amt, symbol: "\$");
-          print("Fire two $i: $categoryName ${theSet[categoryName]}");
+      for (int i = 0; i < len; i++) {
+        amt = 0.0;
+        var categoryName = categories[i].keys.first.toString();
+        if (theSet.containsKey(categoryName)) {
+          amt = theSet[categoryName];
         }
-      });
 
-    }
+        categoryData[categoryName] =
+            Datademunger.toCurrency(amt, symbol: "\$");
+        print("Fire two $i: $categoryName ${theSet[categoryName]}");
+
+      }
+
+      var eventlen = theRange.length;
+      lirows.clear();
+      for(int i=0;i<eventlen;i++)
+      {
+        lirows.add(theRange[i]);
+      }
+
+    });
+
 
 
 
@@ -183,6 +250,8 @@ class _PlanningPageState extends State<PlanningPage>{
       {
         amt = "flub in $categoryName";
       }
+      String specificTotal = categoryMicros[categoryName];
+
       items.add(
         FlatButton(
           padding: EdgeInsets.symmetric(vertical:4.0),
@@ -198,7 +267,7 @@ class _PlanningPageState extends State<PlanningPage>{
                 ),
                 Expanded(
                   flex:1,
-                  child:Text("Fine $i",style:rowStyle(context)),
+                  child:Text(specificTotal,style:rowStyle(context)),
                 ),
                 Expanded(
                   flex:1,
@@ -470,35 +539,40 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
   {
 
       List<Widget> items = [];
-      var goods = Logitem.getRange(widget.myRange.isoFrom(),widget.myRange.isoTo(),entrytype:"planning");
-      goods.then((value)
+
+      var len = lirows.length;
+      for(int i=0;i<len;i++)
       {
-        var len = value.length;
-        for(int i=0;i<len;i++)
-        {
-          items.add(
-              Row(
+        items.add(
+
+            FlatButton(
+              padding: EdgeInsets.symmetric(vertical:4.0),
+              onPressed: (){
+                //it's already asynchronous
+                editSpecific(lirows[i]);
+              },
+              child:Row(
                   children:[
                     Expanded(
                       flex:1,
-                      child:Text(value[i].title),
+                      child:Text(lirows[i].title),
                     ),
                     Expanded(
                       flex:1,
-                      child:Text(value[i].category),
+                      child:Text(lirows[i].category),
                     ),
                     Expanded(
                       flex:1,
-                      child:Text(value[i].stramount()),
+                      child:Text(lirows[i].stramount()),
                     )
                   ]
               )
 
-          );
-        }
-      }
-      );
+            )
 
+
+        );
+      }
       /*
       known to work
       for(int i=1;i<15;i++)
@@ -616,7 +690,6 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
           MaterialPageRoute(builder:(context) => GrossallocPage(category:categoryName, isoDate:date,strAmount:amt))
       );
       loadCategoryData();
-
     }
     else {
       /*
@@ -642,6 +715,36 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     }
     */
 
+  }
+
+  void editSpecific(Logitem toedit) async {
+    Logitem feedback;
+    if(!Platform.isIOS) {
+      print("Starting $toedit");
+      feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder:(context) => PlanItemPage(incoming:toedit))
+      );
+    }
+
+
+    if(feedback != null)
+    {
+      print("Got back ${feedback.title}");
+      var chosen = feedback;
+      //this looks ridiculous to those used to declarative languages
+      //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
+      chosen.save(entrytype:"planning").then((value) {
+        if(value)
+        {
+          loadCategoryData();
+        }
+        else
+        {
+          print("FAIL at save:${Logitem.lastError}");
+        }
+
+      });
+    }
   }
 
 }
@@ -828,7 +931,6 @@ class RealGrossPage extends StatelessWidget {
 }
 
 
-
 class OneDecimalPoint extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
@@ -850,3 +952,611 @@ class OneDecimalPoint extends TextInputFormatter {
 
 }
 
+
+class PlanItemPage extends StatelessWidget{
+  Logitem incoming;
+  String defaultDate;
+
+  PlanItemPage({Key key,this.incoming,this.defaultDate}): super(key:key);
+  @override
+  Widget build(BuildContext context) {
+    String content = "(new)";
+    if(incoming !=  null)
+    {
+      content = incoming.title;
+    }
+
+    if(incoming == null)
+    {
+      /*
+      var ahora = DateTime.now();
+      String mo = "${ahora.month}";
+      String da = "${ahora.day}";
+      while (da.length < 2)
+      {
+        da = "0" +da;
+      }
+      while (mo.length < 2)
+      {
+        mo = "0" +mo;
+      }
+*/
+
+      incoming = new Logitem(
+          name:"",
+          amt: 0,
+          category: "",
+          date:defaultDate
+      );
+    }
+
+    print("building full page");
+    var zeForm = PlanitemPageform(incoming);
+    return new Scaffold (
+        appBar: new AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+            title: new Text(content),
+            leading:IconButton(
+                icon:Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }
+            ),
+            actions: <Widget>[
+              // action button
+              /*
+          FlatButton(
+              child: Text("CANCEL",
+                style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
+                    color:Color(0xFFFFFFFF))
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          */
+              // action button
+              FlatButton(
+                child: Text("SAVE",
+                    style:TextStyle(fontSize:Theme.of(context).textTheme.button.fontSize,
+                        color:Color(0xFFFFFFFF))
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(zeForm.chosen);
+                },
+              ),
+            ]
+
+        ),
+        body: new Center(
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+            child: zeForm
+        )
+    );
+  }
+}
+
+class PlanitemPageform extends StatefulWidget {
+  Logitem chosen;
+  PlanitemPageform(Logitem incoming,{Key key}):super(key:key) {
+    //super(key:key);
+    this.chosen = incoming;
+    if(chosen == null)
+    {
+      print("Pageform got a null");
+    }
+    else
+    {
+      print("Pageform got $chosen");
+    }
+  }
+
+  @override
+  _ItemPageformState createState() {
+    return _ItemPageformState();
+  }
+
+}
+
+class _ItemPageformState extends State<PlanitemPageform> with PageState {
+
+    TextEditingController _controllerAmount;
+    TextEditingController _controllerTitle;
+    TextEditingController _controllerDetails;
+    GlobalKey _keyAmt = new GlobalKey(debugLabel:"amt");
+    GlobalKey _keyTitle = new GlobalKey(debugLabel:"title");
+    GlobalKey _keyDetails = new GlobalKey(debugLabel:"details");
+
+    List<String> categoryName = [];
+    List<String> categoryNote = [];
+
+
+    @override
+    initState()
+    {
+
+      for(int i=0;i<categories.length;i++) {
+        categoryName.add(categories[i].keys.first);
+        categoryNote.add(categories[i].values.first);
+      }
+
+
+      _controllerAmount = TextEditingController(text:widget.chosen.stramount());
+      _controllerTitle = TextEditingController(text:widget.chosen.title);
+      if(widget.chosen.details == null ||widget.chosen.details.isEmpty)
+      {
+        _controllerDetails = TextEditingController();
+      }
+      else
+      {
+        _controllerDetails = TextEditingController(text:widget.chosen.details);
+      }
+
+      if(widget.chosen == null)
+      {
+        print("Pageform initState got a null");
+      }
+      else
+      {
+        print("Pageform initState got ${widget.chosen}");
+      }
+      super.initState();
+    }
+    @override
+    dispose()
+    {
+      if(_controllerAmount != null)
+      {
+        _controllerAmount.dispose();
+      }
+      if(_controllerTitle != null)
+      {
+        _controllerTitle.dispose();
+      }
+      if(_controllerDetails != null)
+      {
+        _controllerDetails.dispose();
+      }
+
+      super.dispose();
+    }
+
+    Widget explainCategory(String sel)
+    {
+      String explainer = categoryNote[categoryName.indexOf(sel)];
+      if(explainer == null)
+      {
+        explainer = "";
+      }
+      return Text(explainer,
+          textAlign: TextAlign.start,
+          style: Theme
+              .of(context)
+              .textTheme
+              .caption
+      );
+    }
+
+    Widget menumakerAndroid(String currentsel)
+    {
+
+      List<DropdownMenuItem<String>> droplist = [];
+
+      if(currentsel == null || currentsel.length == 0)
+      {
+        currentsel = categoryName[0];
+        widget.chosen.category = currentsel;
+      }
+
+      for(int i=0;i<categories.length;i++)
+      {
+        droplist.add(
+            DropdownMenuItem<String>(
+                value: categoryName[i],
+                child: Text(categoryName[i],
+                    textAlign: TextAlign.start,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .title
+                )
+            )
+        );
+      }
+
+      return Column (
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children:[
+            DropdownButton<String>(
+              items: droplist,
+              value: currentsel,
+              //puts down-arrow at end of enclosing space
+              onChanged: (String value){
+                widget.chosen.category = value;
+
+                setState((){});
+              },
+            )
+            ,
+            explainCategory(currentsel)
+          ]
+      );
+      //return ;
+
+    }
+
+    Widget menumakerCupertino(BuildContext context,String currentsel)
+    {
+      if(currentsel == null || currentsel.length == 0)
+      {
+        currentsel = categoryName[0];
+        widget.chosen.category = currentsel;
+      }
+      List<Widget> visualCategories = [
+        /*
+      CupertinoButton(
+          onPressed:((){
+            //not quite right
+            Navigator.of(context).pop();
+          }) ,
+          child: Text("Cancel")
+
+      )*/
+      ];
+      for(int i=0; i<categories.length;i++)
+      {
+        String aha = categoryName[i];
+        List<Widget> interieur =[
+          CupertinoButton(
+              onPressed:(categoryName[i] == currentsel)?null:((){
+                //not quite right
+                Navigator.of(context).pop(aha);
+              }) ,
+              child: Text(aha)
+
+          )
+        ];
+        if(categoryNote[i] != null)
+        {
+          interieur.add(
+              Text(categoryNote[i])
+          );
+        }
+        visualCategories.add(
+            Column(
+                children:interieur
+            )
+
+        );
+      }
+      return CupertinoButton(
+          child: Text(currentsel),
+          onPressed:((){
+            //run that bottom sheet thing, containing a CupertinoPicker
+            Future<String> newvalue = showModalBottomSheet<String>(
+                context:context,
+                builder:((context){
+                  return Column(
+                      children: [
+                        CupertinoButton(
+                            onPressed:((){
+                              Navigator.of(context).pop();
+                            }),
+                            child:Text("Cancel")
+
+                        )
+                        ,
+                        Expanded(
+                          child: ListView(
+                              shrinkWrap: true,
+                              children:visualCategories
+                          ),
+                        )
+
+                        /*
+                */
+                      ]
+                  );
+
+                  /*
+            return ListView(
+              children:visualCategories
+            );
+        */
+                })
+            );
+            newvalue.then((String value)
+            {
+              if(value != null)
+              {
+                widget.chosen.category = value;
+                setState((){});
+              }
+            });
+
+          })
+        /*
+      onChanged: (String value){
+        chosen.category = value;
+        setState((){});
+      },
+      */
+      );
+    }
+
+//I think this belongs in a class common to all of the Full-Screen Dialogs
+    Widget saneTextField({GlobalKey key,String inText, TextEditingController controller, String hint, String type,int maxLines = 2,
+      void Function(String newValue) changeHandler } ) {
+
+      TextInputType kbdType = TextInputType.text;
+      TextAlign align = TextAlign.start;
+      TextStyle editStyle = Theme
+          .of(context)
+          .textTheme
+          .title;
+      if(type == "longedit")
+      {
+        editStyle =Theme
+            .of(context)
+            .textTheme
+            .headline;
+      }
+      if(type == "currency")
+      {
+        maxLines = 1;
+        kbdType = TextInputType.numberWithOptions(signed: false,decimal:true);
+        //align = TextAlign.end;
+      }
+
+
+      return Container(
+          margin:EdgeInsets.symmetric(vertical:4.5),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                  flex:6,
+                  child:Padding(
+                      padding:EdgeInsets.only(top:9.0),
+                      child: Text(
+                        hint,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline,
+
+                      )
+
+                  )
+
+              )
+              ,
+              Spacer(
+                flex: 1,
+              ),
+
+              Expanded(
+                  flex:10,
+                  child:Material(
+                      child:Container(
+                          decoration: BoxDecoration(color:Colors.black12),
+                          child:TextField(
+                            controller:controller,
+                            keyboardType: kbdType,
+                            maxLines: maxLines,
+                            textAlign:align,
+                            style: editStyle,
+                            onChanged: changeHandler,
+                          )
+                      )
+
+                  )
+              )
+
+
+            ],
+          )
+      )
+
+
+      ;
+    }
+
+    @override
+    Widget build(BuildContext context)
+    {
+
+      if(widget.chosen == null)
+      {
+        print("Pageform build got a null");
+      }
+      else
+      {
+        print("Pageform build got ${widget.chosen}");
+      }
+      String itemNamePrompt = "What it will be";
+
+//went from Column to ListView for all platforms
+      return ListView (
+          children: <Widget>[
+            Row(
+                children:[
+                  Expanded(
+                      flex: 1,
+                      child:getDateButton(
+                          context,
+                          "Date: ",
+                          Datademunger.fromISOtoUS(widget.chosen.thedate),
+                          ((String value){
+                            widget.chosen.thedate=Datademunger.fromUStoISO(value);
+                            setState(() {});
+                          })
+                      )
+                    /*
+                  CupertinoButton(
+                      onPressed:(){
+                        askCupertinoDate(context,fromISOtoUS(chosen.thedate),((String value)
+                        {
+                          chosen.thedate=fromUStoISO(value);
+                          setState(() {});
+                        })
+                        );
+
+                        /*
+                        Future<String> newdate = askDate(context,fromISOtoUS(chosen.thedate));
+                        newdate.then((value){
+                          chosen.thedate=fromUStoISO(value);
+                          setState(() {});
+                        }
+                        );
+                        */
+                      },
+                      child: Text("Date: ")
+                  )
+                  */
+                  )
+                  ,
+                  Expanded(
+                      flex: 3,
+                      child: new Text(
+                        Datademunger.fromISOtoUS(widget.chosen.thedate),
+                        textAlign: TextAlign.center,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .display1,
+                      )
+                  )
+                ]
+            )
+            ,
+            /*
+        Container(
+        height:90.0,
+          child:
+        )*/
+            saneTextField(
+                controller:_controllerTitle,
+                key:_keyTitle,
+                inText:widget.chosen.title,
+                hint:itemNamePrompt,
+                changeHandler:(String newValue) {
+                  widget.chosen.title = newValue;
+                }
+            ),
+            saneTextField(
+                controller:_controllerAmount,
+                key:_keyAmt,
+                inText:widget.chosen.stramount(),
+                hint:"How much",
+                type:"currency",
+                changeHandler:(String newValue) {
+                  //var auldSel = _controllerAmount.selection;
+                  num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+                  //_controllerAmount.text = Logitem.toDollarString(goodNumber);
+                  widget.chosen.amount = goodNumber;
+                  //_controllerAmount.selection = auldSel;
+                }
+            )
+            /*
+        Row(
+            //crossAxisAlignment: CrossAxisAlignment.stretch,
+            children:[
+              Expanded(
+                  flex:2,
+                  child:saneTextField(
+                      controller:_controllerTitle,
+                      key:_keyTitle,
+                      inText:chosen.title,
+                      hint:"What it was",
+                      changeHandler:(String newValue) {
+                        chosen.title = newValue;
+                      }
+                  )
+              ),
+              Expanded(
+                  flex:1,
+                  child:saneTextField(
+                      controller:_controllerAmount,
+                      key:_keyAmt,
+                      inText:chosen.stramount(),
+                      hint:"How much",
+                      type:"currency",
+                      changeHandler:(String newValue) {
+                        var auldSel = _controllerAmount.selection;
+                        num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+                        _controllerAmount.text = Logitem.toDollarString(goodNumber);
+                        chosen.amount = goodNumber;
+                        _controllerAmount.selection = auldSel;
+                      }
+                  )
+              ),
+
+            ]
+        )
+        */
+            ,
+            Container(
+                margin:EdgeInsets.symmetric(vertical:4.5),
+                child: Row(
+                    children:[
+                      /*
+                        Expanded(
+                          flex:2,
+                          child:new Text(
+                            "Category:",
+                            textAlign: TextAlign.start,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .title
+                          )
+                        ),
+                        */
+                      Expanded(
+                          flex:6,
+                          child:Text(
+                              "Category",
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headline
+                          )
+
+                      )
+                      ,
+                      Spacer(
+                        flex: 1,
+                      ),
+
+
+                      Platform.isIOS ? menumakerCupertino(context,widget.chosen.category) :
+                      Expanded(flex:12,child:menumakerAndroid(widget.chosen.category))
+                      /*
+                        Expanded(
+                          flex:3,
+                          child:
+                        )*/
+
+                    ]
+                )
+            ),
+
+
+
+            saneTextField(
+                controller:_controllerDetails,
+                key:_keyDetails,
+                inText:widget.chosen.details,
+                hint:"Details",
+                type:"longedit",
+                changeHandler:(String newValue) {
+                  widget.chosen.details = newValue;
+                }
+            )
+
+          ]
+      );
+    }
+
+
+
+}

@@ -10,6 +10,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
+import 'package:basketnerds/basepage.dart';
 import 'package:basketnerds/planning.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,59 +26,6 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
-void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
-{
-  String rv = originalDate;
-  List<String> datelets = originalDate.split("/");
-  DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
-  DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
-  DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
-
-
-/*
-//Todo: Rework this per https://docs.flutter.io/flutter/cupertino/CupertinoDatePicker-class.html
-need a bottom sheet, a row containing cancel and done buttons, and a row containing the Picker
-  CupertinoDatePicker.showDatePicker(
-      context,
-      dateFormat:"mmm-dd-yyyy",
-      minYear:minDate.year,
-      maxYear:maxDate.year,
-      initialYear:currentDate.year,
-      initialMonth: currentDate.month,
-      initialDate: currentDate.day,
-      locale:'en_US',
-      showTitleActions:true,
-      onConfirm:((int year, int month, int date){
-        rv=fromISOtoUS("$year-$month-$date");
-        actOnDate(rv);
-      })
-  );
-  */
-}
-
-Future<String> askDate(BuildContext context,String originalDate) async {
-  String rv = originalDate;
-  List<String> datelets = originalDate.split("/");
-  DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
-  DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
-  DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
-
-
-  DateTime value = await showDatePicker(
-      context:context,
-      initialDate:currentDate,
-      firstDate:minDate,
-      lastDate:maxDate
-  );
-
-
-  if(value != null)
-  {
-    rv=fromISOtoUS("${value.year}-${value.month}-${value.day}");
-  }
-
-  return rv;
-}
 
 _LoggingPageState yakker;
 String monthStart(DateTime monthAtHand)
@@ -151,6 +99,9 @@ class MyApp extends StatelessWidget {
 
 
 class ItemPage extends StatelessWidget {
+  String itemtype = "logging"; //make a package symbol outta this, willya?
+
+  ItemPage({Key key,this.itemtype}):super(key:key);
   @override
   Widget build(BuildContext context) {
     String content = "(new)";
@@ -199,13 +150,16 @@ class ItemPage extends StatelessWidget {
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-          child: RealItemPage()
+          child: RealItemPage(itemtype)
         )
     );
   }
 }
-
+//will rebuild this bit later
 class CupertinoItemPage extends StatelessWidget {
+  String itemtype = "logging"; //make a package symbol outta this, willya?
+
+  //CupertinoItemPage({key:Key,this.itemtype}):super(key:key);
   @override
   Widget build(BuildContext context) {
     /*
@@ -232,7 +186,7 @@ class CupertinoItemPage extends StatelessWidget {
             backgroundColor: CupertinoColors.white
         )
         ,
-        child: RealItemPage()
+        child: RealItemPage(itemtype)
     );
   }
 }
@@ -240,11 +194,13 @@ class CupertinoItemPage extends StatelessWidget {
 
  */
 class RealItemPage extends StatefulWidget {
+  String itemtype;
+  RealItemPage(this.itemtype,{Key key}): super(key:key);
   @override
   _RealItemPageState createState() => new _RealItemPageState();
 }
 
-class _RealItemPageState extends State<RealItemPage> {
+class _RealItemPageState extends State<RealItemPage> with PageState {
 
   TextEditingController _controllerAmount;
   TextEditingController _controllerTitle;
@@ -557,49 +513,15 @@ class _RealItemPageState extends State<RealItemPage> {
 
     ;
   }
-//provisionally here...this needs to be common to all pages
-  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
-
-    if(Platform.isIOS)
-    {
-      return CupertinoButton(
-          onPressed:(){
-            askCupertinoDate(context,initialDate,actOnDate);
-
-          },
-          child: Text(label)
-      );
-    }
-    else
-    {
-      return RaisedButton(
-          child: Text(label),
-          onPressed:() {
-            Future<String> newdate = askDate(context,initialDate);
-            newdate.then((value)
-            {
-              actOnDate(value);
-            });
-          }
-        /*
-            (value) {
-            loggingRange.setDate1(value);
-            fetchRows().then((goods) {
-              setState(() {});
-            }
-            );
-          }
-             */
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context)
   {
-
-
-
+    String itemNamePrompt = "What it was";
+    if(widget.itemtype == "planning")
+    {
+      itemNamePrompt = "What it will be";
+    }
 
 //went from Column to ListView for all platforms
     return ListView (
@@ -608,7 +530,8 @@ class _RealItemPageState extends State<RealItemPage> {
             children:[
               Expanded(
                   flex: 1,
-                  child:_getDateButton(
+                  child:getDateButton(
+                    context,
                     "Date: ",
                     fromISOtoUS(chosen.thedate),
                       ((String value){
@@ -663,7 +586,7 @@ class _RealItemPageState extends State<RealItemPage> {
             controller:_controllerTitle,
             key:_keyTitle,
             inText:chosen.title,
-            hint:"What it was",
+            hint:itemNamePrompt,
             changeHandler:(String newValue) {
               chosen.title = newValue;
             }
@@ -841,6 +764,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   int cupertinoCurrentTab = 0;
 
+  List<PageWidget> pages = [ LoggingPage(), DummyPage(), PlanningPage() ];
+
 
 
   @override
@@ -908,32 +833,12 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       settings: new RouteSettings(name:"signup/choose_credentials")
     ));
     */
+      String mode="logging";
+
       chosen=null;
       Logitem feedback;
-      if(!Platform.isIOS) {
-        feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:ItemPage().build)
-      );
-      }
-      else {
-        feedback = await Navigator.of(context).push(
-            MaterialPageRoute(builder: CupertinoItemPage().build)
-        );
-      }
-      //("/item");
+      feedback = await pages[_tabController.index].fabClicked(context);
 
-      if(feedback != null)
-      {
-        chosen = feedback;
-        //this looks ridiculous to those used to declarative languages
-        //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
-        chosen.save().then((value) {
-          yakker.fetchRows().then((goods) {
-            setState(() {});
-          });
-
-        });
-      }
 
   }
 
@@ -1011,11 +916,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
             child:TabBarView(
                 controller:_tabController,
-                children:[
-                  LoggingPage(),
-                  DummyPage(),
-                  PlanningPage()
-                ]
+                children:pages
             ),
 
           ),
@@ -1118,6 +1019,8 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
 
 
+
+
 //mm/dd/yyyy to yyyy-mm-dd
 String fromUStoISO(String inDate)
 {
@@ -1152,58 +1055,60 @@ String fromISOtoUS(String inDate)
 
 
 
-class LoggingPage extends StatefulWidget {
+class LoggingPage extends PageWidget {
   LoggingPage({Key key}) :
     super(key:key);
 
   @override
+  fabClicked(BuildContext context) async {
+    Logitem feedback;
+    if(!Platform.isIOS) {
+      feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder: ItemPage(itemtype:"logging").build)
+      );
+    }
+    else {
+      //TODO: sort out the iOS stuff per above
+      feedback = await Navigator.of(context).push(
+          MaterialPageRoute(builder: CupertinoItemPage().build)
+      );
+    }
+    //("/item");
+
+    if(feedback != null)
+    {
+      chosen = feedback;
+      //this looks ridiculous to those used to declarative languages
+      //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
+      chosen.save(entrytype:"logging").then((value) {
+        yakker.fetchRows().then((goods) {
+          if(toUpdate == null)
+            {
+              print("FAIL! state is missing");
+            }
+            else
+              {
+                toUpdate.setState(() {});
+              }
+        });
+
+      });
+    }
+  }
+
+  @override
   _LoggingPageState createState() {
-    return new _LoggingPageState();
+    this.toUpdate = new _LoggingPageState();
+    return toUpdate;
   }
 
 }
 
-class _LoggingPageState extends State<LoggingPage> {
+class _LoggingPageState extends State<LoggingPage> with PageState{
   List<Widget> gottenRows = [];
   bool fired = false;
 
   Widget cupertinoToolbar;
-  
-  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
-
-    if(Platform.isIOS)
-    {
-      return CupertinoButton(
-          onPressed:(){
-            askCupertinoDate(context,initialDate,actOnDate);
-
-          },
-          child: Text(label)
-      );
-    }
-    else
-    {
-      return RaisedButton(
-        child: Text(label),
-        onPressed:() {
-          Future<String> newdate = askDate(context,initialDate);
-          newdate.then((value)
-          {
-            actOnDate(value);
-          });
-        }
-            /*
-            (value) {
-            loggingRange.setDate1(value);
-            fetchRows().then((goods) {
-              setState(() {});
-            }
-            );
-          }
-             */
-      );
-    }
-  }
 
 void _handleCupertinoMenu(int seleccion, BuildContext context) {
     //int seleccion = this._popupItems.indexOf(value);
@@ -1312,7 +1217,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("From: ",loggingRange.date1,((String value)
+                child: getDateButton(context,"From: ",loggingRange.date1,((String value)
                 {
                   loggingRange.setDate1(value);
                   fetchRows().then((goods) {
@@ -1341,7 +1246,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("To: ",loggingRange.date2,((String value)
+                child: getDateButton(context,"To: ",loggingRange.date2,((String value)
                 {
                   loggingRange.setDate2(value);
                   fetchRows().then((goods) {
@@ -1526,17 +1431,18 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 }
 
 
-class DummyPage extends StatefulWidget {
+class DummyPage extends PageWidget {
   DummyPage({Key key}):super(key:key);
 
   @override
   _DummyPageState createState() {
-    return new _DummyPageState();
+    toUpdate = new _DummyPageState();
+    return toUpdate;
   }
 
 }
 
-class _DummyPageState extends State<DummyPage> {
+class _DummyPageState extends State<DummyPage> with PageState {
   //can you smell the potential for reuse?
 
 
@@ -1588,42 +1494,6 @@ class _DummyPageState extends State<DummyPage> {
     return rv;
   }
 
-  Widget _getDateButton(String label,String initialDate,actOnDate(String value)) {
-
-    if(Platform.isIOS)
-    {
-      return CupertinoButton(
-          onPressed:(){
-            askCupertinoDate(context,initialDate,actOnDate);
-
-          },
-          child: Text(label)
-      );
-    }
-    else
-    {
-      return RaisedButton(
-          child: Text(label),
-          onPressed:() {
-            Future<String> newdate = askDate(context,initialDate);
-            newdate.then((value)
-            {
-              actOnDate(value);
-            });
-          }
-        /*
-            (value) {
-            loggingRange.setDate1(value);
-            fetchRows().then((goods) {
-              setState(() {});
-            }
-            );
-          }
-             */
-      );
-    }
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -1659,7 +1529,7 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: _getDateButton("From: ",statsRange.date1,((String value)
+                      child: getDateButton(context,"From: ",statsRange.date1,((String value)
                       {
                         statsRange.setDate1(value);
                         getTotals(context).then((goods) {
@@ -1689,7 +1559,7 @@ class _DummyPageState extends State<DummyPage> {
                 children:[
                   Expanded(
                       flex: 1,
-                      child: _getDateButton("To: ",statsRange.date2,((String value)
+                      child: getDateButton(context, "To: ",statsRange.date2,((String value)
                       {
                         statsRange.setDate2(value);
                         getTotals(context).then((goods) {

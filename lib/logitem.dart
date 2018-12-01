@@ -253,8 +253,10 @@ static Future<String> exportToExternal({String localUrl}) async {
     List<Logitem> rv = [];
 
     List<Map> raw = await database.rawQuery(
-        'SELECT * FROM Logitem where thedate >= ? and thedate <= ?',
-        [isoFrom, isoTo]);
+        'SELECT * FROM Logitem where entryType = ? AND thedate >= ? and thedate <= ? ORDER BY thedate DESC',
+       [entrytype,isoFrom, isoTo]);
+    /*'SELECT * FROM Logitem where entryType != ? AND thedate >= ? and thedate <= ? ORDER BY thedate DESC',
+    ["planning",isoFrom, isoTo]);*/
 
     for (int i = raw.length - 1; i >= 0; i--) {
       rv.add(Logitem.fromMap(raw[i]));
@@ -271,8 +273,8 @@ static Future<String> exportToExternal({String localUrl}) async {
       num total = 0.0;
       //lastError += "Sought: \"$category\"";
       List<Map> raw = await database.rawQuery(
-          'SELECT sum(amount) FROM Logitem where category = ? and thedate >= ? and thedate <= ?',
-          [category, isoFrom, isoTo]);
+          'SELECT sum(amount) FROM Logitem where entryType = ?  and category = ? and thedate >= ? and thedate <= ?',
+          [entrytype,category, isoFrom, isoTo]);
 
       total = raw[0].values.first;
       if (total == null) {
@@ -354,13 +356,13 @@ static Future<String> exportToExternal({String localUrl}) async {
       await database.transaction((txn) async {
         if (details == null || details.isEmpty) {
           await txn.rawInsert(
-              'INSERT INTO Logitem(what,amount,category,thedate) VALUES(?,?,?,?)',
-              [title, amount, category, thedate]);
+              'INSERT INTO Logitem(what,amount,category,thedate,entryType) VALUES(?,?,?,?,?)',
+              [title, amount, category, thedate,entrytype]);
         }
         else {
           await txn.rawInsert(
-              'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
-              [title, amount, category, thedate, details]);
+              'INSERT INTO Logitem(what,amount,category,thedate,details,entryType) VALUES(?,?,?,?,?,?)',
+              [title, amount, category, thedate, details,entrytype]);
         }
       });
     }
