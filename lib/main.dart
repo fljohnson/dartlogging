@@ -12,6 +12,7 @@ import 'dart:io' show Platform;
 //import 'package:flutter_cupertino_date_picker/flutter_cupertino_date_picker.dart';
 import 'package:basketnerds/basepage.dart';
 import 'package:basketnerds/planning.dart';
+import 'package:basketnerds/stats.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import "logitem.dart";
@@ -99,9 +100,9 @@ class MyApp extends StatelessWidget {
 
 
 class ItemPage extends StatelessWidget {
-  String itemtype = "logging"; //make a package symbol outta this, willya?
+  final String itemtype; //make a package symbol outta this, willya?
 
-  ItemPage({Key key,this.itemtype}):super(key:key);
+  ItemPage({Key key,this.itemtype = "logging"}):super(key:key);
   @override
   Widget build(BuildContext context) {
     String content = "(new)";
@@ -157,7 +158,7 @@ class ItemPage extends StatelessWidget {
 }
 //will rebuild this bit later
 class CupertinoItemPage extends StatelessWidget {
-  String itemtype = "logging"; //make a package symbol outta this, willya?
+  final String itemtype = "logging"; //make a package symbol outta this, willya?
 
   //CupertinoItemPage({key:Key,this.itemtype}):super(key:key);
   @override
@@ -194,7 +195,7 @@ class CupertinoItemPage extends StatelessWidget {
 
  */
 class RealItemPage extends StatefulWidget {
-  String itemtype;
+  final String itemtype;
   RealItemPage(this.itemtype,{Key key}): super(key:key);
   @override
   _RealItemPageState createState() => new _RealItemPageState();
@@ -217,6 +218,7 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
   initState()
   {
 
+    super.initState();
     for(int i=0;i<categories.length;i++) {
       categoryName.add(categories[i].keys.first);
       categoryNote.add(categories[i].values.first);
@@ -254,7 +256,6 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
     {
       _controllerDetails = TextEditingController(text:chosen.details);
     }
-    super.initState();
   }
   @override
   dispose()
@@ -764,29 +765,15 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   int cupertinoCurrentTab = 0;
 
-  List<PageWidget> pages = [ LoggingPage(), DummyPage(), PlanningPage() ];
+  List<PageWidget> pages ;
 
 
 
   @override
   void initState() {
     super.initState();
-
-
-    _popupItems = ["Import...","Export..."];
-    adder = new FloatingActionButton(
-      onPressed: newItem,
-      tooltip: 'Add Item',
-      child: new Icon(Icons.add),
-    );
-
-    cupertinoAdder = CupertinoButton(
-      onPressed: newItem,
-      child: new Icon(CupertinoIcons.add)
-    );
-  //  _pageDates =[new DatePair("09/01/2018","09/30/2018"),new DatePair("09/01/2018","09/30/2018")];
-   // _pages = <Widget>[new LoggingPage(owner:this),new DummyPage()];
     _tabController = new TabController(vsync:this,length: myTabs.length);
+    /*
     _tabController.addListener((){
       if(_tabController.index == 1)
         {
@@ -807,7 +794,22 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         });
       }
     });
+*/
+    pages = [ LoggingPage(), DummyPage(tabster:_tabController), PlanningPage() ];
 
+    _popupItems = ["Import...","Export..."];
+    adder = new FloatingActionButton(
+      onPressed: newItem,
+      tooltip: 'Add Item',
+      child: new Icon(Icons.add),
+    );
+
+    cupertinoAdder = CupertinoButton(
+        onPressed: newItem,
+        child: new Icon(CupertinoIcons.add)
+    );
+    //  _pageDates =[new DatePair("09/01/2018","09/30/2018"),new DatePair("09/01/2018","09/30/2018")];
+    // _pages = <Widget>[new LoggingPage(owner:this),new DummyPage()];
   }
 
 
@@ -833,12 +835,15 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       settings: new RouteSettings(name:"signup/choose_credentials")
     ));
     */
-      String mode="logging";
+
 
       chosen=null;
+      /*
       Logitem feedback;
       feedback = await pages[_tabController.index].fabClicked(context);
+      */
 
+      pages[_tabController.index].fabClicked(context);
 
   }
 
@@ -1082,14 +1087,7 @@ class LoggingPage extends PageWidget {
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
       chosen.save(entrytype:"logging").then((value) {
         yakker.fetchRows().then((goods) {
-          if(toUpdate == null)
-            {
-              print("FAIL! state is missing");
-            }
-            else
-              {
-                toUpdate.setState(() {});
-              }
+          yakker.reload(); //roundabout way of doing setState()
         });
 
       });
@@ -1098,8 +1096,7 @@ class LoggingPage extends PageWidget {
 
   @override
   _LoggingPageState createState() {
-    this.toUpdate = new _LoggingPageState();
-    return toUpdate;
+    return new _LoggingPageState();
   }
 
 }
@@ -1108,6 +1105,9 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
   List<Widget> gottenRows = [];
   bool fired = false;
 
+  void reload() {
+    setState(() {});
+  }
   Widget cupertinoToolbar;
 
 void _handleCupertinoMenu(int seleccion, BuildContext context) {
@@ -1431,191 +1431,4 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 }
 
 
-class DummyPage extends PageWidget {
-  DummyPage({Key key}):super(key:key);
 
-  @override
-  _DummyPageState createState() {
-    toUpdate = new _DummyPageState();
-    return toUpdate;
-  }
-
-}
-
-class _DummyPageState extends State<DummyPage> with PageState {
-  //can you smell the potential for reuse?
-
-
-  List<Widget> gottenRows = [];
-  bool fired = false;
-  Future<bool> getTotals(BuildContext context) async
-  {
-    bool rv = false;
-    //just in case this page is ever drawn first
-    /*
-    if(Logitem.database == null)
-    {
-      await Logitem.createSampleData();
-    }
-    */
-    List<Widget> rows = [];
-
-    List<Map<String,String>> stats = await Logitem.getTotals(statsRange.isoFrom(), statsRange.isoTo());
-    for(int i=0;i<stats.length;i++)
-    {
-      rows.add(
-          Row(
-            children: <Widget>[
-              Expanded(
-                flex: 3,
-                child: Container(
-                    child:Text(stats[i].keys.first,style: Theme
-                        .of(context)
-                        .textTheme
-                        .title)
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child:Text(stats[i].values.first,style: Theme
-                    .of(context)
-                    .textTheme
-                    .title,
-                    textAlign: TextAlign.right
-                ),
-              ),
-            ],
-
-          )
-      );
-    }
-    rv = true;
-    gottenRows = rows;
-    return rv;
-  }
-
-
-  @override
-  Widget build(BuildContext context) {
-    if(!fired)
-    {
-      fired = true;
-      /*
-      getTotals(context).then((goods) {
-        setState(() {});
-      });
-      */
-    }
-    return new Center(
-      // Center is a layout widget. It takes a single child and positions it
-      // in the middle of the parent.
-        child: new Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug paint" (press "p" in the console where you ran
-          // "flutter run", or select "Toggle Debug Paint" from the Flutter tool
-          // window in IntelliJ) to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
-                children:[
-                  Expanded(
-                      flex: 1,
-                      child: getDateButton(context,"From: ",statsRange.date1,((String value)
-                      {
-                        statsRange.setDate1(value);
-                        getTotals(context).then((goods) {
-                          setState(() {});
-                        }
-                        );
-                      })),
-
-
-                  )
-                  ,
-                  Expanded(
-                      flex: 3,
-                      child: new Text(
-                        statsRange.date1,
-                        textAlign: TextAlign.center,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .display1,
-                      )
-                  )
-                ]
-            ),
-
-            Row(
-                children:[
-                  Expanded(
-                      flex: 1,
-                      child: getDateButton(context, "To: ",statsRange.date2,((String value)
-                      {
-                        statsRange.setDate2(value);
-                        getTotals(context).then((goods) {
-                          setState(() {});
-                        }
-                        );
-                      })),
-
-                  )
-                  ,
-                  Expanded(
-                      flex: 3,
-                      child: new Text(
-                        statsRange.date2,
-                        textAlign: TextAlign.center,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .display1,
-                      )
-                  )
-                ]
-            ),
-
-
-            Expanded(
-                child: ListView(
-                    children:gottenRows
-                )
-            ),
-
-          ],
-        )
-    );
-  }
-}
-
-void doAlert(BuildContext context,String what) {
-  showDialog(
-    context:context,
-    barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Money Logs ran into trouble"),
-          content: SingleChildScrollView(
-            child: Text(what)
-          ),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('DISMISS'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      }
-  );
-}

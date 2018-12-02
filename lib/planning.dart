@@ -10,6 +10,21 @@ import 'package:flutter/services.dart';
 
 //Map <String,String> canister;
 
+class Planister {
+  String category;
+  String isoDate;
+  String strAmount;
+  static final Planister _singleton = new Planister._internal();
+
+  factory Planister() {
+    return _singleton;
+  }
+
+  Planister._internal();
+}
+
+DatePair outerRange;
+_PlanningPageState zeState;
 
 TextStyle dialogStyle(BuildContext context) {
   return Theme.of(context).textTheme.display2;
@@ -25,26 +40,13 @@ TextStyle largeTextFieldStyle(BuildContext context) {
   return Theme.of(context).textTheme.display2;
 }
 class PlanningPage extends PageWidget {
-  DatePair myRange;
 
-  bool ignited;
-
-  PlanningPage({Key key}):super(key:key){
-    //set the default date range
-    String isoStart = Datademunger.getISOOffset(dmonths:1);
-    var arry = isoStart.split("-");
-    isoStart=arry[0]+"-"+arry[1]+"-01";
-    String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
-
-    myRange = DatePair(isoStart,isoEnd);
-
-  }
+  PlanningPage({Key key}):super(key:key);
 
 
   @override
   _PlanningPageState createState() {
-    toUpdate =  _PlanningPageState();
-    return toUpdate;
+    return _PlanningPageState();
   }
 
   @override
@@ -52,7 +54,7 @@ class PlanningPage extends PageWidget {
     Logitem feedback;
     if(!Platform.isIOS) {
       feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder: PlanItemPage(defaultDate:myRange.isoFrom()).build)
+          MaterialPageRoute(builder: PlanItemPage(defaultDate:outerRange.isoFrom()).build)
       );
     }
     else {
@@ -73,18 +75,18 @@ class PlanningPage extends PageWidget {
       chosen.save(entrytype:"planning").then((value) {
         if(value)
           {
-            if(toUpdate == null)
+            if(zeState == null)
             {
               print("FAIL! state is missing");
             }
             else
             {
-              (toUpdate as _PlanningPageState).loadCategoryData();
+              zeState.loadCategoryData();
             }
           }
           else
           {
-            print("FAIL at save:${Logitem.lastError}");
+            doAlert(context,"FAIL at save:${Logitem.lastError}");
           }
 
       });
@@ -137,7 +139,7 @@ class PlanningPage extends PageWidget {
 
 
 
-class _PlanningPageState extends State<PlanningPage>{
+class _PlanningPageState extends State<PlanningPage> with PageState{
 
   Map<String,String> categoryData = {};
   Map<String,String> categoryMicros = {};
@@ -147,9 +149,19 @@ class _PlanningPageState extends State<PlanningPage>{
 
 
   @override void initState() {
+    super.initState();
+    //set the default date range
+    String isoStart = Datademunger.getISOOffset(dmonths:1);
+    var arry = isoStart.split("-");
+    isoStart=arry[0]+"-"+arry[1]+"-01";
+    String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
+
+    myRange = DatePair(isoStart,isoEnd);
+
+    outerRange = DatePair(myRange.isoFrom(),myRange.isoTo());
+    zeState = this;
     primeCategoryData();
     loadCategoryData();
-    super.initState();
 
   }
 
@@ -169,9 +181,9 @@ class _PlanningPageState extends State<PlanningPage>{
   loadCategoryData() async{
     num amt =0.0;
     var len = categories.length;
-    var theSet = await Logitem.getPlannedTotals(widget.myRange.isoFrom(),widget.myRange.isoTo());
-    var muTotals = await Logitem.getTotals(widget.myRange.isoFrom(),widget.myRange.isoTo(),entrytype:"planning");
-    var theRange = await Logitem.getRange(widget.myRange.isoFrom(),widget.myRange.isoTo(), entrytype: "planning");
+    var theSet = await Logitem.getPlannedTotals(myRange.isoFrom(),myRange.isoTo());
+    var muTotals = await Logitem.getTotals(myRange.isoFrom(),myRange.isoTo(),entrytype:"planning");
+    var theRange = await Logitem.getRange(myRange.isoFrom(),myRange.isoTo(), entrytype: "planning");
     setState(() {
       for(int i=0;i < muTotals.length;i++)
       {
@@ -187,7 +199,7 @@ class _PlanningPageState extends State<PlanningPage>{
 
         categoryData[categoryName] =
             Datademunger.toCurrency(amt, symbol: "\$");
-        print("Fire two $i: $categoryName ${theSet[categoryName]}");
+      //  print("Fire two $i: $categoryName ${theSet[categoryName]}");
 
       }
 
@@ -257,7 +269,7 @@ class _PlanningPageState extends State<PlanningPage>{
           padding: EdgeInsets.symmetric(vertical:4.0),
           onPressed: (){
             //it's already asynchronous
-            newGross(categoryName,amt,widget.myRange.isoFrom());
+            newGross(categoryName,amt,myRange.isoFrom());
           },
           child:Row(
               children:[
@@ -283,36 +295,7 @@ class _PlanningPageState extends State<PlanningPage>{
     }
     return items;
   }
-  
-  void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
-  {
-    String rv = originalDate;
-    List<String> datelets = originalDate.split("/");
-    DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
-    DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
-    DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
 
-
-/*
-//Todo: Rework this per https://docs.flutter.io/flutter/cupertino/CupertinoDatePicker-class.html
-need a bottom sheet, a row containing cancel and done buttons, and a row containing the Picker
-  CupertinoDatePicker.showDatePicker(
-      context,
-      dateFormat:"mmm-dd-yyyy",
-      minYear:minDate.year,
-      maxYear:maxDate.year,
-      initialYear:currentDate.year,
-      initialMonth: currentDate.month,
-      initialDate: currentDate.day,
-      locale:'en_US',
-      showTitleActions:true,
-      onConfirm:((int year, int month, int date){
-        rv=fromISOtoUS("$year-$month-$date");
-        actOnDate(rv);
-      })
-  );
-  */
-  }
 
   Future<String> askDate(BuildContext context,String originalDate) async {
     String rv = originalDate;
@@ -456,9 +439,10 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("From: ",widget.myRange.date1,((String value)
+                child: _getDateButton("From: ",myRange.date1,((String value)
                 {
-                  widget.myRange.setDate1(value);
+                  myRange.setDate1(value);
+                  outerRange.setDate1(value);
                   this.loadCategoryData();
                 })
                 )
@@ -467,7 +451,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
             Expanded(
                 flex: 3,
                 child: new Text(
-                  widget.myRange.date1,
+                  myRange.date1,
                   textAlign: TextAlign.center,
                   style: Theme
                       .of(context)
@@ -481,9 +465,10 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
           children:[
             Expanded(
                 flex: 1,
-                child: _getDateButton("To: ",widget.myRange.date2,((String value)
+                child: _getDateButton("To: ",myRange.date2,((String value)
                 {
-                  widget.myRange.setDate2(value);
+                  myRange.setDate2(value);
+                  outerRange.setDate2(value);
                   this.loadCategoryData();
                 })
                 )
@@ -492,7 +477,7 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
             Expanded(
                 flex: 3,
                 child: new Text(
-                  widget.myRange.date2,
+                  myRange.date2,
                   textAlign: TextAlign.center,
                   style: Theme
                       .of(context)
@@ -686,8 +671,11 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
     }
     if(!Platform.isIOS) {
 
-      String feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder:(context) => GrossallocPage(category:categoryName, isoDate:date,strAmount:amt))
+      Planister().category = categoryName;
+      Planister().isoDate = date;
+      Planister().strAmount = amt;
+      await Navigator.of(context).push(
+          MaterialPageRoute(builder:(context) => GrossallocPage())
       );
       loadCategoryData();
     }
@@ -751,22 +739,20 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
 
 
 class GrossallocPage extends StatelessWidget {
-  String category;
-  String isoDate;
-  String strAmount;
-  RealGrossPage actualPage;
 
-  GrossallocPage({Key key,@required this.category,@required this.isoDate,@required this.strAmount}):super(key:key);
+  //RealGrossPage actualPage;
+
+
 
   @override
   Widget build(BuildContext context) {
 
-    actualPage = RealGrossPage(category:category,isoDate:isoDate,strAmount:strAmount);
+    //actualPage =
     return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
-            title: new Text(category),
+            title: new Text(Planister().category),
             leading:IconButton(
                 icon:Icon(Icons.close),
                 onPressed: () {
@@ -803,14 +789,14 @@ class GrossallocPage extends StatelessWidget {
         body: new Center(
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-            child: actualPage
+            child: RealGrossPage()
         )
     );
   }
 
   void returnFromSavePlanned(BuildContext context) async {
-    print("sending $category $isoDate, ${actualPage.strAmount}");
-    Future<String> proto = Logitem.saveCategoryPlan(category:category,isoDate:isoDate,amount:actualPage.strAmount);
+    print("sending ${Planister().category} ${Planister().isoDate}, ${Planister().strAmount}");
+    Future<String> proto = Logitem.saveCategoryPlan(category:Planister().category,isoDate:Planister().isoDate,  amount:Planister().strAmount);
     proto.then((result) {
       /*
                     if(!Logitem.lastError.isNullOrEmpty())
@@ -821,34 +807,31 @@ class GrossallocPage extends StatelessWidget {
                     {
                      */
       if (result.startsWith("OK")) {
-        Navigator.of(context).pop(category);
+        Navigator.of(context).pop(Planister().category);
       }
     });
   }
 
 }
-/*
+
 class RealGrossPage extends StatefulWidget {
   @override
   _RealGrossPageState createState() => new _RealGrossPageState();
 }
 
 class _RealGrossPageState extends State<RealGrossPage> {
-  */
+/*
 class RealGrossPage extends StatelessWidget {
-
+*/
 
   TextEditingController amtController;
 
   TextInputFormatter formatCurrency;
 
-  String strAmount;
-  String category;
-  String isoDate;
 
-  RealGrossPage({Key key,@required this.category,@required this.isoDate,@required this.strAmount}){
+  _RealGrossPageState({Key key}) {
     formatCurrency = OneDecimalPoint();
-    amtController= TextEditingController(text:strAmount.replaceAll("\$",""));
+    amtController= TextEditingController(text:Planister().strAmount.replaceAll("\$",""));
   }
   /*
   @override
@@ -858,7 +841,7 @@ class RealGrossPage extends StatelessWidget {
     super.initState();
   }
   */
-/*
+
   @override
   void dispose() {
     if(amtController != null)
@@ -868,7 +851,7 @@ class RealGrossPage extends StatelessWidget {
 
     super.dispose();
   }
-  */
+
 
   @override
   Widget build(BuildContext context)
@@ -880,7 +863,7 @@ class RealGrossPage extends StatelessWidget {
 
     return Column (
         children: <Widget>[
-          Text("Date: "+ Datademunger.fromISOtoUS(this.isoDate),style:dialogStyle(context))
+          Text("Date: "+ Datademunger.fromISOtoUS(Planister().isoDate),style:dialogStyle(context))
           ,
           Text(
             "Amount",
@@ -902,7 +885,7 @@ class RealGrossPage extends StatelessWidget {
                 style: largeTextFieldStyle(context),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onChanged: ((String value){
-                  strAmount = value;
+                  Planister().strAmount = value;
                 }),
               ),
 
@@ -954,8 +937,8 @@ class OneDecimalPoint extends TextInputFormatter {
 
 
 class PlanItemPage extends StatelessWidget{
-  Logitem incoming;
-  String defaultDate;
+  final Logitem incoming;
+  final String defaultDate;
 
   PlanItemPage({Key key,this.incoming,this.defaultDate}): super(key:key);
   @override
@@ -966,6 +949,7 @@ class PlanItemPage extends StatelessWidget{
       content = incoming.title;
     }
 
+    var working = this.incoming;
     if(incoming == null)
     {
       /*
@@ -982,7 +966,7 @@ class PlanItemPage extends StatelessWidget{
       }
 */
 
-      incoming = new Logitem(
+      working = new Logitem(
           name:"",
           amt: 0,
           category: "",
@@ -991,7 +975,7 @@ class PlanItemPage extends StatelessWidget{
     }
 
     print("building full page");
-    var zeForm = PlanitemPageform(incoming);
+    var zeForm = PlanitemPageform(working);
     return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -1039,10 +1023,10 @@ class PlanItemPage extends StatelessWidget{
 }
 
 class PlanitemPageform extends StatefulWidget {
-  Logitem chosen;
-  PlanitemPageform(Logitem incoming,{Key key}):super(key:key) {
+  final Logitem chosen;
+  PlanitemPageform(this.chosen,{Key key}):super(key:key) {
     //super(key:key);
-    this.chosen = incoming;
+    //this.chosen = incoming;
     if(chosen == null)
     {
       print("Pageform got a null");
@@ -1077,6 +1061,7 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
     initState()
     {
 
+      super.initState();
       for(int i=0;i<categories.length;i++) {
         categoryName.add(categories[i].keys.first);
         categoryNote.add(categories[i].values.first);
@@ -1102,7 +1087,6 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
       {
         print("Pageform initState got ${widget.chosen}");
       }
-      super.initState();
     }
     @override
     dispose()

@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
 List<Map<String,String>> categories =[
   {"Living expenses":"housing,telecommunications, utilities, insurance"},
   {"Groceries":null},
@@ -141,7 +144,7 @@ class Datademunger {
     return datelets[2]+"-"+datelets[0]+"-"+datelets[1];
   }
 
-  static String getISOOffset({int dmonths = 0 , int ddays = 0, String fromISODate = null}) {
+  static String getISOOffset({int dmonths = 0 , int ddays = 0, String fromISODate}) {
 	  if(fromISODate == null)
     {
       var base = DateTime.now();
@@ -247,4 +250,27 @@ class DatePair {
       return comparedate1;
     }
   }
+}
+
+void doAlert(BuildContext context,String what) {
+  showDialog(
+      context:context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Money Logs ran into trouble"),
+          content: SingleChildScrollView(
+              child: Text(what)
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('DISMISS'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
+  );
 }

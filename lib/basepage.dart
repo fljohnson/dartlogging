@@ -1,17 +1,20 @@
 import 'dart:io';
 
-import 'package:basketnerds/logitem.dart';
+//import 'package:basketnerds/logitem.dart';
 import 'package:basketnerds/pseudoresources.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class PageWidget extends StatefulWidget {
+  /*
   State<PageWidget> toUpdate;
+  DatePair myRange;
+  */
   PageWidget({Key key}) : super(key:key);
 
   @override
-  State<StatefulWidget> createState() {
+  State<PageWidget> createState() {
     return null;
   }
 
@@ -23,8 +26,8 @@ class PageWidget extends StatefulWidget {
 }
 
 abstract class PageState {
-
-
+  State<PageWidget> toUpdate;
+  DatePair myRange;
   //it needed to be common to all pages
   Widget getDateButton(BuildContext context,String label,String initialDate,actOnDate(String value)) {
 
@@ -64,12 +67,13 @@ abstract class PageState {
 
   void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
   {
+    /*known good - keep this
     String rv = originalDate;
     List<String> datelets = originalDate.split("/");
     DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
     DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
     DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
-
+*/
 
 /*
 //Todo: Rework this per https://docs.flutter.io/flutter/cupertino/CupertinoDatePicker-class.html

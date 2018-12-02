@@ -287,6 +287,42 @@ static Future<String> exportToExternal({String localUrl}) async {
     }
     return rv;
   }
+  static Future<Map<String, num>> getNumericTotals(String isoFrom,
+      String isoTo,{String entrytype = "logging"}) async {
+    Map<String, num> rv = {};
+
+    lastError="";
+    try {
+
+      for (int i = 0; i < categories.length; i++) {
+        String category = categories[i].keys.first;
+        num total = 0.0;
+
+        //lastError += "Sought: \"$category\"";
+        List<Map> raw = await database.rawQuery(
+            'SELECT sum(amount) FROM Logitem where entryType = ?  and category = ? and thedate >= ? and thedate <= ?',
+            [entrytype,category, isoFrom, isoTo]);
+
+        total = raw[0].values.first;
+        if (total == null) {
+          rv[category] = 0.0;
+        }
+        else {
+          if(!rv.containsKey(category))
+          {
+            rv[category] = 0.0;
+          }
+          rv[category] += total;
+        }
+      }
+    }
+    catch(ecch) {
+      lastError=ecch.toString();
+      print("Falta: $lastError");
+    }
+
+    return rv;
+  }
 
   int _id = -1;
   String thedate;
@@ -625,6 +661,11 @@ int rv = 0;
       await createSampleData();
     }
     Map<String,num> rv = Map<String,num>();
+    //initialize, to guard against where there never was a Planitem entry for a given category
+    for(int i=0;i<categories.length;i++)
+    {
+      rv[categories[i].keys.first] = 0.0;
+    }
     try {
       List<Map> raw = await database.rawQuery(
           'SELECT category,amount FROM Planitem where thedate >= ? and thedate <= ?',
