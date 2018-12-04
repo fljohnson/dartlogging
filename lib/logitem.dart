@@ -99,15 +99,43 @@ static Future<String> exportToExternal({String localUrl}) async {
     {
       platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
     }
+
     String rv;
     try {
       final String result = await platform.invokeMethod(
         "getFileToOpen",[write]);
-      rv = result;
+      if(result !=null)
+      {
+        if(write)
+        {
+
+          if(result == "" )
+          {
+            lastError = "Directory is not writable";
+            return rv;
+          }
+          rv = result;
+          //todo: degoof "name .csv" AND name (n).csv";
+          print("got filename $rv");
+          if(result.endsWith(" .csv"))
+          {
+            rv = result.replaceAll(" .csv",".csv");
+            await File(result).rename(rv);
+          }
+        }
+        else
+        {
+          rv = result;
+        }
+
+      }
+
+      //rv = result;
     }
     on PlatformException catch(ecch) {
       lastError = ecch.message;
     }
+
     return rv;
   }
 
@@ -151,7 +179,7 @@ static Future<String> exportToExternal({String localUrl}) async {
           {
 
             await db.execute(
-              "ALTER TABLE Logitem ADD entryType TEXT DEFAUT NULL"
+              "ALTER TABLE Logitem ADD entryType TEXT DEFAULT 'logging'"
             );
             //possible time-saving alteration
             await db.execute(
@@ -444,6 +472,7 @@ static Future<String> exportToExternal({String localUrl}) async {
 			}
 		catch(e) {
 			lastError = e.toString();
+			print("failed $lastError");
 		}
       }
    // });
@@ -454,12 +483,14 @@ static Future<String> exportToExternal({String localUrl}) async {
     final res = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
     if(res != PermissionStatus.authorized)
     {
+      print("bailing due to permission $res");
       return null;
     }
     List<Logitem> rawGoods = await getRange(from, to);
     List<List<dynamic>> rv = [
       ["ID","Date","What","Amount","Category","Details"]
     ];
+    print("about to write ${rawGoods.length} records");
     for(Logitem row in rawGoods)
     {
       if(row.details == null){
@@ -628,11 +659,11 @@ int rv = 0;
             'SELECT id FROM Logitem where category = ? and thedate = ? and amount = ? and what = ?',
             [possCategory, possDate, possAmount,possWhat]);
 
-
         if(presence.length == 0)
         {
           await _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
         }
+
 
     }
   }
@@ -641,15 +672,22 @@ int rv = 0;
   {
     //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
     await database.transaction((txn) async {
-      if (details == null || details.isEmpty) {
-        await txn.rawInsert(
-            'INSERT INTO Logitem(what,amount,category,thedate) VALUES(?,?,?,?)',
-            [title, amount, category, thedate]);
+      try {
+        if (details == null || details.isEmpty) {
+          await txn.rawInsert(
+              'INSERT INTO Logitem(what,amount,category,thedate,entryType) VALUES(?,?,?,?,"logging")',
+              [title, amount, category, thedate]);
+        }
+        else {
+          await txn.rawInsert(
+              'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
+              [title, amount, category, thedate, details]);
+        }
       }
-      else {
-        await txn.rawInsert(
-            'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
-            [title, amount, category, thedate, details]);
+      catch(ecch)
+      {
+        lastError = ecch.toString();
+        print("DOH! $lastError");
       }
     });
   }

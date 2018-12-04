@@ -1007,6 +1007,12 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
           {
           Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
         }
+        else
+          {
+            if(Logitem.lastError != null) {
+              doAlert(context, "Failure on export:${Logitem.lastError}");
+            }
+          }
       });
       break;
       default:
@@ -1395,6 +1401,8 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
   Future<List<Widget>>fetchRows() async {
     List<Widget> panelBody = [];
 
+    String friendlyDate;
+
     //get the Logitems matching this.range, ordered by date DESC
     List<Logitem> hits = await Logitem.getRange(
         loggingRange.isoFrom(), loggingRange.isoTo());
@@ -1403,7 +1411,8 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
     String dateLabel = "";
     if (hits.length > 0) {
       dateLabel = hits[0].thedate;
-      panelBody.add(dateMark("Date: $dateLabel"));
+      friendlyDate = Datademunger.fromISOtoUS(dateLabel);
+      panelBody.add(dateMark("Date: $friendlyDate"));
       panelBody.add(dataRow(hits[0]));
     }
 
@@ -1414,8 +1423,9 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
         {
           //flush it
           dateLabel = hits[i].thedate;
+          friendlyDate = Datademunger.fromISOtoUS(dateLabel);
 
-          panelBody.add(dateMark("Date: $dateLabel"));
+          panelBody.add(dateMark("Date: $friendlyDate"));
         }
       panelBody.add(dataRow(hits[i]));
     }

@@ -9,6 +9,7 @@ List<Map<String,String>> categories =[
   {"Household":"hardware, cleaning supplies, furnishings"},
   {"Transportation":"tolls, fuel, fares, parking"},
   {"Medical":"office visits,prescriptions"},
+  {"Personal care":"clothing,haircuts,toiletries"},
   {"Entertainment":"includes food out"},
   {"Debts":null},
   {"Savings":null},
@@ -23,7 +24,7 @@ class Datademunger {
 	static String isoifyDate(String input)
 	{
 
-    for(int i=patterns.length -1;i>=0;i--)
+    for(int i=0;i<patterns.length;i++)
     {
       String suspect=patterns[i].stringMatch(input);
       if(suspect != null )

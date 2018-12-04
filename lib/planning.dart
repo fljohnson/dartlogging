@@ -113,24 +113,7 @@ class PlanningPage extends PageWidget {
         ]
     );
   }
-  Widget upperlistFooter() {
-    return Row(
-        children:[
-          Expanded(
-            flex:1,
-            child: Text("Totals"),
-          ),
-          Expanded(
-            flex:1,
-            child: Text("\$1234.00"),
-          ),
-          Expanded(
-            flex:1,
-            child: Text("\$5678.90"),
-          ),
-        ]
-    );
-  }
+
 
 
 
@@ -144,6 +127,8 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   Map<String,String> categoryData = {};
   Map<String,String> categoryMicros = {};
   List<Logitem> lirows = [];
+  num macroPlanTotal;
+  num microPlanTotal;
 
 
 
@@ -175,6 +160,8 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
       categoryData[categoryName] = "\$0.00";
       categoryMicros[categoryName] = "\$0.00";
     }
+    microPlanTotal = 0.0;
+    macroPlanTotal = 0.0;
   }
 
 
@@ -185,17 +172,23 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     var muTotals = await Logitem.getTotals(myRange.isoFrom(),myRange.isoTo(),entrytype:"planning");
     var theRange = await Logitem.getRange(myRange.isoFrom(),myRange.isoTo(), entrytype: "planning");
     setState(() {
+      microPlanTotal = 0.0;
       for(int i=0;i < muTotals.length;i++)
       {
         categoryMicros[muTotals[i].keys.first] = muTotals[i].values.first;
+        num augend = Logitem.toNumber(muTotals[i].values.first.replaceAll("\$",""));
+        microPlanTotal += augend;
       }
 
+      macroPlanTotal = 0.0;
       for (int i = 0; i < len; i++) {
         amt = 0.0;
         var categoryName = categories[i].keys.first.toString();
         if (theSet.containsKey(categoryName)) {
           amt = theSet[categoryName];
         }
+
+        macroPlanTotal += amt;
 
         categoryData[categoryName] =
             Datademunger.toCurrency(amt, symbol: "\$");
@@ -249,6 +242,25 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   }
 
 
+  Widget upperlistFooter() {
+    return Row(
+        children:[
+          Expanded(
+            flex:1,
+            child: Text("Totals"),
+          ),
+          Expanded(
+            flex:1,
+            child: Text(Logitem.toDollarString(microPlanTotal)),
+          ),
+          Expanded(
+            flex:1,
+            child: Text(Logitem.toDollarString(macroPlanTotal)),
+          ),
+        ]
+    );
+  }
+
   List<Widget> upperlistView(BuildContext context) {
     List<Widget> items = [];
 
@@ -274,17 +286,19 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
           child:Row(
               children:[
                 Expanded(
-                  flex:1,
+                  flex:3,
                   child:Text(categoryName,style:rowStyle(context)),
                 ),
                 Expanded(
-                  flex:1,
-                  child:Text(specificTotal,style:rowStyle(context)),
+                  flex:2,
+                  child:Text(specificTotal,style:rowStyle(context),
+                      textAlign:TextAlign.right),
                 ),
                 Expanded(
-                  flex:1,
+                  flex:2,
                   //child:Text(Datademunger.toCurrency(amt,symbol:"\$")),
-                  child:Text(amt,style:rowStyle(context)),
+                  child:Text(amt,style:rowStyle(context),
+                  textAlign:TextAlign.right),
                 )
 
               ]
@@ -390,13 +404,13 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                 ),
                 Expanded(
                   flex:1,
-                  child: widget.upperlistFooter(),
+                  child: upperlistFooter(),
                 )
 
 
               ]
             ),
-            color:Colors.blueGrey.shade100
+           // color:Colors.blueGrey.shade100
         )
         )
       ],
@@ -408,7 +422,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         Container(
             width: 200.0,
             height:190.0,
-            color:Colors.orangeAccent.shade100,
+            //color:Colors.orangeAccent.shade100,
           child: Column(
             children: <Widget>[
               Expanded(
@@ -513,6 +527,10 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
           ),
           Expanded(
             flex:1,
+            child: Text("Amount"),
+          ),
+          Expanded(
+            flex:1,
             child: Text("Planned date"),
           ),
         ]
@@ -539,16 +557,20 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
               child:Row(
                   children:[
                     Expanded(
-                      flex:1,
+                      flex:2,
                       child:Text(lirows[i].title),
                     ),
                     Expanded(
-                      flex:1,
+                      flex:3,
                       child:Text(lirows[i].category),
                     ),
                     Expanded(
-                      flex:1,
+                      flex:2,
                       child:Text(lirows[i].stramount()),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child:Text(Datademunger.fromISOtoUS(lirows[i].thedate)),
                     )
                   ]
               )

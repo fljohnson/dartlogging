@@ -15,9 +15,11 @@ import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 
 import io.flutter.app.FlutterActivity;
+import io.flutter.plugin.common.FlutterException;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
@@ -99,7 +101,7 @@ public class MainActivity extends FlutterActivity {
   }
   */
 private String getExternalDir() {
-  File filesilly = Environment.getExternalStoragePublicDirectory("My Documents");
+  File filesilly = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
   return filesilly.getAbsolutePath();
 }
 
@@ -131,6 +133,14 @@ private String getExternalDir() {
     //intent.setType("text/comma-separated-values");
     //cheater's move
     intent.setType(MimeTypeMap.getSingleton().getMimeTypeFromExtension("csv"));
+    String mes = Environment.getExternalStorageDirectory().toString();
+    //String mes = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).toString();
+
+    mes ="document/primary:My Documents"; //right value, but wrong way to set it.
+    //mes += "My Documents";
+    Uri sanity = new Uri.Builder().scheme("content").authority("com.android.externalstorage.documents").path(mes).build();
+//    System.out.println("DICEY URI:"+sanity.toString());
+    intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI,sanity);
 
     startActivityForResult(intent, READ_REQUEST_CODE);
   }
@@ -154,8 +164,14 @@ private String getExternalDir() {
         if(shippable != null)
         {
           String aha = getUriRealPath(this,uri);
-          aha = aha.replace(" .csv",".csv");
-          shippable.success(aha);
+          if(aha == "")
+          {
+            tryAgain();
+          }
+          else {
+            //aha = aha.replace(" .csv",".csv");
+            shippable.success(aha);
+          }
         }
       }
       return;
@@ -181,13 +197,21 @@ private String getExternalDir() {
     return ret;
   }
 
+  private void tryAgain()
+  {
+    //1. if we weren't writing, return
+    //2. alert the user that we can't export to this directory:Choose Another or dismiss
+    //3 if Choose Another,
+    performFileSearch(true);
+  }
+
   private String getUriRealPathAboveKitkat(Context ctx, Uri uri)
   {
     String ret = "";
 
     if(ctx != null && uri != null) {
         if(isDocumentUri(ctx, uri)){
-
+//System.out.println("Normal URI:"+uri.toString());
         // Get uri related document id.
         String documentId = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -208,12 +232,14 @@ private String getExternalDir() {
             if("primary".equalsIgnoreCase(type))
             {
               ret = Environment.getExternalStorageDirectory() + "/" + realDocId;
+              //ret = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS) + "/" + realDocId;
             }
           }
         }
 
         if(isDownloadDoc(uriAuthority))
         {
+			
           // Build download uri.
           Uri downloadUri = Uri.parse("content://downloads/public_downloads");
 
@@ -221,6 +247,28 @@ private String getExternalDir() {
           Uri downloadUriAppendId = ContentUris.withAppendedId(downloadUri, Long.valueOf(documentId));
 
           ret = getImageRealPath(getContentResolver(), downloadUriAppendId, null);
+          if(ret=="")
+          {
+            /*
+            Dart app can't write to this directory, but we somehow have a reserved filename
+            -a zero-length file with the intended name-as a result of the sub-Activity
+
+            This cleans up the mess, and starts the process of asking the user for a different directory
+            */
+            try {
+              //System.out.println("Flutter can't write to " + uri.toString());
+
+              DocumentsContract.deleteDocument(getContentResolver(), uri);
+              //System.out.println("BYE BYE!" + uri.toString());
+            }
+            catch(Exception ecch)
+            {
+       //       System.out.println("deletion failed:"+ecch.toString());
+            }
+
+          }
+
+          
 
         }
 
@@ -313,9 +361,17 @@ private String getExternalDir() {
   private String getImageRealPath(ContentResolver contentResolver, Uri uri, String whereClause)
   {
     String ret = "";
+    Cursor cursor = null;
 
-    // Query the uri with condition.
-    Cursor cursor = contentResolver.query(uri, null, whereClause, null, null);
+    //System.out.println("SEEKING "+uri.toString());
+    try {
+      // Query the uri with condition.
+      cursor = contentResolver.query(uri, null, whereClause, null, null);
+    }
+    catch(Exception ecch)
+    {
+   //   System.out.println("Missed:"+ ecch.getMessage());
+    }
 
     if(cursor!=null)
     {

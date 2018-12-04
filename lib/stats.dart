@@ -21,8 +21,11 @@ class DummyPage extends PageWidget {
 
 class _DummyPageState extends State<DummyPage> with PageState {
   TabController tabctl;
+  num moment;
 
-  _DummyPageState({this.tabctl});
+  _DummyPageState({this.tabctl}){
+    moment = tabctl.animation.value;
+  }
   //can you smell the potential for reuse?
 
 
@@ -34,6 +37,7 @@ class _DummyPageState extends State<DummyPage> with PageState {
   @override void initState() {
 
     super.initState();
+
     //set the default date range
     String isoStart = Datademunger.getISOOffset(dmonths:0);
     var arry = isoStart.split("-");
@@ -43,8 +47,14 @@ class _DummyPageState extends State<DummyPage> with PageState {
     myRange = DatePair(isoStart,isoEnd);
 
     primeTotals();
-    loadTotals();
+
+
+    if(moment > 0 && moment < 2 ) {
+      loadTotals();
+    }
+
   }
+
 
   void primeTotals()
   {
@@ -63,8 +73,7 @@ class _DummyPageState extends State<DummyPage> with PageState {
     var results = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "logging");
     var microplanned = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "planning");
     var macroplanned = await Logitem.getPlannedTotals(myRange.isoFrom(), myRange.isoTo());
-    if(tabctl.index != 1)
-    {
+    if(moment == 0 || moment == 2 ) {
       return;
     }
     setState(() {
@@ -134,15 +143,18 @@ class _DummyPageState extends State<DummyPage> with PageState {
     {
       String categoryName = categories[i].keys.first;
       rows.add(
-          Row(
+        Container(
+          margin:EdgeInsets.symmetric(vertical: 8.0),
+          child:Row(
             children: <Widget>[
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                     child:Text(categoryName,style: Theme
                         .of(context)
                         .textTheme
-                        .title)
+                        .title
+                    )
                 ),
               ),
               Expanded(
@@ -166,6 +178,9 @@ class _DummyPageState extends State<DummyPage> with PageState {
             ],
 
           )
+        )
+
+
       );
     }
 
