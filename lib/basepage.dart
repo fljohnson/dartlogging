@@ -11,6 +11,8 @@ class PageWidget extends StatefulWidget {
   State<PageWidget> toUpdate;
   DatePair myRange;
   */
+
+  final List<String> range = [];
   PageWidget({Key key}) : super(key:key);
 
   @override

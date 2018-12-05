@@ -38,13 +38,18 @@ class _DummyPageState extends State<DummyPage> with PageState {
 
     super.initState();
 
-    //set the default date range
-    String isoStart = Datademunger.getISOOffset(dmonths:0);
-    var arry = isoStart.split("-");
-    isoStart=arry[0]+"-"+arry[1]+"-01";
-    String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
+    if(widget.range.length==0) {
+      //set the default date range
+      String isoStart = Datademunger.getISOOffset(dmonths: 0);
+      var arry = isoStart.split("-");
+      isoStart = arry[0] + "-" + arry[1] + "-01";
+      String isoEnd = Datademunger.getISOOffset(
+          dmonths: 1, ddays: -1, fromISODate: isoStart);
+      widget.range.add(isoStart);
+      widget.range.add(isoEnd);
+    }
 
-    myRange = DatePair(isoStart,isoEnd);
+    myRange = DatePair(widget.range[0],widget.range[1]);
 
     primeTotals();
 
@@ -215,6 +220,7 @@ class _DummyPageState extends State<DummyPage> with PageState {
                     flex: 1,
                     child: getDateButton(context,"From: ",myRange.date1,((String value)
                     {
+                      widget.range[0] = value;
                       myRange.setDate1(value);
                       loadTotals();
                       /*
@@ -248,6 +254,7 @@ class _DummyPageState extends State<DummyPage> with PageState {
                     flex: 1,
                     child: getDateButton(context, "To: ",myRange.date2,((String value)
                     {
+                      widget.range[1] = value;
                       myRange.setDate2(value);
                       loadTotals();
                       /*

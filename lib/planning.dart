@@ -135,13 +135,18 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
 
   @override void initState() {
     super.initState();
-    //set the default date range
-    String isoStart = Datademunger.getISOOffset(dmonths:1);
-    var arry = isoStart.split("-");
-    isoStart=arry[0]+"-"+arry[1]+"-01";
-    String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
+    if(widget.range.length==0) {
 
-    myRange = DatePair(isoStart,isoEnd);
+      //set the default date range
+      String isoStart = Datademunger.getISOOffset(dmonths:1);
+      var arry = isoStart.split("-");
+      isoStart=arry[0]+"-"+arry[1]+"-01";
+      String isoEnd = Datademunger.getISOOffset(dmonths:1,ddays:-1,fromISODate:isoStart);
+      widget.range.add(isoStart);
+      widget.range.add(isoEnd);
+    }
+
+    myRange = DatePair(widget.range[0],widget.range[1]);
 
     outerRange = DatePair(myRange.isoFrom(),myRange.isoTo());
     zeState = this;
@@ -455,6 +460,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                 flex: 1,
                 child: _getDateButton("From: ",myRange.date1,((String value)
                 {
+                  widget.range[0] = value;
                   myRange.setDate1(value);
                   outerRange.setDate1(value);
                   this.loadCategoryData();
@@ -481,6 +487,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                 flex: 1,
                 child: _getDateButton("To: ",myRange.date2,((String value)
                 {
+                  widget.range[1] = value;
                   myRange.setDate2(value);
                   outerRange.setDate2(value);
                   this.loadCategoryData();
