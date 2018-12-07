@@ -99,15 +99,26 @@ class PlanningPage extends PageWidget {
   Widget upperlistHeader() {
     return Row(
         children:[
-          Spacer(flex:1),
+          Spacer(flex:3),
           Expanded(
-              flex:1,
-              child: Text("Specific items")
+              flex:2,
+          child:Container(
+            margin:EdgeInsets.only(left:1.0),
+            child:Text("Specific items",
+              textAlign:TextAlign.right,
+              ),
+          )
           )
           ,
           Expanded(
-            flex: 1,
-            child:Text("Gross allocation"),
+            flex: 2,
+            child:Container(
+    margin:EdgeInsets.only(left:1.0),
+              child:Text("Gross allocation",
+                textAlign:TextAlign.right,
+              ),
+    )
+
           )
 
         ]
@@ -251,16 +262,18 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     return Row(
         children:[
           Expanded(
-            flex:1,
+            flex:3,
             child: Text("Totals"),
           ),
           Expanded(
-            flex:1,
-            child: Text(Logitem.toDollarString(microPlanTotal)),
+            flex:2,
+            child: Text(Logitem.toDollarString(microPlanTotal),
+                textAlign:TextAlign.right),
           ),
           Expanded(
-            flex:1,
-            child: Text(Logitem.toDollarString(macroPlanTotal)),
+            flex:2,
+            child: Text(Logitem.toDollarString(macroPlanTotal),
+                textAlign:TextAlign.right),
           ),
         ]
     );
@@ -282,32 +295,36 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
       String specificTotal = categoryMicros[categoryName];
 
       items.add(
-        FlatButton(
-          padding: EdgeInsets.symmetric(vertical:4.0),
-          onPressed: (){
+        GestureDetector(
+          child:Container(
+            margin:EdgeInsets.symmetric(vertical:1.0),
+              child:Row(
+                  children:[
+                    Expanded(
+                      flex:3,
+                      child:Text(categoryName,style:rowStyle(context)),
+                    ),
+                    Expanded(
+                      flex:2,
+                      child:Text(specificTotal,style:rowStyle(context),
+                          textAlign:TextAlign.right),
+                    ),
+                    Expanded(
+                      flex:2,
+                      //child:Text(Datademunger.toCurrency(amt,symbol:"\$")),
+                      child:Text(amt,style:rowStyle(context),
+                          textAlign:TextAlign.right),
+                    )
+
+                  ]
+              )
+          ),
+          onTapUp: (details){
             //it's already asynchronous
             newGross(categoryName,amt,myRange.isoFrom());
           },
-          child:Row(
-              children:[
-                Expanded(
-                  flex:3,
-                  child:Text(categoryName,style:rowStyle(context)),
-                ),
-                Expanded(
-                  flex:2,
-                  child:Text(specificTotal,style:rowStyle(context),
-                      textAlign:TextAlign.right),
-                ),
-                Expanded(
-                  flex:2,
-                  //child:Text(Datademunger.toCurrency(amt,symbol:"\$")),
-                  child:Text(amt,style:rowStyle(context),
-                  textAlign:TextAlign.right),
-                )
 
-              ]
-          )
+
         )
           
       );
@@ -382,66 +399,55 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   @override
   Widget build(BuildContext context) {
 
-    Widget upperlist = Expanded(flex:25,child:Row(
+    Widget upperlist = Expanded(flex:15,child:Row(
       children: <Widget>[
         Expanded(flex: 1,child:
-        Container(
-            width: 200.0,
-            height:190.0,
-            child:Column(
-              children:[
-                Expanded(
-                  flex:1,
-                  child: widget.upperlistHeader(),
-                )
-                ,
-                Expanded(
-                  flex:4,
+        Column(
+            children:[
+              Expanded(
+                flex:3,
+                child: widget.upperlistHeader(),
+              )
+              ,
+              Expanded(
+                  flex:8,
                   child: Row(
-                    children:[
-                      Expanded(
-                        flex:1,
-                        child: ListView(children:upperlistView(context))
-                      )
-                     //
-                    ]
+                      children:[
+                        Expanded(
+                            flex:1,
+                            child: ListView(children:upperlistView(context))
+                        )
+                        //
+                      ]
                   )
-                ),
-                Expanded(
-                  flex:1,
-                  child: upperlistFooter(),
-                )
+              ),
+              Expanded(
+                flex:2,
+                child: upperlistFooter(),
+              )
 
 
-              ]
-            ),
-           // color:Colors.blueGrey.shade100
+            ]
         )
         )
       ],
     )
     );
 
-    Widget lowerlist = Expanded(flex: 25,child:Row (
+    Widget lowerlist = Expanded(flex:25,child:Row (
         children:[Expanded(flex:1,child:
-        Container(
-            width: 200.0,
-            height:190.0,
-            //color:Colors.orangeAccent.shade100,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                flex:1,
-                child: lowerlistHeader(),
-              )
-              ,
-              Expanded(
-                flex:4,
-                child: lowerlistView(),
-              ),
-            ],
-
-          ),
+        Column(
+          children: <Widget>[
+            Expanded(
+              flex:1,
+              child: lowerlistHeader(),
+            )
+            ,
+            Expanded(
+              flex:4,
+              child: lowerlistView(),
+            ),
+          ],
 
         )
         )
@@ -508,8 +514,16 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
             )
           ]
       ),
+
       upperlist,
-      Spacer(
+
+      Expanded(
+        flex:3,
+        child:Text(
+            "Known upcoming outlays",
+            style:rowStyle(context),
+            textAlign:TextAlign.center
+        )
       ),
       lowerlist
     ];
@@ -526,18 +540,18 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     return Row(
         children:[
           Spacer(
-            flex:1,
+            flex:2,
           ),
           Expanded(
-            flex:1,
+            flex:3,
             child: Text("Category"),
           ),
           Expanded(
-            flex:1,
+            flex:2,
             child: Text("Amount"),
           ),
           Expanded(
-            flex:1,
+            flex:2,
             child: Text("Planned date"),
           ),
         ]
@@ -554,37 +568,38 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
       for(int i=0;i<len;i++)
       {
         items.add(
-
-            FlatButton(
-              padding: EdgeInsets.symmetric(vertical:4.0),
-              onPressed: (){
-                //it's already asynchronous
-                editSpecific(lirows[i]);
-              },
-              child:Row(
-                  children:[
-                    Expanded(
-                      flex:2,
-                      child:Text(lirows[i].title),
-                    ),
-                    Expanded(
-                      flex:3,
-                      child:Text(lirows[i].category),
-                    ),
-                    Expanded(
-                      flex:2,
-                      child:Text(lirows[i].stramount()),
-                    ),
-                    Expanded(
-                      flex:2,
-                      child:Text(Datademunger.fromISOtoUS(lirows[i].thedate)),
+            GestureDetector(
+                //padding:EdgeInsets.all(0.0),
+                onTapUp: (details){
+                  //it's already asynchronous
+                  editSpecific(lirows[i]);
+                },
+                child:Container(
+                  margin:EdgeInsets.symmetric(vertical: 2.0),
+                    child:Row(
+                        children:[
+                          Expanded(
+                            flex:2,
+                            child:Text(lirows[i].title),
+                          ),
+                          Expanded(
+                            flex:3,
+                            child:Text(lirows[i].category),
+                          ),
+                          Expanded(
+                            flex:2,
+                            child:Text(lirows[i].stramount()),
+                          ),
+                          Expanded(
+                            flex:2,
+                            child:Text(Datademunger.fromISOtoUS(lirows[i].thedate)),
+                          )
+                        ]
                     )
-                  ]
-              )
+                )
+
 
             )
-
-
         );
       }
       /*
@@ -621,6 +636,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     );
     */
       return ListView(
+        shrinkWrap: true,
           children:items
       );
     }

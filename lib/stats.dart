@@ -149,7 +149,7 @@ class _DummyPageState extends State<DummyPage> with PageState {
       String categoryName = categories[i].keys.first;
       rows.add(
         Container(
-          margin:EdgeInsets.symmetric(vertical: 8.0),
+          margin:EdgeInsets.symmetric(vertical: 2.0),
           child:Row(
             children: <Widget>[
               Expanded(
@@ -281,7 +281,23 @@ class _DummyPageState extends State<DummyPage> with PageState {
                 ]
             ),
 
-
+            Row(
+                children:[
+                  Spacer(
+                    flex:3,
+                  ),
+                  Expanded(
+                    flex:2,
+                    child: Text("Planned",
+                        textAlign: TextAlign.right),
+                  ),
+                  Expanded(
+                    flex:2,
+                    child: Text("Actual",
+                        textAlign: TextAlign.right),
+                  ),
+                ]
+            ),
             Expanded(
                 child: ListView(
                     children:totalstable

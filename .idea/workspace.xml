@@ -13,10 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/basepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/basepage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/stats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/stats.dart" afterDir="false" />
     </list>
@@ -36,7 +34,7 @@
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="180">
-              <caret line="1225" column="66" selection-start-line="1225" selection-start-column="54" selection-end-line="1225" selection-end-column="66" />
+              <caret line="186" column="19" selection-start-line="186" selection-start-column="19" selection-end-line="186" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -44,8 +42,8 @@
       <file leaf-file-name="stats.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/stats.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="33">
-              <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="32" />
+            <state relative-caret-position="213">
+              <caret line="296" column="50" selection-start-line="296" selection-start-column="50" selection-end-line="296" selection-end-column="50" />
               <folding>
                 <element signature="e#1#20#0" expanded="true" />
               </folding>
@@ -56,8 +54,8 @@
       <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="122">
-              <caret line="149" selection-start-line="149" selection-end-line="149" />
+            <state relative-caret-position="45">
+              <caret line="407" column="22" selection-start-line="407" selection-start-column="22" selection-end-line="407" selection-end-column="22" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -68,7 +66,7 @@
       <file leaf-file-name="basepage.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
+            <state relative-caret-position="15">
               <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -80,11 +78,20 @@
       <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4065">
-              <caret line="281" selection-start-line="281" selection-end-line="281" />
+            <state relative-caret-position="30">
+              <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pubspec.yaml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="17" column="2" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
             </state>
           </provider>
         </entry>
@@ -109,36 +116,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>simple</find>
-      <find>writee</find>
-      <find>_getCSVExportable</find>
-      <find>perm</find>
-      <find>getF</find>
-      <find>rena</find>
-      <find>dice</find>
-      <find>norm</find>
-      <find>defau</find>
-      <find>bail</find>
-      <find>getUriRealPathAboveKitkat</find>
-      <find>getUriRealPath</find>
-      <find>tryA</find>
-      <find>tryAgain</find>
-      <find>System.out</find>
-      <find>raws</find>
-      <find>isoifyDate</find>
-      <find>import</find>
-      <find>_insertFromCSV</find>
-      <find>pree</find>
-      <find>print</find>
-      <find>fetchRows</find>
-      <find>DatePai</find>
-      <find>setDates</find>
-      <find>askDate</find>
-      <find>from:</find>
-      <find>myRange</find>
-      <find>default</find>
-      <find>widget.</find>
       <find>myrange</find>
+      <find>upperlistFooter</find>
+      <find>upperlist</find>
+      <find>upperlis</find>
+      <find>lowerlis</find>
+      <find>vert</find>
+      <find>ver</find>
+      <find>dataRow</find>
+      <find>vertical</find>
+      <find>lowerlistView</find>
+      <find>totalsTable</find>
+      <find>vertical:</find>
+      <find>EdgeI</find>
+      <find>ListV</find>
+      <find>upperlistV</find>
+      <find>FlatButton</find>
+      <find>gross</find>
+      <find>.RIGH</find>
+      <find>lowerlistH</find>
+      <find>lowerlist</find>
+      <find>textsty</find>
+      <find>Known u</find>
+      <find>drawTable</find>
+      <find>lowerlistHe</find>
+      <find>dialogStyle</find>
+      <find>totalstable</find>
+      <find>drawtable</find>
+      <find>flex</find>
+      <find>:20</find>
+      <find>upperlistView</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -158,12 +165,13 @@
         <option value="$PROJECT_DIR$/pubspec.yaml" />
         <option value="$PROJECT_DIR$/lib/generated/i18n.dart" />
         <option value="$PROJECT_DIR$/android/app/build.gradle" />
-        <option value="$PROJECT_DIR$/lib/main.dart" />
         <option value="$PROJECT_DIR$/android/app/src/main/java/com/fouracessoftware/basketnerds/MainActivity.java" />
         <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
         <option value="$PROJECT_DIR$/lib/logitem.dart" />
-        <option value="$PROJECT_DIR$/lib/stats.dart" />
         <option value="$PROJECT_DIR$/lib/basepage.dart" />
+        <option value="$APPLICATION_CONFIG_DIR$/studio64.vmoptions" />
+        <option value="$PROJECT_DIR$/lib/main.dart" />
+        <option value="$PROJECT_DIR$/lib/stats.dart" />
         <option value="$PROJECT_DIR$/lib/planning.dart" />
       </list>
     </option>
@@ -252,6 +260,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -268,7 +277,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -276,6 +284,7 @@
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///home/floyd/CrossPlatformDev/basketnerds/lib/basepage.dart" />
     <property name="android.project.structure.last.selected" value="Project" />
     <property name="android.project.structure.proportion" value="0.15" />
     <property name="dart.analysis.tool.window.force.activate" value="false" />
@@ -522,7 +531,14 @@
       <option name="project" value="LOCAL" />
       <updated>1543956156035</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Fixed where date range got reset by change of page&#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1">
+      <created>1544040999633</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1544040999634</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TodoView">
@@ -536,7 +552,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-2" width="1370" height="740" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
@@ -547,8 +562,8 @@
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.3228477" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924472" visible="true" weight="0.32615894" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3349917" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924472" visible="true" weight="0.32615894" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
       <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
       <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
@@ -559,17 +574,17 @@
       <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
       <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.5066225" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.5066225" />
       <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
-      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.3228477" />
+      <window_info active="true" anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" visible="true" weight="0.3228477" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32615894" />
     </layout>
@@ -662,7 +677,9 @@
     <MESSAGE value="Completed Planning page, but seem to have broken the Stats page&#10;Up next: &#10;-problem may be with state-setting.&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
     <MESSAGE value="Fixed up Stats page, and made overall Dart code more to Dart/Flutter's liking.&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
     <MESSAGE value="Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
+    <MESSAGE value="Fixed where date range got reset by change of page&#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
+    <MESSAGE value="fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.&#10;&#10;Up next MAY be to work the iOS version. Odds are that file I/O per se goes native&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.&#10;&#10;Up next MAY be to work the iOS version. Odds are that file I/O per se goes native&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -725,13 +742,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/cupertino/date_picker.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="165" column="27" selection-start-line="165" selection-start-column="27" selection-end-line="165" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/cupertino/page_scaffold.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -876,13 +886,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/flutterdev/flutter/.pub-cache/hosted/pub.dartlang.org/sqflite-0.12.2+1/lib/src/database.dart" />
-    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="2" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/generated/i18n.dart" />
     <entry file="file://$USER_HOME$/flutterdev/flutter/packages/flutter/lib/src/material/dropdown.dart">
       <provider selected="true" editor-type-id="text-editor">
@@ -975,26 +978,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="2" selection-start-line="17" selection-start-column="2" selection-end-line="17" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4065">
-          <caret line="281" selection-start-line="281" selection-end-line="281" />
+        <state relative-caret-position="30">
+          <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/studio64.vmoptions">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="7" selection-start-line="1" selection-start-column="7" selection-end-line="1" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="1225" column="66" selection-start-line="1225" selection-start-column="54" selection-end-line="1225" selection-end-column="66" />
+          <caret line="186" column="19" selection-start-line="186" selection-start-column="19" selection-end-line="186" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
+        <state relative-caret-position="15">
           <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
@@ -1004,8 +1021,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/stats.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="33">
-          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="32" />
+        <state relative-caret-position="213">
+          <caret line="296" column="50" selection-start-line="296" selection-start-column="50" selection-end-line="296" selection-end-column="50" />
           <folding>
             <element signature="e#1#20#0" expanded="true" />
           </folding>
@@ -1014,8 +1031,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="149" selection-start-line="149" selection-end-line="149" />
+        <state relative-caret-position="45">
+          <caret line="407" column="22" selection-start-line="407" selection-start-column="22" selection-end-line="407" selection-end-column="22" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

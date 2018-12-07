@@ -1302,9 +1302,10 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 
   Widget dataRow(Logitem content)
   {
-    return FlatButton(
-      padding: EdgeInsets.symmetric(vertical:4.0),
-      child:new Row(
+    return GestureDetector(
+      child:Container(
+        margin: EdgeInsets.symmetric(vertical:4.0),
+        child:new Row(
           children:[
             Expanded(
               flex: 4,
@@ -1354,8 +1355,9 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
             ),
           ]
       )
+      )
         ,
-      onPressed: (() async {
+      onTapUp: ((details) async {
         chosen = content;
         Logitem feedback;
         if(!Platform.isIOS)
