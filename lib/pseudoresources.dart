@@ -117,7 +117,6 @@ class Datademunger {
   static String fromISOtoUS(String inDate)
   {
     List<String> datelets = inDate.split("-");
-
     while(datelets[1].length <2)
     {
       datelets[1]= "0" + datelets[1];

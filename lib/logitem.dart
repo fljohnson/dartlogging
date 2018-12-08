@@ -55,7 +55,7 @@ class Logitem {
   static Future<bool> blankDB() async {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
-    path = join(databasesPath, "demo.db");
+    path = join(databasesPath, "moneylogs.db");
     //await deleteDatabase(path); //remove before going live
     //throw PathException("intentional bombout");
     rv = true;
@@ -116,7 +116,7 @@ static Future<String> exportToExternal({String localUrl}) async {
           }
           rv = result;
           //todo: degoof "name .csv" AND name (n).csv";
-          print("got filename $rv");
+          //print("got filename $rv");
           if(result.endsWith(" .csv"))
           {
             rv = result.replaceAll(" .csv",".csv");
@@ -152,12 +152,12 @@ static Future<String> exportToExternal({String localUrl}) async {
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
 
    // docsdir2 = await getExtDir("My Documents");
-    database = await openDatabase(path, version: 3,
+    database = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
           // When creating the db, create the table
 
             await db.execute(
-                "CREATE TABLE Logitem (id INTEGER PRIMARY KEY, what TEXT, category, TEXT, thedate TEXT, amount REAL, details TEXT)"
+                "CREATE TABLE Logitem (id INTEGER PRIMARY KEY, what TEXT, category, TEXT, thedate TEXT, amount REAL, details TEXT,entryType TEXT DEFAULT 'logging')"
             );
             //and some indexing stuff
             //index on date
@@ -170,9 +170,29 @@ static Future<String> exportToExternal({String localUrl}) async {
                 "CREATE INDEX whys_IDX_logitem on Logitem(category)"
             );
 
+            //possible time-saving alteration
+            await db.execute(
+                "CREATE INDEX etype_IDX_logitem on Logitem(entryType)"
+            );
+
+            //okay, now that new table
+            await db.execute(
+                "CREATE TABLE Planitem (id INTEGER PRIMARY KEY, category TEXT, thedate TEXT, amount REAL)"
+            );
+            //and some indexing stuff
+            //index on date
+            await db.execute(
+                "CREATE INDEX whens_IDX_planitem on Planitem(thedate)"
+            );
+
+            //index on category
+            await db.execute(
+                "CREATE INDEX whys_IDX_planitem on Planitem(category)"
+            );
+
 
         },
-        onUpgrade: (Database db, int oldversion,int newversion) async {
+      /*  onUpgrade: (Database db, int oldversion,int newversion) async {
         for(int i=oldversion;i<newversion;i++)
         {
           if(i == 1) //v1 to v2
@@ -222,7 +242,7 @@ static Future<String> exportToExternal({String localUrl}) async {
             );
           }
         }
-      }
+      }*/
     );
     rv = true;
     return rv;
@@ -281,12 +301,14 @@ static Future<String> exportToExternal({String localUrl}) async {
     List<Logitem> rv = [];
 
     List<Map> raw = await database.rawQuery(
-        'SELECT * FROM Logitem where entryType = ? AND thedate >= ? and thedate <= ? ORDER BY thedate DESC',
-       [entrytype,isoFrom, isoTo]);
-    /*'SELECT * FROM Logitem where entryType != ? AND thedate >= ? and thedate <= ? ORDER BY thedate DESC',
-    ["planning",isoFrom, isoTo]);*/
-
-    for (int i = raw.length - 1; i >= 0; i--) {
+       'SELECT * FROM Logitem where entryType = ? AND thedate >= ? and thedate <= ? ORDER BY thedate DESC',
+        [entrytype,isoFrom, isoTo]);
+    /*
+    'SELECT * FROM Logitem where thedate >= ? and thedate <= ? ORDER BY thedate DESC',
+    [isoFrom, isoTo]);
+    */
+    for (int i = 0;i< raw.length ;i++) {
+      //print("hit id # ${raw[i]['id']} ${raw[i]['thedate']}");
       rv.add(Logitem.fromMap(raw[i]));
     }
     return rv;
@@ -490,7 +512,7 @@ static Future<String> exportToExternal({String localUrl}) async {
     List<List<dynamic>> rv = [
       ["ID","Date","What","Amount","Category","Details"]
     ];
-    print("about to write ${rawGoods.length} records");
+   // print("about to write ${rawGoods.length} records");
     for(Logitem row in rawGoods)
     {
       if(row.details == null){
@@ -656,13 +678,15 @@ int rv = 0;
 
         //if we're here, it's safe to check for preexistence
         List<Map> presence = await database.rawQuery(
-            'SELECT id FROM Logitem where category = ? and thedate = ? and amount = ? and what = ?',
+            'SELECT * FROM Logitem where category = ? and thedate = ? and amount = ? and what = ?',
             [possCategory, possDate, possAmount,possWhat]);
 
         if(presence.length == 0)
         {
           await _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
         }
+
+
 
 
     }

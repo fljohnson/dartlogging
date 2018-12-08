@@ -1,9 +1,11 @@
 package com.fouracessoftware.basketnerds;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -27,6 +29,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 public class MainActivity extends FlutterActivity {
   private static final String CHANNEL = "com.fouracessoftware.basketnerds/filesys";
   private static final int READ_REQUEST_CODE = 42;
+  private Boolean writing;
   private static MethodChannel.Result shippable;
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class MainActivity extends FlutterActivity {
 
     new MethodChannel(getFlutterView(), CHANNEL).setMethodCallHandler(
             new MethodChannel.MethodCallHandler() {
+
+
               @Override
               public void onMethodCall(MethodCall call, MethodChannel.Result result) {
                 String tosend = "";
@@ -54,7 +59,8 @@ public class MainActivity extends FlutterActivity {
 
                   calledAction = 1; //assumes whatever File Picker exists to be asynchronous
                   shippable = result;
-                  performFileSearch((Boolean)((ArrayList)call.arguments).get(0));
+                  writing = (Boolean)((ArrayList)call.arguments).get(0);
+                  performFileSearch();
                 }
                 if(calledAction == -1)
                 {
@@ -109,12 +115,12 @@ private String getExternalDir() {
   /**
    * Fires an intent to spin up the "file chooser" UI and select an image.
    */
-  public void performFileSearch(Boolean write) {
+  public void performFileSearch() {
 
     // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
     // browser.
     Intent intent;
-    if(write) {
+    if(writing) {
       intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
     }
     else {
@@ -200,9 +206,22 @@ private String getExternalDir() {
   private void tryAgain()
   {
     //1. if we weren't writing, return
+    if(!writing)
+    {
+      return;
+    }
     //2. alert the user that we can't export to this directory:Choose Another or dismiss
-    //3 if Choose Another,
-    performFileSearch(true);
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    builder.setMessage(R.string.dir_not_writable);
+    builder.setPositiveButton("Use other folder", new DialogInterface.OnClickListener() {
+      @Override
+      public void onClick(DialogInterface dialogInterface, int i) {
+        //3. if the user chooses to find another folder, start again.
+        performFileSearch();
+      }
+    });
+    builder.create().show();
+
   }
 
   private String getUriRealPathAboveKitkat(Context ctx, Uri uri)
