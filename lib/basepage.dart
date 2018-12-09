@@ -16,7 +16,8 @@ TextStyle columnHeaderStyle = TextStyle (
   color:Colors.black,
   fontSize: 16.0,
   fontStyle: FontStyle.normal,
-  fontWeight:FontWeight.bold
+  fontWeight:FontWeight.bold,
+  decoration:TextDecoration.none
 );
 class PageWidget extends StatefulWidget {
   /*
