@@ -546,6 +546,7 @@ int rv = 0;
       //readin = await input.readAsString();
       //readin = input.readAsLinesSync();
       readin = fileContents.split("\n");
+      throw FormatException("got ${readin.length} records");
       await _doCSVImport(readin);
       if(lastError == "")
       {
@@ -558,9 +559,9 @@ int rv = 0;
     }
     catch(ecch)
     {
-      if(lastError.length == 0) {
+     // if(lastError.length == 0) {
         lastError = ecch.message;
-      }
+     // }
       rv = -1;
     }
     return rv;
