@@ -547,7 +547,14 @@ int rv = 0;
       //readin = input.readAsLinesSync();
       readin = fileContents.split("\n");
       await _doCSVImport(readin);
-      rv = 1; //consider setting this to number of rows actually inserted
+      if(lastError == "")
+      {
+      	rv = 1; //consider setting this to number of rows actually inserted
+      }
+      else
+      {
+      	rv = -1;
+      }
     }
     catch(ecch)
     {
