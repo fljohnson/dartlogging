@@ -6,6 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+TextStyle mainTextStyle = TextStyle(
+    color:Colors.black,
+  fontSize: 18.0,
+  fontStyle: FontStyle.normal
+);
+
+TextStyle columnHeaderStyle = TextStyle (
+  color:Colors.black,
+  fontSize: 16.0,
+  fontStyle: FontStyle.normal,
+  fontWeight:FontWeight.bold
+);
 class PageWidget extends StatefulWidget {
   /*
   State<PageWidget> toUpdate;

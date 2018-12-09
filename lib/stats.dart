@@ -289,11 +289,13 @@ class _DummyPageState extends State<DummyPage> with PageState {
                   Expanded(
                     flex:2,
                     child: Text("Planned",
+                    	style:columnHeaderStyle,
                         textAlign: TextAlign.right),
                   ),
                   Expanded(
                     flex:2,
                     child: Text("Actual",
+                        style:columnHeaderStyle,
                         textAlign: TextAlign.right),
                   ),
                 ]

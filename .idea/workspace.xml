@@ -14,8 +14,6 @@
   <component name="ChangeListManager">
     <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/basepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/basepage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -53,8 +51,8 @@
       <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="362" column="7" lean-forward="true" selection-start-line="362" selection-start-column="7" selection-end-line="362" selection-end-column="7" />
+            <state relative-caret-position="512">
+              <caret line="830" column="13" lean-forward="true" selection-start-line="830" selection-start-column="13" selection-end-line="830" selection-end-column="13" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -552,7 +550,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544308856157</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.">
+      <created>1544327088820</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1544327088820</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TodoView">
@@ -566,7 +571,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-2" width="1370" height="740" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info id="Build Variants" order="2" side_tool="true" />
@@ -670,7 +674,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Brought in Cupertino underpinnngs, and created a functional iOS version. Up next:&#10;-test this one out&#10;-unify Cupertino and Material(Android) variants" />
     <MESSAGE value="Fixed rounding issue in Logitem.toNumber(). Up next:&#10;-hoping for feedback from iOS users (may submit Android version anyway)&#10;-unify Cupertino and Material(Android) variants" />
     <MESSAGE value="Attempt at introducing forks for Cupertino and Material L&amp;F. Said fork works on Android side. Now to test iOS side&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Made the category menu go platform-specific, and made rows out of the &quot;What did I spend on&quot; and &quot;How much&quot; blocks.&#10;-Need file export/import to make it REALLY useful on the &quot;THIS is where my money goes&quot; tip&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
@@ -695,7 +698,8 @@
     <MESSAGE value="Fixed where date range got reset by change of page&#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Up next MAY be to work the iOS version&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
     <MESSAGE value="fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.&#10;&#10;Up next MAY be to work the iOS version. Odds are that file I/O per se goes native&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
     <MESSAGE value="Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
-    <option name="LAST_COMMIT_MESSAGE" value="Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <MESSAGE value="Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <option name="LAST_COMMIT_MESSAGE" value="Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1055,8 +1059,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="362" column="7" lean-forward="true" selection-start-line="362" selection-start-column="7" selection-end-line="362" selection-end-column="7" />
+        <state relative-caret-position="512">
+          <caret line="830" column="13" lean-forward="true" selection-start-line="830" selection-start-column="13" selection-end-line="830" selection-end-column="13" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
           </folding>

@@ -105,6 +105,7 @@ class PlanningPage extends PageWidget {
           child:Container(
             margin:EdgeInsets.only(left:1.0),
             child:Text("Specific items",
+              style:columnHeaderStyle,
               textAlign:TextAlign.right,
               ),
           )
@@ -115,6 +116,7 @@ class PlanningPage extends PageWidget {
             child:Container(
     margin:EdgeInsets.only(left:1.0),
               child:Text("Gross allocation",
+				style:columnHeaderStyle,
                 textAlign:TextAlign.right,
               ),
     )
@@ -263,16 +265,18 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         children:[
           Expanded(
             flex:3,
-            child: Text("Totals"),
+            child: Text("Totals",style:columnHeaderStyle,),
           ),
           Expanded(
             flex:2,
             child: Text(Logitem.toDollarString(microPlanTotal),
+				style:columnHeaderStyle,
                 textAlign:TextAlign.right),
           ),
           Expanded(
             flex:2,
             child: Text(Logitem.toDollarString(macroPlanTotal),
+				style:columnHeaderStyle,
                 textAlign:TextAlign.right),
           ),
         ]
@@ -544,15 +548,18 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
           ),
           Expanded(
             flex:3,
-            child: Text("Category"),
+            child: Text("Category",
+                                	style:columnHeaderStyle,),
           ),
           Expanded(
             flex:2,
-            child: Text("Amount"),
+            child: Text("Amount",
+                                	style:columnHeaderStyle,),
           ),
           Expanded(
             flex:2,
-            child: Text("Planned date"),
+            child: Text("Planned date",
+                                	style:columnHeaderStyle),
           ),
         ]
     );

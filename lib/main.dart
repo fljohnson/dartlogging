@@ -18,11 +18,7 @@ import 'package:flutter/material.dart';
 import "logitem.dart";
 import "pseudoresources.dart";
 
-TextStyle mainTextStyle = TextStyle(
-    color:Colors.black,
-  fontSize: 18.0,
-  fontStyle: FontStyle.normal
-);
+
 DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
