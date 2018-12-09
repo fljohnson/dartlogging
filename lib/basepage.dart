@@ -30,6 +30,8 @@ class PageWidget extends StatefulWidget {
 abstract class PageState {
   State<PageWidget> toUpdate;
   DatePair myRange;
+
+  String cuperTemp;
   //it needed to be common to all pages
   Widget getDateButton(BuildContext context,String label,String initialDate,actOnDate(String value)) {
 
@@ -68,17 +70,72 @@ abstract class PageState {
   }
 
   void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
+  async
   {
-    /*known good - keep this
+    /*known good - keep this */
     String rv = originalDate;
     List<String> datelets = originalDate.split("/");
     DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
     DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
     DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
-*/
 
+
+    var newDate = await showCupertinoDialog(context:context,builder:(context){
 /*
-//Todo: Rework this per https://docs.flutter.io/flutter/cupertino/CupertinoDatePicker-class.html
+minimumDate and maximumDate have no effect in CupertinoDatePickerMode.date - they only seem to work
+for CupertinoDatePickerMode.dateAndTime, if the internal docs are any indicator
+ */
+
+      return CupertinoAlertDialog(
+        content:Container(
+          height: 250.0,
+          child:CupertinoDatePicker(
+            mode:CupertinoDatePickerMode.date,
+            minimumYear: currentDate.year-1,
+            maximumYear: currentDate.year+1,
+            initialDateTime: currentDate,
+            onDateTimeChanged: (value){
+              String mo="${value.month}";
+              String da="${value.day}";
+              while(mo.length<2)
+              {
+                mo = "0"+mo;
+              }
+              while(da.length<2)
+              {
+                da = "0"+da;
+              }
+              this.cuperTemp = "${value.year}-$mo-$da";
+            },
+          ),
+        ),
+        actions: [
+          CupertinoDialogAction(
+            child:Text("OK"),
+            isDefaultAction: true,
+            isDestructiveAction: true,
+            onPressed: (){
+              Navigator.of(context).pop(this.cuperTemp);
+            },
+
+          )
+      ,
+          CupertinoDialogAction(
+      child:Text("Cancel"),
+      onPressed: (){
+      Navigator.of(context).pop();
+      },
+      )
+        ],
+      );
+    });
+
+    if(newDate != null)
+    {
+      actOnDate(newDate);
+    }
+/*
+//this came in from an add-on when the stock CupertinoDatePicker disappeared around Flutter v8.2
 need a bottom sheet, a row containing cancel and done buttons, and a row containing the Picker
   CupertinoDatePicker.showDatePicker(
       context,

@@ -949,6 +949,17 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   }
 
   CupertinoPageScaffold theTabPage(BuildContext context, int index) {
+  return CupertinoPageScaffold(
+        navigationBar: new CupertinoNavigationBar(
+          //middle:Text("Logging"),
+          middle:pageSelector(index),
+          trailing:cupertinoAdder,
+          backgroundColor:CupertinoColors.white
+        )
+          ,
+        child:pages[index]
+      );
+  /*
     if(index == 0)
     {
       return CupertinoPageScaffold(
@@ -974,6 +985,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
         child:DummyPage()
       );
     }
+    */
   }
   
 
