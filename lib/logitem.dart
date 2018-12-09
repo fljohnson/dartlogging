@@ -25,6 +25,8 @@ class Logitem {
   static List<String> categoryNames = [];
   static String lastError;
 
+  static bool semaphore = false;
+
   static String toDollarString(num amount) {
     List<String> parts = ("$amount").split(".");
     if (parts.length == 1) {
@@ -147,6 +149,7 @@ static Future<String> exportToExternal({String localUrl}) async {
 
     for(int i=0;i<categories.length;i++)
     {
+      print("adding ${categories[i].keys.first} at position $i");
       categoryNames.add(categories[i].keys.first);
     }
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
@@ -250,8 +253,16 @@ static Future<String> exportToExternal({String localUrl}) async {
 
   static Future<void> createSampleData() async {
     //docsdir = await getExternalStorageDirectory();
-    await blankDB();
-    await initDB();
+    if(categoryNames.length == 0) {
+      await blankDB();
+      await initDB();
+    }
+    else {
+      if(database == null)
+        {
+          print("fired twice at blanks");
+        }
+    }
     /*
     Logitem proto;
     proto = new Logitem(
@@ -296,6 +307,7 @@ static Future<String> exportToExternal({String localUrl}) async {
   static Future<List<Logitem>> getRange(String isoFrom, String isoTo,{String entrytype = "logging"}) async {
     if(database == null)
     {
+      print("In getRange $entrytype");
       await createSampleData();
     }
     List<Logitem> rv = [];
@@ -680,6 +692,7 @@ int rv = 0;
         String upcase =possCategory.toUpperCase();
         possCategory = upcase.substring(0,1) + possCategory.toLowerCase().substring(1);
         //is the incoming category value among those known to the app?
+        print("|$possCategory| vs ${categoryNames.length}");
         if(categoryNames.indexOf(possCategory) == -1)
         {
           lastError = "Problem encountered on line $i: unknown category \"$possCategory\"";
@@ -730,6 +743,7 @@ int rv = 0;
     lastError="";
     if(database == null)
     {
+      print("in getPlannedTotals");
       await createSampleData();
     }
     Map<String,num> rv = Map<String,num>();

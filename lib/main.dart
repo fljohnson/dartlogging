@@ -23,6 +23,15 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
+void smashDB(BuildContext context) async {
+  await Logitem.createSampleData();
+  /*
+  Future<void> result = Logitem.createSampleData();
+  result.then((void value){},onError: (e){
+    doAlert(context,e.toString());
+  });
+  */
+}
 
 _LoggingPageState yakker;
 String monthStart(DateTime monthAtHand)
@@ -64,7 +73,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-
+    smashDB(context);
 
 
     return new MaterialApp(
@@ -843,13 +852,12 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   }
 
+
   @override
   Widget build(BuildContext context) {
     if (Logitem.database == null) {
-      Future<void> result = Logitem.createSampleData();
-      result.then((void value){},onError: (e){
-        doAlert(context,e.toString());
-      });
+      print("in main");
+
     }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -1413,11 +1421,16 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
 
     String friendlyDate;
 
+    List<Logitem> hits = [];
     //get the Logitems matching this.range, ordered by date DESC
-    List<Logitem> hits = await Logitem.getRange(
-        loggingRange.isoFrom(), loggingRange.isoTo());
+    if(Logitem.database != null)
+      {
+
+        hits = await Logitem.getRange(
+            loggingRange.isoFrom(), loggingRange.isoTo());
 
 
+      }
     String dateLabel = "";
     if (hits.length > 0) {
       dateLabel = hits[0].thedate;
