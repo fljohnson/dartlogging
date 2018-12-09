@@ -1131,7 +1131,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       case 0:
         Future<String> result = Logitem.getFileToOpen();
         result.then((value) {
-        doAlert(context,"Will read in $value");
+        //doAlert(context,"Will read in $value");
           Future<int> importResult = Logitem.doIOSImport(value);
           importResult.then((int value) {
             if(value != 1)

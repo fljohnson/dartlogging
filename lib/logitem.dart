@@ -532,11 +532,13 @@ static Future<String> exportToExternal({String localUrl}) async {
 static Future<int> doIOSImport(String fileContents) async {
 int rv = 0;
     lastError = "";
+    /*
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
     if(res != PermissionStatus.authorized)
     {
       return rv;
     }
+    */
 
     //problem 1: grab the file contents
     List<String> readin;
@@ -546,7 +548,7 @@ int rv = 0;
       //readin = await input.readAsString();
       //readin = input.readAsLinesSync();
       readin = fileContents.split("\n");
-      throw FormatException("got ${readin.length} records");
+      //throw FormatException("got ${readin.length} records");
       await _doCSVImport(readin);
       if(lastError == "")
       {
