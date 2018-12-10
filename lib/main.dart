@@ -23,8 +23,14 @@ DatePair loggingRange = new DatePair("09/01/2018","09/30/2018");
 DatePair statsRange = new DatePair("09/01/2018","09/30/2018");
 Logitem chosen;
 
+List<VoidCallback> finishedDB = [];
+
 void smashDB(BuildContext context) async {
   await Logitem.createSampleData();
+  for(int i=0;i<finishedDB.length;i++)
+    {
+      finishedDB[i]();
+    }
   /*
   Future<void> result = Logitem.createSampleData();
   result.then((void value){},onError: (e){
@@ -108,6 +114,7 @@ class ItemPage extends StatelessWidget {
   final String itemtype; //make a package symbol outta this, willya?
 
   ItemPage({Key key,this.itemtype = "logging"}):super(key:key);
+
   @override
   Widget build(BuildContext context) {
     String content = "(new)";
@@ -296,6 +303,7 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
             .caption
     );
   }
+
 
   Widget menumakerAndroid(String currentsel)
   {
@@ -740,6 +748,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderStateMixin {
 
+  List<PageWidget> pages ;
   List<Tab> myTabs = <Tab>[
     new Tab(text: 'Logging'),
     new Tab(text: 'Stats'),
@@ -770,7 +779,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   int cupertinoCurrentTab = 0;
 
-  List<PageWidget> pages ;
+
 
 
 
@@ -1083,8 +1092,10 @@ String fromISOtoUS(String inDate)
 
 
 class LoggingPage extends PageWidget {
+
   LoggingPage({Key key}) :
     super(key:key);
+
 
   @override
   fabClicked(BuildContext context) async {
@@ -1108,10 +1119,16 @@ class LoggingPage extends PageWidget {
       //this looks ridiculous to those used to declarative languages
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
       chosen.save(entrytype:"logging").then((value) {
+        if(yakker != null)
+          {
+            yakker.refresh();
+          }
+          /*
         yakker.fetchRows().then((goods) {
-          yakker.reload(); //roundabout way of doing setState()
-        });
+          yakker.refresh(); //roundabout way of doing setState()
 
+        });
+*/
       });
     }
   }
@@ -1124,12 +1141,10 @@ class LoggingPage extends PageWidget {
 }
 
 class _LoggingPageState extends State<LoggingPage> with PageState{
+  List<Logitem> logged ;
   List<Widget> gottenRows = [];
   bool fired = false;
 
-  void reload() {
-    setState(() {});
-  }
   Widget cupertinoToolbar;
 
 void _handleCupertinoMenu(int seleccion, BuildContext context) {
@@ -1205,9 +1220,137 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
         }
     }
   }
-  
+
+  @override
+  initState()
+  {
+    super.initState();
+    primeLogs();
+    loadLogs();
+    /*
+    if(!fired)
+    { //this plus a race condition required ditching the custom initState()
+      fired = true;
+      finishedDB.add((){
+        fetchRows().then((goods) {
+          setState(() {});
+        });
+      });
+
+    }
+    else {
+      print("HALLO");
+      fetchRows().then((goods) {
+        setState(() {});
+      });
+    }*/
+  }
+
+  primeLogs()
+  {
+    logged = [];
+  }
+  loadLogs() async {
+    var hits = await Logitem.getRange(loggingRange.isoFrom(), loggingRange.isoTo());
+    setState((){
+      logged.clear();
+      logged.addAll(hits);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    this.cupertinoToolbar = Row (
+        children:[
+          new CupertinoButton(
+              child:Text("Import..."),
+              onPressed:((){
+                _handleCupertinoMenu(0,context);
+              })
+          ),
+          new CupertinoButton(
+              child:Text("Export..."),
+              onPressed:((){
+                _handleCupertinoMenu(1,context);
+              })
+          )
+        ]
+    );
+
+    List<Widget> columnContents = <Widget>[
+      Row(
+          children:[
+            Expanded(
+                flex: 1,
+                child: getDateButton(context,"From: ",loggingRange.date1,((String value)
+                {
+                  loggingRange.setDate1(value);
+                  fetchRows().then((goods) {
+                    setState(() {});
+                  }
+                  );
+                })
+                )
+            )
+            ,
+            Expanded(
+                flex: 3,
+                child: new Text(
+                  loggingRange.date1,
+                  textAlign: TextAlign.center,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                )
+            )
+          ]
+      ),
+
+      Row(
+          children:[
+            Expanded(
+                flex: 1,
+                child: getDateButton(context,"To: ",loggingRange.date2,((String value)
+                {
+                  loggingRange.setDate2(value);
+                  fetchRows().then((goods) {
+                    setState(() {});
+                  });
+                })
+                )
+            )
+            ,
+            Expanded(
+                flex: 3,
+                child: new Text(
+                  loggingRange.date2,
+                  textAlign: TextAlign.center,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .display1,
+                )
+            )
+          ]
+      ),
+      Expanded(
+          child: ListView(
+              children:createRows()
+          )
+      ),
+
+    ];
+
+    if(Platform.isIOS){
+      columnContents.add(cupertinoToolbar);
+    }
+    return new Column(
+      //mainAxisAlignment: MainAxisAlignment.center,
+      children: columnContents,
+    );
+  }
+  Widget build2(BuildContext context) {
 	this.cupertinoToolbar = Row (
 			children:[
           new CupertinoButton(
@@ -1225,13 +1368,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
         ]
        );
         
-    if(!fired)
-    { //this plus a race condition required ditching the custom initState()
-      fired = true;
-      fetchRows().then((goods) {
-        setState(() {});
-      });
-    }
+
     yakker = this;
 
     List<Widget> columnContents = <Widget>[
@@ -1457,9 +1594,40 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
   }
 
   void refresh() {
+    loadLogs();
+    /*
     fetchRows().then((goods) {
       setState(() {});
     });
+    */
+  }
+
+  List<Widget> createRows() {
+    List<Widget> panelBody = [];
+
+    String friendlyDate;
+    String dateLabel = "";
+    if (logged.length > 0) {
+      dateLabel = logged[0].thedate;
+      friendlyDate = Datademunger.fromISOtoUS(dateLabel);
+      panelBody.add(dateMark("Date: $friendlyDate"));
+      panelBody.add(dataRow(logged[0]));
+    }
+
+    for(int i=1;i<logged.length;i++)
+    {
+
+      if(logged[i].thedate != dateLabel)
+      {
+        //flush it
+        dateLabel = logged[i].thedate;
+        friendlyDate = Datademunger.fromISOtoUS(dateLabel);
+
+        panelBody.add(dateMark("Date: $friendlyDate"));
+      }
+      panelBody.add(dataRow(logged[i]));
+    }
+    return panelBody;
   }
 }
 

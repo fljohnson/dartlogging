@@ -33,6 +33,8 @@ class PageWidget extends StatefulWidget {
     return null;
   }
 
+
+
   fabClicked(BuildContext context) async {
     return null;
   }
@@ -86,11 +88,11 @@ abstract class PageState {
   async
   {
     /*known good - keep this */
-    String rv = originalDate;
+    //String rv = originalDate;
     List<String> datelets = originalDate.split("/");
     DateTime currentDate = new DateTime(int.parse(datelets[2]),int.parse(datelets[0]), int.parse(datelets[1]));
-    DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
-    DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
+   // DateTime minDate = new DateTime(currentDate.year,currentDate.month-2,1);
+   // DateTime maxDate = new DateTime(currentDate.year,currentDate.month+2,-1);
 
 
     var newDate = await showCupertinoDialog(context:context,builder:(context){
@@ -192,4 +194,5 @@ need a bottom sheet, a row containing cancel and done buttons, and a row contain
 
     return rv;
   }
+
 }
