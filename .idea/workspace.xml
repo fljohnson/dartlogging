@@ -12,10 +12,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Flutter_Plugins.xml" afterDir="false" />
+    <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="Solved a &quot;fraction from hell&quot;&#10;&#10;Got Logging to refresh after &quot;add new&quot;, and reworked the initial fetch to synchronize with the DB becoming available.&#10;Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/logitem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logitem.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -29,14 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="49" selection-start-line="49" selection-end-line="49" />
-              <folding>
-                <element signature="e#34650#36944#0" />
-              </folding>
+            <state relative-caret-position="147">
+              <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -44,7 +41,7 @@
       <file leaf-file-name="stats.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/stats.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="1005">
               <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
               <folding>
                 <element signature="e#1#20#0" expanded="true" />
@@ -56,8 +53,8 @@
       <file leaf-file-name="planning.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="44">
-              <caret line="148" selection-start-line="148" selection-end-line="148" />
+            <state relative-caret-position="74">
+              <caret line="412" column="22" selection-start-line="412" selection-start-column="22" selection-end-line="412" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -65,17 +62,17 @@
       <file leaf-file-name="basepage.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="465">
               <caret line="37" column="2" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="134">
-              <caret line="315" column="9" selection-start-line="315" selection-start-column="9" selection-end-line="315" selection-end-column="9" />
+            <state relative-caret-position="195">
+              <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
               </folding>
@@ -103,8 +100,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>reload(</find>
-      <find>smas</find>
       <find>LoggingP</find>
       <find>onDB</find>
       <find>pages</find>
@@ -133,6 +128,8 @@
       <find>zeS</find>
       <find>remove</find>
       <find>fini</find>
+      <find>categoryMicros</find>
+      <find>margin</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -158,10 +155,10 @@
         <option value="$PROJECT_DIR$/lib/stats.dart" />
         <option value="$PROJECT_DIR$/android/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
-        <option value="$PROJECT_DIR$/lib/logitem.dart" />
         <option value="$PROJECT_DIR$/lib/basepage.dart" />
-        <option value="$PROJECT_DIR$/lib/planning.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
+        <option value="$PROJECT_DIR$/lib/planning.dart" />
+        <option value="$PROJECT_DIR$/lib/logitem.dart" />
       </list>
     </option>
   </component>
@@ -176,7 +173,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -204,7 +201,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -494,7 +491,14 @@
       <option name="project" value="LOCAL" />
       <updated>1544632878208</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Got Logging to refresh after &quot;add new&quot;, and reworked the initial fetch to synchronize with the DB becoming available.&#10;Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.">
+      <created>1544647187737</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1544647187746</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TodoView">
@@ -511,44 +515,45 @@
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
-      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32200646" />
-      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
-      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.5066225" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.3228477" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.32200646" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924472" visible="true" weight="0.32524273" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3349917" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
+      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
+      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" visible="true" weight="0.41465256" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32524273" />
+      <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.50647247" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
-      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" weight="0.3228477" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32524273" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Dart Analysis" order="8" sideWeight="0.49320242" weight="0.3228477" />
       <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32615894" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -560,7 +565,6 @@
       <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
@@ -573,7 +577,7 @@
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" weight="0.41465256" />
       <window_info active="true" anchor="bottom" id="Messages" order="14" sideWeight="0.49471298" visible="true" weight="0.3228477" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info id="Image Layers" order="4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
@@ -612,7 +616,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Attempt at introducing forks for Cupertino and Material L&amp;F. Said fork works on Android side. Now to test iOS side&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Made the category menu go platform-specific, and made rows out of the &quot;What did I spend on&quot; and &quot;How much&quot; blocks.&#10;-Need file export/import to make it REALLY useful on the &quot;THIS is where my money goes&quot; tip&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Got export working, but need to deal with &quot;My Documents&quot; vs &quot;Documents&quot;&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
     <MESSAGE value="Got export working, but need to deal with &quot;My Documents&quot; vs &quot;Documents&quot;&#10;Added Column headers on output, though&#10;-Import needs to be able to figure out incoming columns and alert the user if fields are missing.&#10;-hoping for feedback from iOS users (may submit Android version anyway)" />
@@ -637,11 +640,12 @@
     <MESSAGE value="Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
     <MESSAGE value="Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
     <MESSAGE value="Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <MESSAGE value="Got Logging to refresh after &quot;add new&quot;, and reworked the initial fetch to synchronize with the DB becoming available.&#10;Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <option name="LAST_COMMIT_MESSAGE" value="Got Logging to refresh after &quot;add new&quot;, and reworked the initial fetch to synchronize with the DB becoming available.&#10;Fixed goof that caused settings of new Planning Logitem to return to their defaults upon any state change, including saving.&#10;&#10;Attempt to use CupertinoDatePicker on iOS, and adapt the page set to iOS&#10;&#10;Straightened up DDL, and feel confident enough to fool with iOS.Odds are that file I/O per se goes native&#10;&#10;fixed spacing and labeling &#10;&#10;Bug-hunting:unscrewed the File Save As part, save for a native-code Alert(&quot;The Money Logs cannot put files in this folder. Please choose another one), and where I forgot about that entryType field on import.&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="230" />
+      <option name="time" value="231" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
@@ -953,7 +957,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="465">
           <caret line="37" column="2" selection-start-line="37" selection-start-column="2" selection-end-line="37" selection-end-column="2" />
         </state>
       </provider>
@@ -965,16 +969,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="148" selection-start-line="148" selection-end-line="148" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/stats.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="1005">
           <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
           <folding>
             <element signature="e#1#20#0" expanded="true" />
@@ -982,22 +979,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="315" column="9" selection-start-line="315" selection-start-column="9" selection-end-line="315" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="147">
+          <caret line="38" column="4" selection-start-line="38" selection-start-column="4" selection-end-line="38" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        <state relative-caret-position="74">
+          <caret line="412" column="22" selection-start-line="412" selection-start-column="22" selection-end-line="412" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="35" column="31" selection-start-line="35" selection-start-column="31" selection-end-line="35" selection-end-column="31" />
           <folding>
-            <element signature="e#34650#36944#0" />
+            <element signature="e#0#20#0" expanded="true" />
           </folding>
         </state>
       </provider>

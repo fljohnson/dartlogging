@@ -410,8 +410,11 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         Column(
             children:[
               Expanded(
-                flex:3,
-                child: widget.upperlistHeader(),
+                flex:4,
+                child: Container(
+                  child:widget.upperlistHeader(),
+                  margin:EdgeInsets.only(bottom:10.0)
+                )
               )
               ,
               Expanded(

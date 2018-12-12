@@ -33,6 +33,8 @@ class Logitem {
       parts.add("00");
     }
     else {
+      num better = num.parse("0."+parts[1])*100;
+      parts[1] = (better.round()).toString();
       while (parts[1].length < 2) {
         parts[1] += "0";
       }
@@ -406,6 +408,7 @@ static Future<String> exportToExternal({String localUrl}) async {
   }
 
   String stramount() {
+    /* D_R_Y
     List<String> parts = ("$amount").split(".");
     if (parts.length == 1) {
       parts.add("00");
@@ -417,6 +420,8 @@ static Future<String> exportToExternal({String localUrl}) async {
     }
 
     return "\$${parts[0]}.${parts[1]}";
+    */
+    return toDollarString(amount);
   }
 
   Logitem.fromMap(Map<String, dynamic> incoming)
