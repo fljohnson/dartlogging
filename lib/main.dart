@@ -39,7 +39,16 @@ void smashDB(BuildContext context) async {
   */
 }
 
-_LoggingPageState yakker;
+void onDBReady(VoidCallback whatThen) {
+  if (Logitem.database == null) {
+    finishedDB.add(whatThen);
+  }
+  else {
+    whatThen();
+  }
+}
+
+_LoggingPageState zeState;
 String monthStart(DateTime monthAtHand)
 {
   DateTime firstOfMonth = new DateTime(
@@ -1016,9 +1025,9 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
               doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
             }
             //should do in any event
-            if(yakker != null)
+            if(zeState != null)
             {
-              yakker.refresh();
+              zeState.refresh();
             }
 
           });
@@ -1119,13 +1128,13 @@ class LoggingPage extends PageWidget {
       //this looks ridiculous to those used to declarative languages
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
       chosen.save(entrytype:"logging").then((value) {
-        if(yakker != null)
+        if(zeState != null)
           {
-            yakker.refresh();
+            zeState.refresh();
           }
           /*
-        yakker.fetchRows().then((goods) {
-          yakker.refresh(); //roundabout way of doing setState()
+        zeState.fetchRows().then((goods) {
+          zeState.refresh(); //roundabout way of doing setState()
 
         });
 */
@@ -1162,9 +1171,9 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
               doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
             }
             //should do in any event
-            if(yakker != null)
+            if(zeState != null)
             {
-              yakker.refresh();
+              zeState.refresh();
             }
 
           });
@@ -1225,8 +1234,9 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
   initState()
   {
     super.initState();
+    zeState = this;
     primeLogs();
-    loadLogs();
+    onDBReady(loadLogs);
     /*
     if(!fired)
     { //this plus a race condition required ditching the custom initState()
@@ -1255,6 +1265,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
     setState((){
       logged.clear();
       logged.addAll(hits);
+      print("Got hits ${hits.length}");
     });
   }
 
@@ -1369,7 +1380,7 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
        );
         
 
-    yakker = this;
+    zeState = this;
 
     List<Widget> columnContents = <Widget>[
       Row(
