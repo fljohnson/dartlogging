@@ -13,8 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="df63f031-5efd-40e6-a63c-08d5c80b126b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/lib/basepage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/basepage.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
@@ -29,17 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="1231" column="75" selection-start-line="1231" selection-start-column="75" selection-end-line="1231" selection-end-column="75" />
-              <folding>
-                <element signature="e#26180#27394#0" />
-                <element signature="e#33948#34050#0" />
-                <element signature="e#34405#36946#0" />
-                <element signature="e#37339#38278#0" />
-              </folding>
+            <state relative-caret-position="60">
+              <caret line="1232" selection-start-line="1232" selection-end-line="1232" />
             </state>
           </provider>
         </entry>
@@ -47,7 +41,7 @@
       <file leaf-file-name="stats.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/stats.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="344">
+            <state relative-caret-position="1005">
               <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
               <folding>
                 <element signature="e#1#20#0" expanded="true" />
@@ -56,13 +50,16 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
+            <state relative-caret-position="225">
+              <caret line="1014" column="5" selection-start-line="1014" selection-start-column="5" selection-end-line="1014" selection-end-column="5" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#28171#28469#0" />
+                <element signature="e#28514#28829#0" />
+                <element signature="e#30109#32608#0" />
               </folding>
             </state>
           </provider>
@@ -71,7 +68,7 @@
       <file leaf-file-name="basepage.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2144">
+            <state relative-caret-position="450">
               <caret line="36" selection-start-line="36" selection-end-line="36" />
               <folding>
                 <element signature="e#0#17#0" expanded="true" />
@@ -83,7 +80,7 @@
       <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="115">
+            <state relative-caret-position="750">
               <caret line="60" column="6" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
               <folding>
                 <element signature="e#0#20#0" expanded="true" />
@@ -112,13 +109,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>blankDB</find>
-      <find>unkno</find>
-      <find>categoryNames</find>
-      <find>createS</find>
-      <find>createSampleData</find>
-      <find>initDB</find>
-      <find>sema</find>
       <find>context</find>
       <find>getRa</find>
       <find>vs</find>
@@ -142,6 +132,13 @@
       <find>yakker</find>
       <find>_handleCupertinoMenu</find>
       <find>yakk</find>
+      <find>PlanItemPage</find>
+      <find>chosen.amount</find>
+      <find>menumakerAndroid</find>
+      <find>PlanitemPageform</find>
+      <find>saneT</find>
+      <find>init</find>
+      <find>building</find>
     </findStrings>
     <replaceStrings>
       <replace>fromUStoISO(</replace>
@@ -166,10 +163,10 @@
         <option value="$PROJECT_DIR$/lib/stats.dart" />
         <option value="$PROJECT_DIR$/android/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
-        <option value="$PROJECT_DIR$/lib/planning.dart" />
         <option value="$PROJECT_DIR$/lib/logitem.dart" />
         <option value="$PROJECT_DIR$/lib/basepage.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
+        <option value="$PROJECT_DIR$/lib/planning.dart" />
       </list>
     </option>
   </component>
@@ -479,6 +476,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-2" width="1370" height="740" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
       <window_info id="Build Variants" order="2" side_tool="true" />
@@ -496,8 +494,8 @@
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924472" visible="true" weight="0.32615894" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3349917" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32615894" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" weight="0.41465256" />
@@ -505,9 +503,9 @@
       <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
+      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
-      <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -516,13 +514,11 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Dart Analysis" order="8" sideWeight="0.49320242" weight="0.3228477" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32615894" />
       <window_info id="Build Variants" order="3" side_tool="true" />
       <window_info id="Image Layers" order="4" />
-      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32615894" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" id="Flutter Inspector" order="7" sideWeight="0.49836066" side_tool="true" weight="0.32930514" />
@@ -531,24 +527,26 @@
       <window_info id="Capture Tool" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="9" side_tool="true" visible="true" weight="0.32930514" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" weight="0.41465256" />
       <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
       <window_info anchor="right" id="Assistant" order="8" weight="0.32930514" />
       <window_info anchor="bottom" id="Logcat" order="11" weight="0.6694352" />
-      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3349917" />
       <window_info anchor="bottom" id="Flutter Performance" order="13" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32615894" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="12" weight="0.3349917" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" weight="0.41465256" />
       <window_info active="true" anchor="bottom" id="Messages" order="14" sideWeight="0.49471298" visible="true" weight="0.3228477" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32615894" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.5066225" />
     </layout-to-restore>
   </component>
@@ -611,7 +609,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="227" />
+      <option name="time" value="230" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="FlutterRunConfigurationType">
@@ -930,7 +928,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
+        <state relative-caret-position="750">
           <caret line="60" column="6" selection-start-line="60" selection-start-column="6" selection-end-line="60" selection-end-column="6" />
           <folding>
             <element signature="e#0#20#0" expanded="true" />
@@ -940,7 +938,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/stats.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="344">
+        <state relative-caret-position="1005">
           <caret line="73" column="3" selection-start-line="73" selection-start-column="3" selection-end-line="73" selection-end-column="3" />
           <folding>
             <element signature="e#1#20#0" expanded="true" />
@@ -950,7 +948,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/basepage.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2144">
+        <state relative-caret-position="450">
           <caret line="36" selection-start-line="36" selection-end-line="36" />
           <folding>
             <element signature="e#0#17#0" expanded="true" />
@@ -958,25 +956,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
+    <entry file="file://$PROJECT_DIR$/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="201" column="18" selection-start-line="201" selection-start-column="18" selection-end-line="201" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="60">
+          <caret line="1232" selection-start-line="1232" selection-end-line="1232" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/main.dart">
+    <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="1231" column="75" selection-start-line="1231" selection-start-column="75" selection-end-line="1231" selection-end-column="75" />
+        <state relative-caret-position="225">
+          <caret line="1014" column="5" selection-start-line="1014" selection-start-column="5" selection-end-line="1014" selection-end-column="5" />
           <folding>
-            <element signature="e#26180#27394#0" />
-            <element signature="e#33948#34050#0" />
-            <element signature="e#34405#36946#0" />
-            <element signature="e#37339#38278#0" />
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#28171#28469#0" />
+            <element signature="e#28514#28829#0" />
+            <element signature="e#30109#32608#0" />
           </folding>
         </state>
       </provider>

@@ -113,7 +113,7 @@ packages:
       name: sqflite
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.2+1"
+    version: "0.13.0"
   stack_trace:
     dependency: transitive
     description:

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 //Map <String,String> canister;
+var working; //holds temporary object in PlanItemPageform
 
 class Planister {
   String category;
@@ -992,7 +993,19 @@ class PlanItemPage extends StatelessWidget{
   final Logitem incoming;
   final String defaultDate;
 
-  PlanItemPage({Key key,this.incoming,this.defaultDate}): super(key:key);
+
+  PlanItemPage({Key key,this.incoming,this.defaultDate}): super(key:key) {
+    //this stuff was in the StatelessWidget's build(), resulting in blanking the moment a text field changed
+    working = this.incoming;
+    if (incoming == null) {
+      working = new Logitem(
+          name: "",
+          amt: 0,
+          category: "",
+          date: defaultDate
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     String content = "(new)";
@@ -1001,30 +1014,6 @@ class PlanItemPage extends StatelessWidget{
       content = incoming.title;
     }
 
-    var working = this.incoming;
-    if(incoming == null)
-    {
-      /*
-      var ahora = DateTime.now();
-      String mo = "${ahora.month}";
-      String da = "${ahora.day}";
-      while (da.length < 2)
-      {
-        da = "0" +da;
-      }
-      while (mo.length < 2)
-      {
-        mo = "0" +mo;
-      }
-*/
-
-      working = new Logitem(
-          name:"",
-          amt: 0,
-          category: "",
-          date:defaultDate
-      );
-    }
 
     print("building full page");
     var zeForm = PlanitemPageform(working);
@@ -1185,7 +1174,7 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
         currentsel = categoryName[0];
         widget.chosen.category = currentsel;
       }
-
+      print("Dropdown should get $currentsel");
       for(int i=0;i<categories.length;i++)
       {
         droplist.add(
@@ -1210,9 +1199,9 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
               value: currentsel,
               //puts down-arrow at end of enclosing space
               onChanged: (String value){
-                widget.chosen.category = value;
-
-                setState((){});
+                setState((){
+                  widget.chosen.category = value;
+                });
               },
             )
             ,
@@ -1424,8 +1413,10 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
                           "Date: ",
                           Datademunger.fromISOtoUS(widget.chosen.thedate),
                           ((String value){
-                            widget.chosen.thedate=Datademunger.fromUStoISO(value);
-                            setState(() {});
+
+                            setState(() {
+                              widget.chosen.thedate=Datademunger.fromUStoISO(value);
+                            });
                           })
                       )
                     /*
@@ -1477,7 +1468,10 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
                 inText:widget.chosen.title,
                 hint:itemNamePrompt,
                 changeHandler:(String newValue) {
-                  widget.chosen.title = newValue;
+                  setState(() {
+                    widget.chosen.title = newValue;
+                  });
+
                 }
             ),
             saneTextField(
@@ -1487,11 +1481,16 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
                 hint:"How much",
                 type:"currency",
                 changeHandler:(String newValue) {
-                  //var auldSel = _controllerAmount.selection;
-                  num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
-                  //_controllerAmount.text = Logitem.toDollarString(goodNumber);
-                  widget.chosen.amount = goodNumber;
-                  //_controllerAmount.selection = auldSel;
+                  setState((){
+
+                    //var auldSel = _controllerAmount.selection;
+                    num goodNumber = Logitem.toNumber(newValue.replaceAll("\$", ""));
+                    //_controllerAmount.text = Logitem.toDollarString(goodNumber);
+                    widget.chosen.amount = goodNumber;
+                    print("entered number ${widget.chosen.amount}");
+                    //_controllerAmount.selection = auldSel;
+                  });
+
                 }
             )
             /*
@@ -1585,7 +1584,10 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
                 hint:"Details",
                 type:"longedit",
                 changeHandler:(String newValue) {
-                  widget.chosen.details = newValue;
+                  setState((){
+                    widget.chosen.details = newValue;
+                  });
+
                 }
             )
 
