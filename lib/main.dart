@@ -964,7 +964,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   }
 
-  CupertinoSegmentedControl pageSelector(int index) {
+  CupertinoSegmentedControl pageSelector(int index, {BuildContext bc}) {
     Map<int,Widget> botons = {
       0:Text("Logging"),
       1:Text("Stats"),
@@ -974,11 +974,16 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       children:botons,
       groupValue:index,
       onValueChanged:((int value) {
+        for(int i=0;i<pages.length;i++)
+        {
+          pages[value].notifyActive(i == value);
+        }
+        if(bc != null)
+          {
+            doAlert(bc,"new value is $value");
+          }
         setState((){
-			for(int i=0;i<pages.length;i++)
-			{
-        pages[value].notifyActive(i == value);
-			}
+
 			this.cupertinoCurrentTab = value;
         });
       })
@@ -989,7 +994,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   return CupertinoPageScaffold(
         navigationBar: new CupertinoNavigationBar(
           //middle:Text("Logging"),
-          middle:pageSelector(index),
+          middle:pageSelector(index,bc:context),
           trailing:cupertinoAdder,
           backgroundColor:CupertinoColors.white
         )
