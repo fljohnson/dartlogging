@@ -57,10 +57,10 @@ class _DummyPageState extends State<DummyPage> with PageState {
 
 	if(Platform.isIOS)
 	{
-		if(widget.active[0])
-		{
+		//if(widget.active[0])
+		//{
 			loadTotals();
-		}
+		//}
 	}
 	else
 	{

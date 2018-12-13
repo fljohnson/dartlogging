@@ -876,7 +876,14 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       feedback = await pages[_tabController.index].fabClicked(context);
       */
 
-      pages[_tabController.index].fabClicked(context);
+      // (*bleep*)
+      if(!Platform.isIOS) {
+        pages[_tabController.index].fabClicked(context);
+      }
+      else
+      {
+        pages[this.cupertinoCurrentTab].fabClicked(context);
+      }
 
   }
 
@@ -974,16 +981,12 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       children:botons,
       groupValue:index,
       onValueChanged:((int value) {
-        for(int i=0;i<pages.length;i++)
-        {
-          pages[value].notifyActive(i == value);
-        }
-        if(bc != null)
-          {
-            doAlert(bc,"new value is $value");
-          }
         setState((){
 
+          for(int i=0;i<pages.length;i++)
+          {
+            pages[value].notifyActive(i == value);
+          }
 			this.cupertinoCurrentTab = value;
         });
       })
