@@ -90,8 +90,11 @@ class _DummyPageState extends State<DummyPage> with PageState {
     var results = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "logging");
     var microplanned = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "planning");
     var macroplanned = await Logitem.getPlannedTotals(myRange.isoFrom(), myRange.isoTo());
-    if(moment == 0 || moment == 2 ) {
-      return;
+    if(!Platform.isIOS)
+    {
+		if(moment == 0 || moment == 2 ) {
+		  return;
+		}
     }
     setState(() {
       var len = results.length;
