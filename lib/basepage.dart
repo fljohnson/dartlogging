@@ -26,6 +26,7 @@ class PageWidget extends StatefulWidget {
   */
 
   final List<String> range = [];
+  final List<bool> active = [false]; //for iOS; attempts to work around @immutable concern
   PageWidget({Key key}) : super(key:key);
 
   @override
@@ -34,6 +35,10 @@ class PageWidget extends StatefulWidget {
   }
 
 
+  void notifyActive(bool isActive)
+  {
+    active[0] = isActive;
+  }
 
   fabClicked(BuildContext context) async {
     return null;
@@ -83,6 +88,8 @@ abstract class PageState {
       );
     }
   }
+
+
 
   void askCupertinoDate(BuildContext context,String originalDate, void actOnDate(String value) )
   async

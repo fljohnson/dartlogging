@@ -1,4 +1,5 @@
 
+import 'dart:io';
 import 'dart:math';
 
 import 'package:basketnerds/basepage.dart';
@@ -54,9 +55,20 @@ class _DummyPageState extends State<DummyPage> with PageState {
     primeTotals();
 
 
-    if(moment > 0 && moment < 2 ) {
-      loadTotals();
-    }
+	if(Platform.isIOS)
+	{
+		if(widget.active[0])
+		{
+			loadTotals();
+		}
+	}
+	else
+	{
+		if(moment > 0 && moment < 2 ) {
+		  loadTotals();
+		}
+	}
+    
 
   }
 

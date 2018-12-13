@@ -53,19 +53,10 @@ class PlanningPage extends PageWidget {
   @override
   fabClicked(BuildContext context) async {
     Logitem feedback;
-    if(!Platform.isIOS) {
-      feedback = await Navigator.of(context).push(
+    //differentiation is in PlanItemPage
+    feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder: PlanItemPage(defaultDate:outerRange.isoFrom()).build)
       );
-    }
-    else {
-      //TODO: sort out the iOS stuff per above
-      /*
-      feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder: CupertinoItemPage().build)
-      );
-      */
-    }
     //("/item");
 
     if(feedback != null)
@@ -763,12 +754,10 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
 
   void editSpecific(Logitem toedit) async {
     Logitem feedback;
-    if(!Platform.isIOS) {
-      print("Starting $toedit");
-      feedback = await Navigator.of(context).push(
+    //left platform differentiation to PlanItemPage
+    feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder:(context) => PlanItemPage(incoming:toedit))
       );
-    }
 
 
     if(feedback != null)
@@ -1020,7 +1009,26 @@ class PlanItemPage extends StatelessWidget{
 
     print("building full page");
     var zeForm = PlanitemPageform(working);
-    return new Scaffold (
+    if(Platform.isIOS)
+    {
+    	return CupertinoPageScaffold(
+			navigationBar: new CupertinoNavigationBar(
+				automaticallyImplyLeading: true,
+				trailing: CupertinoButton(
+				  child:Text("Done"),
+				  onPressed: (){
+					Navigator.of(context).pop(zeForm.chosen);
+				}
+				),
+				backgroundColor: CupertinoColors.white
+			)
+			,
+			child: zeForm
+		);
+    }
+    else
+    {
+		return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
@@ -1063,6 +1071,9 @@ class PlanItemPage extends StatelessWidget{
             child: zeForm
         )
     );
+    
+    }
+    
   }
 }
 

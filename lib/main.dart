@@ -132,7 +132,9 @@ class ItemPage extends StatelessWidget {
       content = chosen.title;
     }
 
-    return new Scaffold (
+	if(!Platform.isIOS)
+	{
+	return new Scaffold (
         appBar: new AppBar(
           // Here we take the value from the MyHomePage object that was created by
           // the App.build method, and use it to set our appbar title.
@@ -175,6 +177,25 @@ class ItemPage extends StatelessWidget {
           child: RealItemPage(itemtype)
         )
     );
+	}
+	else
+	{
+	return CupertinoPageScaffold(
+        navigationBar: new CupertinoNavigationBar(
+            automaticallyImplyLeading: true,
+            trailing: CupertinoButton(
+              child:Text("Done"),
+              onPressed: (){
+                Navigator.of(context).pop(chosen);
+            }
+            ),
+            backgroundColor: CupertinoColors.white
+        )
+        ,
+        child: RealItemPage(itemtype)
+    );
+	}
+    
   }
 }
 //will rebuild this bit later
@@ -195,21 +216,9 @@ class CupertinoItemPage extends StatelessWidget {
       content  = "(new)";
     }
     */
-
-    return CupertinoPageScaffold(
-        navigationBar: new CupertinoNavigationBar(
-            automaticallyImplyLeading: true,
-            trailing: CupertinoButton(
-              child:Text("Done"),
-              onPressed: (){
-                Navigator.of(context).pop(chosen);
-            }
-            ),
-            backgroundColor: CupertinoColors.white
-        )
-        ,
-        child: RealItemPage(itemtype)
-    );
+return Container (
+  height:50.0,width:50.0,color: Colors.amber);
+    
   }
 }
 /*
@@ -784,6 +793,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   FloatingActionButton adder;
   CupertinoButton cupertinoAdder;
   TabController _tabController;
+
   List<String> _popupItems;
 
   int cupertinoCurrentTab = 0;
@@ -964,8 +974,13 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
       children:botons,
       groupValue:index,
       onValueChanged:((int value) {
-        this.cupertinoCurrentTab = value;
-        setState((){});
+        setState((){
+			for(int i=0;i<pages.length;i++)
+			{
+        pages[value].notifyActive(i == value);
+			}
+			this.cupertinoCurrentTab = value;
+        });
       })
     );
   }
@@ -1109,17 +1124,11 @@ class LoggingPage extends PageWidget {
   @override
   fabClicked(BuildContext context) async {
     Logitem feedback;
-    if(!Platform.isIOS) {
-      feedback = await Navigator.of(context).push(
+    //left it to ItemPage to do differentiation
+    feedback = await Navigator.of(context).push(
           MaterialPageRoute(builder: ItemPage(itemtype:"logging").build)
       );
-    }
-    else {
-      //TODO: sort out the iOS stuff per above
-      feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder: CupertinoItemPage().build)
-      );
-    }
+    
     //("/item");
 
     if(feedback != null)
@@ -1524,19 +1533,10 @@ void _handleCupertinoMenu(int seleccion, BuildContext context) {
       onTapUp: ((details) async {
         chosen = content;
         Logitem feedback;
-        if(!Platform.isIOS)
-        {
-          feedback = await Navigator.of(context).push(
+        //moved differentiation to ItemPage
+        feedback = await Navigator.of(context).push(
               MaterialPageRoute(builder:ItemPage().build)
           );
-
-        }
-        else
-        {
-          feedback = await Navigator.of(context).push(
-              MaterialPageRoute(builder:CupertinoItemPage().build)
-          );
-        }
 
         //("/item");
         if(feedback != null)
