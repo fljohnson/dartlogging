@@ -87,27 +87,35 @@ class _DummyPageState extends State<DummyPage> with PageState {
 
   void loadTotals() async
   {
-    var results = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "logging");
-    var microplanned = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "planning");
-    var macroplanned = await Logitem.getPlannedTotals(myRange.isoFrom(), myRange.isoTo());
-    if(!Platform.isIOS)
-    {
-		if(moment == 0 || moment == 2 ) {
-		  return;
-		}
-    }
-    setState(() {
-      var len = results.length;
-      for (int i = 0; i < len; i++) {
-        var categoryName = categories[i].keys.first;
-        actualTotals[categoryName] =
-            Logitem.toDollarString(results[categoryName]);
-        //print("Comparing for $categoryName ${microplanned[categoryName]} vs ${macroplanned[categoryName]}");
-        num winner = max(
-            microplanned[categoryName], macroplanned[categoryName]);
-        plannedTotals[categoryName] = Logitem.toDollarString(winner);
+    try{
+
+      var results = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "logging");
+      var microplanned = await Logitem.getNumericTotals(myRange.isoFrom(), myRange.isoTo(),entrytype: "planning");
+      var macroplanned = await Logitem.getPlannedTotals(myRange.isoFrom(), myRange.isoTo());
+      if(!Platform.isIOS)
+      {
+        if(moment == 0 || moment == 2 ) {
+          return;
+        }
       }
-    });
+      setState(() {
+        var len = results.length;
+        for (int i = 0; i < len; i++) {
+          var categoryName = categories[i].keys.first;
+          actualTotals[categoryName] =
+              Logitem.toDollarString(results[categoryName]);
+          //print("Comparing for $categoryName ${microplanned[categoryName]} vs ${macroplanned[categoryName]}");
+          num winner = max(
+              microplanned[categoryName], macroplanned[categoryName]);
+          plannedTotals[categoryName] = Logitem.toDollarString(winner);
+        }
+      });
+    }
+    catch(ecch)
+  {
+    doAlert(context,"Blew up in loadTotals:"+ecch.toString());
+  }
+
   }
   Future<bool> getTotals(BuildContext context) async
   {
