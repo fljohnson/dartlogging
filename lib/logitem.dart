@@ -683,6 +683,10 @@ int rv = 0;
         //this one's optional
         try {
           possDetails = raw[i][indices["Details"]];
+          if(possDetails != null)
+          {
+			possDetails = possDetails.trim();
+			}
         }
         catch(e) {
 
@@ -695,6 +699,9 @@ int rv = 0;
           lastError = "Problem encountered on line $i: Category field is blank";
           throw FormatException(lastError);
         }
+        possCategory = possCategory.trim();
+        possDate = possDate.trim();
+        possWhat = possWhat.trim();
         String upcase =possCategory.toUpperCase();
         possCategory = upcase.substring(0,1) + possCategory.toLowerCase().substring(1);
         //is the incoming category value among those known to the app?
