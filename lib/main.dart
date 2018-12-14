@@ -343,6 +343,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
             pages[value].notifyActive(i == value);
           }
 			this.cupertinoCurrentTab = value;
+			gigUI();
         });
       })
     );

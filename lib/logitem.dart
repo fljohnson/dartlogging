@@ -61,6 +61,7 @@ class Logitem {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
     path = join(databasesPath, "moneylogs.db");
+    //path = join(databasesPath, "moneylogstemp.db");
     //await deleteDatabase(path); //remove before going live
     //throw PathException("intentional bombout");
     rv = true;
@@ -526,12 +527,16 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
 
   static Future<List<List<dynamic>>> _getCSVExportable(String from,  String to) async {
 
-    final res = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
-    if(res != PermissionStatus.authorized)
-    {
-      print("bailing due to permission $res");
-      return null;
-    }
+	if(!Platform.isIOS)
+	{
+		final res = await SimplePermissions.requestPermission(Permission.WriteExternalStorage);
+		if(res != PermissionStatus.authorized)
+		{
+		  print("bailing due to permission $res");
+		  return null;
+		}
+	}
+    
     List<Logitem> rawGoods = await getRange(from, to);
     List<List<dynamic>> rv = [
       ["ID","Date","What","Amount","Category","Details"]
@@ -710,7 +715,7 @@ int rv = 0;
         String upcase =possCategory.toUpperCase();
         possCategory = upcase.substring(0,1) + possCategory.toLowerCase().substring(1);
         //is the incoming category value among those known to the app?
-        print("|$possCategory| vs ${categoryNames.length}");
+        //print("|$possCategory| vs ${categoryNames.length}");
         if(categoryNames.indexOf(possCategory) == -1)
         {
           lastError = "Problem encountered on line $i: unknown category \"$possCategory\"";

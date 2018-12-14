@@ -232,6 +232,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
   }
   loadLogs() async {
     var hits = await Logitem.getRange(loggingRange.isoFrom(), loggingRange.isoTo());
+    //doAlert(context,"Got hits ${hits.length}");
     setState((){
       logged.clear();
       logged.addAll(hits);
@@ -266,10 +267,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
                 child: getDateButton(context,"From: ",loggingRange.date1,((String value)
                 {
                   loggingRange.setDate1(value);
-                  fetchRows().then((goods) {
-                    setState(() {});
-                  }
-                  );
+                  loadLogs();
                 })
                 )
             )
@@ -295,9 +293,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
                 child: getDateButton(context,"To: ",loggingRange.date2,((String value)
                 {
                   loggingRange.setDate2(value);
-                  fetchRows().then((goods) {
-                    setState(() {});
-                  });
+                  loadLogs();
                 })
                 )
             )
