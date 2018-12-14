@@ -444,7 +444,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
             ,
             Expanded(
               flex:4,
-              child: lowerlistView(),
+              child: lowerlistView(context),
             ),
           ],
 
@@ -561,7 +561,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   }
 
 
-  Widget lowerlistView()
+  Widget lowerlistView(BuildContext bc)
   {
 
       List<Widget> items = [];
@@ -582,19 +582,23 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                         children:[
                           Expanded(
                             flex:2,
-                            child:Text(lirows[i].title),
+                            child:Text(lirows[i].title,
+                            style:rowStyle(bc)),
                           ),
                           Expanded(
                             flex:3,
-                            child:Text(lirows[i].category),
+                            child:Text(lirows[i].category,
+                                style:rowStyle(bc)),
                           ),
                           Expanded(
                             flex:2,
-                            child:Text(lirows[i].stramount()),
+                            child:Text(lirows[i].stramount(),
+                                style:rowStyle(bc)),
                           ),
                           Expanded(
                             flex:2,
-                            child:Text(Datademunger.fromISOtoUS(lirows[i].thedate)),
+                            child:Text(Datademunger.fromISOtoUS(lirows[i].thedate),
+                                style:rowStyle(bc)),
                           )
                         ]
                     )
@@ -716,23 +720,16 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
 
           // end of
     }
-    if(!Platform.isIOS) {
 
-      Planister().category = categoryName;
-      Planister().isoDate = date;
-      Planister().strAmount = amt;
-      await Navigator.of(context).push(
-          MaterialPageRoute(builder:(context) => GrossallocPage())
-      );
-      loadCategoryData();
-    }
-    else {
-      /*
-      feedback = await Navigator.of(context).push(
-          MaterialPageRoute(builder: CupertinoItemPage().build)
-      );
-      */
-    }
+    //deferred on platform differentiation
+    Planister().category = categoryName;
+    Planister().isoDate = date;
+    Planister().strAmount = amt;
+    await Navigator.of(context).push(
+        MaterialPageRoute(builder:(context) => GrossallocPage())
+    );
+    loadCategoryData();
+
     //("/item");
 
     /*
@@ -791,7 +788,24 @@ class GrossallocPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    if(Platform.isIOS)
+    {
+      return CupertinoPageScaffold(
+          navigationBar: new CupertinoNavigationBar(
+              automaticallyImplyLeading: true,
+              middle:new Text(Planister().category),
+              trailing: CupertinoButton(
+                  child:Text("Done"),
+                  onPressed: (){
+                    this.returnFromSavePlanned(context);
+                  }
+              ),
+              backgroundColor: CupertinoColors.white
+          )
+          ,
+          child: RealGrossPage()
+      );
+    }
     //actualPage =
     return new Scaffold (
         appBar: new AppBar(

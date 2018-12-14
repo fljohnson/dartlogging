@@ -18,6 +18,10 @@ class DummyPage extends PageWidget {
     return new _DummyPageState(tabctl:tabster);
   }
 
+  @override
+  bool haveFAB() {
+    return false;
+  }
 }
 
 class _DummyPageState extends State<DummyPage> with PageState {

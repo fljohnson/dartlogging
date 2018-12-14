@@ -9,7 +9,8 @@ import 'package:flutter/widgets.dart';
 TextStyle mainTextStyle = TextStyle(
     color:Colors.black,
   fontSize: 18.0,
-  fontStyle: FontStyle.normal
+  fontStyle: FontStyle.normal,
+  decoration:TextDecoration.none //removes mysterious yellow underline on iOS
 );
 
 TextStyle columnHeaderStyle = TextStyle (
@@ -44,7 +45,17 @@ class PageWidget extends StatefulWidget {
     return null;
   }
 
+  bool handlePopupChoice(int seleccion, BuildContext context) {
+    return false;
+  }
 
+  List<String> popupChoices() {
+    return [];
+  }
+
+  bool haveFAB() {
+    return true;
+  }
 }
 
 abstract class PageState {

@@ -274,3 +274,28 @@ void doAlert(BuildContext context,String what) {
       }
   );
 }
+
+
+String monthStart(DateTime monthAtHand)
+{
+  DateTime firstOfMonth = new DateTime(
+      monthAtHand.year,
+      monthAtHand.month,
+      1
+  );
+  List<String> textual = firstOfMonth.toString().split(" ");
+  return textual[0];
+}
+
+String monthEnd(DateTime monthAtHand)
+{
+  DateTime holder = new DateTime(
+      monthAtHand.year,
+      monthAtHand.month + 1,
+      1
+  );
+  holder= holder.subtract(new Duration(days: 1));
+
+  List<String> textual = holder.toString().split(" ");
+  return textual[0];
+}

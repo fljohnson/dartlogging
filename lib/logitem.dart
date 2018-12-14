@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 //import 'package:path_provider/path_provider.dart';
 import 'package:meta/meta.dart';
@@ -151,7 +152,7 @@ static Future<String> exportToExternal({String localUrl}) async {
 
     for(int i=0;i<categories.length;i++)
     {
-      print("adding ${categories[i].keys.first} at position $i");
+      //print("adding ${categories[i].keys.first} at position $i");
       categoryNames.add(categories[i].keys.first);
     }
     platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
@@ -848,5 +849,30 @@ int rv = 0;
     });
 
     return rv;
+  }
+}
+
+List<VoidCallback> finishedDB = [];
+
+void smashDB() async {
+  await Logitem.createSampleData();
+  for(int i=0;i<finishedDB.length;i++)
+  {
+    finishedDB[i]();
+  }
+  /*
+  Future<void> result = Logitem.createSampleData();
+  result.then((void value){},onError: (e){
+    doAlert(context,e.toString());
+  });
+  */
+}
+
+void onDBReady(VoidCallback whatThen) {
+  if (Logitem.database == null) {
+    finishedDB.add(whatThen);
+  }
+  else {
+    whatThen();
   }
 }
