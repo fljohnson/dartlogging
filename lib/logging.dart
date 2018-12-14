@@ -172,7 +172,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
 			and then try to run the Save to External "dialog". The crackpot theory is that now that the local file exists, creating the picker won't crash.
 			*/
 
-              Logitem.exportToExternal(localUrl:value).then((String outbound){
+              Logitem.exportToExternal(loggingRange.isoFrom(),loggingRange.isoTo(),localUrl:value).then((String outbound){
                 if(outbound != null)
                 {
                   doAlert(context,"winning at exportToExternal():$outbound");

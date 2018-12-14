@@ -15,6 +15,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate , UIDocumentPickerDelegate {
 	var shippable : FlutterResult?
+	var txtToWrite : String?
 	
 	private func localDocumentsDirectoryURL() -> URL? {
 		guard let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { return nil }
@@ -161,10 +162,10 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
 		do {
-			try text.write(to:fileURL!,atomically: false, encoding: .utf8)
+			try txtToWrite?.write(to:fileURL!,atomically: false, encoding: .utf8)
 		}
 		catch let error {
-			shippable?(FlutterError(code:"PROBE",message:"brute write failed \(error)",details:nil))
+			shippable?(FlutterError(code:"PROBE",message:"CSV export failed \(error)",details:nil))
 			return
 		}
 		
@@ -295,13 +296,14 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		{
 			if let args = call.arguments as? [String] 
 			{
-				if(args.count == 1)
+				if(args.count == 2)
 				{
+					self.txtToWrite = args[1];
 					self.startExportDlg(controller:controller,localFileUrl: args[0],result: result)
 				}
 				else
 				{
-					result(FlutterError(code:"BADPARAMETER", message:"Needed exactly 1 URL string",details:nil))
+					result(FlutterError(code:"BADPARAMETER", message:"Needed exactly 1 URL string and a block of text-ish data",details:nil))
 				}
 				
 			}

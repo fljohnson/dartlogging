@@ -80,16 +80,22 @@ class Logitem {
     return rv;
   }
 
-static Future<String> exportToExternal({String localUrl}) async {
+static Future<String> exportToExternal(String isoFrom,  String isoTo,{String localUrl,String entityType="logging"}) async {
     lastError = null;
     if(platform == null) //shouldn't be an issue, but..
     {
       platform = const MethodChannel('com.fouracessoftware.basketnerds/filesys');
     }
     String rv;
+    
+	List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo);
+	if(rows == null) {
+		return "no rows in range";
+	}
     try {
+		final outstring = const ListToCsvConverter().convert(rows);
       final String result = await platform.invokeMethod(
-        "exportToExternal",[localUrl]);
+        "exportToExternal",[localUrl,outstring]);
       rv = result;
     }
     on PlatformException catch(ecch) {
@@ -551,6 +557,7 @@ static Future<int> doIOSImport(String fileContents) async {
 int rv = 0;
     lastError = "";
     /*
+    fatal on iOS
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
     if(res != PermissionStatus.authorized)
     {
@@ -562,9 +569,7 @@ int rv = 0;
     List<String> readin;
 
     try {
-      //final input = new File(filetoread);
-      //readin = await input.readAsString();
-      //readin = input.readAsLinesSync();
+      
       readin = fileContents.split("\n");
       //throw FormatException("got ${readin.length} records");
       await _doCSVImport(readin);
