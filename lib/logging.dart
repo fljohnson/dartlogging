@@ -160,7 +160,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
           value contains the "path" portion of a localFileURL to be created
           doExport() will write to this file directly
           */
-            doAlert(context,"Target URL is $value");
+            //doAlert(context,"Target URL is $value");
             //await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
             if(Logitem.lastError != null  && Logitem.lastError != "")
             {
