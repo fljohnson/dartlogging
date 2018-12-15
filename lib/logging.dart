@@ -62,6 +62,7 @@ class LoggingPage extends PageWidget {
       case 1 :
         Future<String> result = Logitem.getFileToWrite();
         result.then((value) {
+
           if (value != null)
           {
             Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
@@ -151,7 +152,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
         });
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
-        Future<String> result = Logitem.getFileToWrite();
+        Future<String> result = Logitem.getFileToWrite(bc:context);
         result.then((value) async {
           if (value != null)
           {
@@ -163,15 +164,21 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
             //await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
             if(Logitem.lastError != null)
             {
-              doAlert(context,"result of doExport():${Logitem.lastError}");
+              doAlert(context,"result of getFileToWrite():${Logitem.lastError}");
             }
             else
             {
+              await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+              if(Logitem.lastError != null && Logitem.lastError != "")
+                {
+                  doAlert(context,"FAILED at doExport():"+Logitem.lastError);
+                }
               /*
 			we now send that path to the native code, which will rebuild the localFileURL,
 			and then try to run the Save to External "dialog". The crackpot theory is that now that the local file exists, creating the picker won't crash.
 			*/
 
+              /*
               Logitem.exportToExternal(loggingRange.isoFrom(),loggingRange.isoTo(),localUrl:value).then((String outbound){
                 if(outbound != null)
                 {
@@ -187,6 +194,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
               },onError: (e){
                 doAlert(context,e.toString());
               });
+              */
 
 
             }

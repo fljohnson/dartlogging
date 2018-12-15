@@ -13,6 +13,14 @@ TextStyle mainTextStyle = TextStyle(
   decoration:TextDecoration.none //removes mysterious yellow underline on iOS
 );
 
+TextStyle rowTextStyle = TextStyle(
+    color:Colors.black,
+    fontSize: 18.0,
+    fontStyle: FontStyle.normal,
+    fontWeight:FontWeight.bold,
+    decoration:TextDecoration.none //removes mysterious yellow underline on iOS
+);
+
 TextStyle columnHeaderStyle = TextStyle (
   color:Colors.black,
   fontSize: 16.0,

@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:basketnerds/filedialogs.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:path_provider/path_provider.dart';
+
 import 'package:meta/meta.dart';
 import 'package:path/path.dart';
 
@@ -151,8 +154,14 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
-  static Future<String> getFileToWrite() async {
-    return getFileToOpen(write:true);
+  static Future<String> getFileToWrite({BuildContext bc}) async {
+	if(!Platform.isIOS)
+	{
+		return getFileToOpen(write:true);
+    }
+    return Navigator.of(bc).push(
+        MaterialPageRoute(builder:SaveAsDlg(ext:"csv").build)
+    );
   }
   static Future<bool> initDB() async {
     bool rv = false;

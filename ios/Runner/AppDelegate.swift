@@ -162,7 +162,7 @@ for the use of the FileManager singleton. This may cut a ton of BS
 		let text="Amount,What,Date\n10.00,test,2018-11-05"
 		
 		do {
-			try txtToWrite?.write(to:fileURL!,atomically: false, encoding: .utf8)
+			try txtToWrite?.write(to:fileURL!,atomically: true, encoding: .utf8)
 		}
 		catch let error {
 			shippable?(FlutterError(code:"PROBE",message:"CSV export failed \(error)",details:nil))
