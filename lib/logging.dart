@@ -162,16 +162,16 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
           */
             doAlert(context,"Target URL is $value");
             //await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
-            if(Logitem.lastError != null)
+            if(Logitem.lastError != null  && Logitem.lastError != "")
             {
-              doAlert(context,"result of getFileToWrite():${Logitem.lastError}");
+              doAlert(context,"result of getFileToWrite():${Logitem.lastError}.");
             }
             else
             {
               await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
               if(Logitem.lastError != null && Logitem.lastError != "")
                 {
-                  doAlert(context,"FAILED at doExport():"+Logitem.lastError);
+                  doAlert(context,"FAILED at doExport():${Logitem.lastError}.");
                 }
               /*
 			we now send that path to the native code, which will rebuild the localFileURL,
