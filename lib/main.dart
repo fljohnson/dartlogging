@@ -175,37 +175,33 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
   void gigUI()
   {
     
-    //print("Building adder for ${_tabController.index} $_popupItems");
-    if(!Platform.isIOS)
-    {
-		if(!pages[_tabController.index].haveFAB()) {
-		  adder = null;
-		  cupertinoAdder = null;
-		  _popupItems = pages[_tabController.index].popupChoices();
-		}
-		else {
-		  adder = new FloatingActionButton(
-			onPressed: newItem,
-			tooltip: 'Add Item',
-			child: new Icon(Icons.add),
-		  );
-		}    
+
+    if(!Platform.isIOS) {
+      if (!pages[_tabController.index].haveFAB()) {
+        adder = null;
+        cupertinoAdder = null;
+      }
+      else {
+        adder = new FloatingActionButton(
+          onPressed: newItem,
+          tooltip: 'Add Item',
+          child: new Icon(Icons.add),
+        );
+      }
+      _popupItems = pages[_tabController.index].popupChoices();
     }
-    else
-    {
-		if(!pages[cupertinoCurrentTab].haveFAB()) {
-		  adder = null;
-		  cupertinoAdder = null;
-		  _popupItems = pages[cupertinoCurrentTab].popupChoices();
-		}
-		else {
-		 
-		  cupertinoAdder = CupertinoButton(
-			  onPressed: newItem,
-			  child: new Icon(CupertinoIcons.add)
-		  );
-		}
-		
+    else {
+      if (!pages[cupertinoCurrentTab].haveFAB()) {
+        adder = null;
+        cupertinoAdder = null;
+      }
+      else {
+        cupertinoAdder = CupertinoButton(
+            onPressed: newItem,
+            child: new Icon(CupertinoIcons.add)
+        );
+      }
+      _popupItems = pages[cupertinoCurrentTab].popupChoices();
     }
   }
 
