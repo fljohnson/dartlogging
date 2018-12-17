@@ -33,28 +33,13 @@ class Logitem {
 
   static bool semaphore = false;
 
-  static String toDollarString(num amount) {
-    List<String> parts = ("$amount").split(".");
-    if (parts.length == 1) {
-      parts.add("00");
-    }
-    else {
-      num better = num.parse("0."+parts[1])*100;
-      parts[1] = (better.round()).toString();
-      while (parts[1].length < 2) {
-        parts[1] += "0";
-      }
-    }
-
-    return "\$${parts[0]}.${parts[1]}";
-  }
 
   static num toNumber(String textAmount) {
     List<String> parts = textAmount.split(".");
     num cents = 0;
     num dollars = 0;
     if (parts.length > 1) {
-      cents = (int.parse((parts[1] + "00").substring(0, 2)) / 100);
+      cents = (int.parse(parts[1].substring(0, 2)) / 100);
     }
     dollars = 100 * (int.parse("0" + parts[0]) + cents);
     num toto = dollars.round() / 100; //THAT's how to round to a cent
@@ -364,7 +349,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
         rv.add({category: "\$0.00"});
       }
       else {
-        String strval = toDollarString(total);
+        String strval = Datademunger.toCurrency(total,symbol:"\$"); //toDollarString(total);
         rv.add({category: strval});
       }
     }
@@ -440,7 +425,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
 
     return "\$${parts[0]}.${parts[1]}";
     */
-    return toDollarString(amount);
+    return Datademunger.toCurrency(amount,symbol:"\$"); //toDollarString(amount);
   }
 
   Logitem.fromMap(Map<String, dynamic> incoming)

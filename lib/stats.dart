@@ -107,11 +107,11 @@ class _DummyPageState extends State<DummyPage> with PageState {
         for (int i = 0; i < len; i++) {
           var categoryName = categories[i].keys.first;
           actualTotals[categoryName] =
-              Logitem.toDollarString(results[categoryName]);
+              Datademunger.toCurrency(results[categoryName],symbol:"\$"); //Logitem.toDollarString(results[categoryName]);
           //print("Comparing for $categoryName ${microplanned[categoryName]} vs ${macroplanned[categoryName]}");
           num winner = max(
               microplanned[categoryName], macroplanned[categoryName]);
-          plannedTotals[categoryName] = Logitem.toDollarString(winner);
+          plannedTotals[categoryName] = Datademunger.toCurrency(winner,symbol:"\$"); //Logitem.toDollarString(winner);
         }
       });
     }

@@ -84,6 +84,7 @@ class PlanningPage extends PageWidget {
         });
         break;
       case 1 :
+        //await the "what to export" dialog (this calller needs to be async)
         Future<String> result = Logitem.getFileToWrite();
         result.then((value) {
 
@@ -320,13 +321,13 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
           ),
           Expanded(
             flex:2,
-            child: Text(Logitem.toDollarString(microPlanTotal),
+            child: Text(Datademunger.toCurrency(microPlanTotal,symbol:"\$"),//Text(Logitem.toDollarString(microPlanTotal),
 				style:columnHeaderStyle,
                 textAlign:TextAlign.right),
           ),
           Expanded(
             flex:2,
-            child: Text(Logitem.toDollarString(macroPlanTotal),
+            child: Text(Datademunger.toCurrency(macroPlanTotal,symbol:"\$"),//Text(Logitem.toDollarString(macroPlanTotal),
 				style:columnHeaderStyle,
                 textAlign:TextAlign.right),
           ),
@@ -645,12 +646,14 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
           Expanded(
             flex:2,
             child: Text("Amount",
-                                	style:columnHeaderStyle,),
+                                	style:columnHeaderStyle,
+              textAlign: TextAlign.end,),
           ),
           Expanded(
-            flex:2,
+            flex:3,
             child: Text("Planned date",
-                                	style:columnHeaderStyle),
+                                	style:columnHeaderStyle,
+              textAlign: TextAlign.end,),
           ),
         ]
     );
@@ -691,12 +694,16 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                           Expanded(
                             flex:2,
                             child:Text(lirows[i].stramount(),
-                                style:rowStyle(bc)),
+                                style:rowStyle(bc),
+                              textAlign: TextAlign.end,
+                            ),
                           ),
                           Expanded(
-                            flex:2,
+                            flex:3,
                             child:Text(Datademunger.fromISOtoUS(lirows[i].thedate),
-                                style:rowStyle(bc)),
+                                style:rowStyle(bc),
+                              textAlign: TextAlign.end,
+                            ),
                           )
                         ]
                     )
@@ -899,6 +906,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         });
         break;
       case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
+
         Future<String> result = Logitem.getFileToWrite(bc:context);
         result.then((value) async {
           if (value != null)
@@ -915,6 +923,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
             }
             else
             {
+              //await the "what to export" dialog (this calller needs to be async)
               await Logitem.doExport(value, myRange.isoFrom(), myRange.isoTo());
               if(Logitem.lastError != null && Logitem.lastError != "")
               {
