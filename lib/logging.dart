@@ -747,6 +747,7 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
 
   List<String> categoryName = [];
   List<String> categoryNote = [];
+  String workingDate;
 
 
   @override
@@ -791,6 +792,8 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
     {
       _controllerDetails = TextEditingController(text:chosen.details);
     }
+
+
   }
   @override
   dispose()
@@ -1054,6 +1057,7 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
   @override
   Widget build(BuildContext context)
   {
+    workingDate = Datademunger.fromISOtoUS(chosen.thedate);
     String itemNamePrompt = "What it was";
     if(widget.itemtype == Logitem.LITYPE_PLANNING)
     {
@@ -1070,10 +1074,11 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
                     child:getDateButton(
                         context,
                         "Date: ",
-                        Datademunger.fromISOtoUS(chosen.thedate),
+                            workingDate,
                         ((String value){
                           setState(() {
                             chosen.thedate=Datademunger.fromUStoISO(value);
+                            workingDate = Datademunger.fromISOtoUS(chosen.thedate);
                           });
                         })
                     )
