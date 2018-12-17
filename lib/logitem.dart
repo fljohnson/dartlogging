@@ -17,6 +17,8 @@ import 'package:csv/csv.dart';
 Find out how Dart handles errors returned by await-ed async functions
 */
 class Logitem {
+  static const String LITYPE_LOGGING="logging";
+  static const String LITYPE_PLANNING="planning";
 
   static MethodChannel platform;
 
@@ -84,7 +86,7 @@ class Logitem {
     return rv;
   }
 
-static Future<String> exportToExternal(String isoFrom,  String isoTo,{String localUrl,String entityType="logging"}) async {
+static Future<String> exportToExternal(String isoFrom,  String isoTo,{String localUrl,String entityType=LITYPE_LOGGING}) async {
     lastError = null;
     if(platform == null) //shouldn't be an issue, but..
     {
@@ -92,7 +94,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     }
     String rv;
     
-	List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo);
+	List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo,entityType);
 	if(rows == null) {
 		return "no rows in range";
 	}
@@ -323,7 +325,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     */
   }
 
-  static Future<List<Logitem>> getRange(String isoFrom, String isoTo,{String entrytype = "logging"}) async {
+  static Future<List<Logitem>> getRange(String isoFrom, String isoTo,{String entrytype = LITYPE_LOGGING}) async {
     if(database == null)
     {
       print("In getRange $entrytype");
@@ -346,7 +348,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
   }
 
   static Future<List<Map<String, String>>> getTotals(String isoFrom,
-      String isoTo,{String entrytype = "logging"}) async {
+      String isoTo,{String entrytype = LITYPE_LOGGING}) async {
     List<Map<String, String>> rv = [];
 
     for (int i = 0; i < categories.length; i++) {
@@ -369,7 +371,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
   static Future<Map<String, num>> getNumericTotals(String isoFrom,
-      String isoTo,{String entrytype = "logging"}) async {
+      String isoTo,{String entrytype = LITYPE_LOGGING}) async {
     Map<String, num> rv = {};
 
     lastError="";
@@ -469,7 +471,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
-  Future<bool> save({String entrytype = "logging"}) async {
+  Future<bool> save({String entrytype = LITYPE_LOGGING}) async {
     bool rv = false;
     if (_id == -1) {
       //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
@@ -505,10 +507,10 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
-  static Future<void> doExport(String filename, String isoFrom, String isoTo) async {
+  static Future<void> doExport(String filename, String isoFrom, String isoTo, {String entryType=LITYPE_LOGGING}) async {
 	  lastError = null;
     //Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
-    List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo);
+    List<List<dynamic>> rows = await _getCSVExportable(isoFrom, isoTo,entryType);
     //toWrite.then((rows) {
       if(rows != null) {
         //we need a file dialog here
@@ -534,7 +536,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
    // });
   }
 
-  static Future<List<List<dynamic>>> _getCSVExportable(String from,  String to) async {
+  static Future<List<List<dynamic>>> _getCSVExportable(String from,  String to,String entryType) async {
 
 	if(!Platform.isIOS)
 	{
@@ -546,7 +548,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
 		}
 	}
     
-    List<Logitem> rawGoods = await getRange(from, to);
+    List<Logitem> rawGoods = await getRange(from, to,entrytype: entryType);
     List<List<dynamic>> rv = [
       ["ID","Date","What","Amount","Category","Details"]
     ];
@@ -567,7 +569,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
-static Future<int> doIOSImport(String fileContents) async {
+static Future<int> doIOSImport(String fileContents, {String entryType=LITYPE_LOGGING}) async {
 int rv = 0;
     lastError = "";
     /*
@@ -586,7 +588,7 @@ int rv = 0;
       
       readin = fileContents.split("\n");
       //throw FormatException("got ${readin.length} records");
-      await _doCSVImport(readin);
+      await _doCSVImport(readin,entryType);
       if(lastError == "")
       {
       	rv = 1; //consider setting this to number of rows actually inserted
@@ -605,7 +607,7 @@ int rv = 0;
     }
     return rv;
 }
-  static Future<int> doImport(String filetoread) async {
+  static Future<int> doImport(String filetoread, {String entityType=LITYPE_LOGGING}) async {
     int rv = 0;
     lastError = "";
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
@@ -621,7 +623,7 @@ int rv = 0;
       final input = new File(filetoread);
       //readin = await input.readAsString();
       readin = input.readAsLinesSync();
-      await _doCSVImport(readin);
+      await _doCSVImport(readin,entityType);
       rv = 1; //consider setting this to number of rows actually inserted
     }
     catch(ecch)
@@ -636,7 +638,7 @@ int rv = 0;
 
 
 
-  static Future<void> _doCSVImport(List<String> incsv) async
+  static Future<void> _doCSVImport(List<String> incsv, [String entityType=LITYPE_LOGGING]) async
   {
     List<String> criticalColumns = ["Date","What","Amount","Category"];
     List<String> columns = ["Date","What","Amount","Category","Details"];
@@ -733,12 +735,12 @@ int rv = 0;
 
         //if we're here, it's safe to check for preexistence
         List<Map> presence = await database.rawQuery(
-            'SELECT * FROM Logitem where category = ? and thedate = ? and amount = ? and what = ?',
-            [possCategory, possDate, possAmount,possWhat]);
+            'SELECT * FROM Logitem where entityType = ? and category = ? and thedate = ? and amount = ? and what = ?',
+            [entityType,possCategory, possDate, possAmount,possWhat]);
 
         if(presence.length == 0)
         {
-          await _insertFromCSV(possWhat,possAmount,possCategory,possDate,possDetails);
+          await _insertFromCSV(entityType,possWhat,possAmount,possCategory,possDate,possDetails);
         }
 
 
@@ -747,20 +749,20 @@ int rv = 0;
     }
   }
 
-  static Future<void> _insertFromCSV(String title,num amount, String category,String thedate,String details) async
+  static Future<void> _insertFromCSV(String entityType,String title,num amount, String category,String thedate,String details) async
   {
     //insert. Doing it as a transaction for safety. rawInsert returns the last ID value to result
     await database.transaction((txn) async {
       try {
         if (details == null || details.isEmpty) {
           await txn.rawInsert(
-              'INSERT INTO Logitem(what,amount,category,thedate,entryType) VALUES(?,?,?,?,"logging")',
-              [title, amount, category, thedate]);
+              'INSERT INTO Logitem(what,amount,category,thedate,entryType) VALUES(?,?,?,?,?)',
+              [title, amount, category, thedate,entityType]);
         }
         else {
           await txn.rawInsert(
-              'INSERT INTO Logitem(what,amount,category,thedate,details) VALUES(?,?,?,?,?)',
-              [title, amount, category, thedate, details]);
+              'INSERT INTO Logitem(what,amount,category,thedate,entryType,details) VALUES(?,?,?,?,?)',
+              [title, amount, category, thedate, entityType,details]);
         }
       }
       catch(ecch)

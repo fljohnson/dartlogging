@@ -88,7 +88,7 @@ class LoggingPage extends PageWidget {
     Logitem feedback;
     //left it to ItemPage to do differentiation
     feedback = await Navigator.of(context).push(
-        MaterialPageRoute(builder: ItemPage(itemtype:"logging").build)
+        MaterialPageRoute(builder: ItemPage(itemtype:Logitem.LITYPE_LOGGING).build)
     );
 
     //("/item");
@@ -98,7 +98,7 @@ class LoggingPage extends PageWidget {
       chosen = feedback;
       //this looks ridiculous to those used to declarative languages
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
-      chosen.save(entrytype:"logging").then((value) {
+      chosen.save(entrytype:Logitem.LITYPE_LOGGING).then((value) {
         if(zeState != null)
         {
           zeState.refresh();
@@ -252,20 +252,34 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
   Widget build(BuildContext context) {
     this.cupertinoToolbar = Row (
         children:[
-          new CupertinoButton(
-              child:Text("Import"),
-              onPressed:((){
-                _handleCupertinoMenu(0,context);
-              })
+          Spacer(
+              flex:1
           ),
-          new CupertinoButton(
-              child:Text("Export"),
-              onPressed:((){
-                _handleCupertinoMenu(1,context);
-              })
+
+          Expanded(
+            flex:2,
+            child:CupertinoButton(
+                child:Text("Import"),
+                onPressed:((){
+                  _handleCupertinoMenu(0,context);
+                })
+            ),
+          ),
+          Expanded(
+              flex:2,
+              child: CupertinoButton(
+                  child:Text("Export"),
+                  onPressed:((){
+                    _handleCupertinoMenu(1,context);
+                  })
+              )
+          ),
+          Spacer(
+              flex:1
           )
         ]
     );
+
 
     List<Widget> columnContents = <Widget>[
       Row(
@@ -612,7 +626,7 @@ class _LoggingPageState extends State<LoggingPage> with PageState{
 class ItemPage extends StatelessWidget {
   final String itemtype; //make a package symbol outta this, willya?
 
-  ItemPage({Key key,this.itemtype = "logging"}):super(key:key);
+  ItemPage({Key key,this.itemtype = Logitem.LITYPE_LOGGING}):super(key:key);
 
   @override
   Widget build(BuildContext context) {
@@ -691,7 +705,7 @@ class ItemPage extends StatelessWidget {
 }
 //will rebuild this bit later
 class CupertinoItemPage extends StatelessWidget {
-  final String itemtype = "logging"; //make a package symbol outta this, willya?
+  final String itemtype = Logitem.LITYPE_LOGGING; //make a package symbol outta this, willya?
 
   //CupertinoItemPage({key:Key,this.itemtype}):super(key:key);
   @override
@@ -1041,7 +1055,7 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
   Widget build(BuildContext context)
   {
     String itemNamePrompt = "What it was";
-    if(widget.itemtype == "planning")
+    if(widget.itemtype == Logitem.LITYPE_PLANNING)
     {
       itemNamePrompt = "What it will be";
     }

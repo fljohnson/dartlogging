@@ -405,7 +405,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
     int seleccion = this._popupItems.indexOf(value);
     if(!pages[_tabController.index].handlePopupChoice(seleccion,context))
       {
-        doAlert(context,"Menu item ${seleccion+1} is missing");
+        doAlert(context,"Menu item \"$value\" is not defined");
       }
   }
 

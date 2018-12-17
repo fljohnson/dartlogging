@@ -51,6 +51,63 @@ class PlanningPage extends PageWidget {
   }
 
   @override
+  List<String> popupChoices() {
+    return ["Import...","Export..."];
+  }
+
+  @override
+  bool handlePopupChoice(int seleccion, BuildContext context){
+
+    bool rv = true;
+    switch(seleccion)
+    {
+      case 0:
+        Future<String> result = Logitem.getFileToOpen();
+        result.then((value) {
+          if(value != null && value != "")
+          {
+
+            Future<int> importResult = Logitem.doImport(value,entityType:Logitem.LITYPE_PLANNING);
+            importResult.then((int value) {
+              if(value == -1)
+              {
+                doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
+              }
+              //should do in any event
+              if(zeState != null)
+              {
+                zeState.loadCategoryData();
+              }
+
+            });
+          }
+        });
+        break;
+      case 1 :
+        Future<String> result = Logitem.getFileToWrite();
+        result.then((value) {
+
+          if (value != null)
+          {
+            Logitem.doExport(value, outerRange.isoFrom(), outerRange.isoTo(),entryType:Logitem.LITYPE_PLANNING);
+          }
+          else
+          {
+            if(Logitem.lastError != null) {
+              doAlert(context, "Failure on export:${Logitem.lastError}");
+            }
+          }
+        });
+        break;
+      default:
+        {
+          rv = false;
+        }
+    }
+    return rv;
+  }
+
+  @override
   fabClicked(BuildContext context) async {
     Logitem feedback;
     //differentiation is in PlanItemPage
@@ -64,7 +121,7 @@ class PlanningPage extends PageWidget {
       var chosen = feedback;
       //this looks ridiculous to those used to declarative languages
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
-      chosen.save(entrytype:"planning").then((value) {
+      chosen.save(entrytype:Logitem.LITYPE_PLANNING).then((value) {
         if(value)
           {
             if(zeState == null)
@@ -135,6 +192,8 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   num macroPlanTotal;
   num microPlanTotal;
 
+  Widget cupertinoToolbar;
+
 
 
 
@@ -179,8 +238,8 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     num amt =0.0;
     var len = categories.length;
     var theSet = await Logitem.getPlannedTotals(myRange.isoFrom(),myRange.isoTo());
-    var muTotals = await Logitem.getTotals(myRange.isoFrom(),myRange.isoTo(),entrytype:"planning");
-    var theRange = await Logitem.getRange(myRange.isoFrom(),myRange.isoTo(), entrytype: "planning");
+    var muTotals = await Logitem.getTotals(myRange.isoFrom(),myRange.isoTo(),entrytype:Logitem.LITYPE_PLANNING);
+    var theRange = await Logitem.getRange(myRange.isoFrom(),myRange.isoTo(), entrytype: Logitem.LITYPE_PLANNING);
     setState(() {
       microPlanTotal = 0.0;
       for(int i=0;i < muTotals.length;i++)
@@ -395,6 +454,37 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
   @override
   Widget build(BuildContext context) {
 
+    this.cupertinoToolbar = Row (
+        children:[
+          Spacer(
+            flex:1
+          ),
+
+          Expanded(
+            flex:2,
+            child:CupertinoButton(
+                child:Text("Import"),
+                onPressed:((){
+                  _handleCupertinoMenu(0,context);
+                })
+            ),
+          ),
+          Expanded(
+            flex:2,
+            child: CupertinoButton(
+                child:Text("Export"),
+                onPressed:((){
+                  _handleCupertinoMenu(1,context);
+                })
+            )
+          ),
+          Spacer(
+            flex:1
+          )
+        ]
+    );
+
+
     Widget upperlist = Expanded(flex:15,child:Row(
       children: <Widget>[
         Expanded(flex: 1,child:
@@ -528,6 +618,10 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     ];
 
     //now add to daters
+
+    if(Platform.isIOS){
+      daters.add(this.cupertinoToolbar);
+    }
     return Column(
       children:daters
     );
@@ -763,7 +857,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
       var chosen = feedback;
       //this looks ridiculous to those used to declarative languages
       //I think "declarative" is a superset to which "imperative" (good ol' C) and some O-O (C++, Java) belong
-      chosen.save(entrytype:"planning").then((value) {
+      chosen.save(entrytype:Logitem.LITYPE_PLANNING).then((value) {
         if(value)
         {
           loadCategoryData();
@@ -774,6 +868,64 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         }
 
       });
+    }
+  }
+
+  void _handleCupertinoMenu(int seleccion, BuildContext context) {
+    switch(seleccion)
+    {
+      case 0:
+        Future<String> result = Logitem.getFileToOpen();
+        result.then((value) {
+          //doAlert(context,"Will read in $value");
+          Future<int> importResult = Logitem.doIOSImport(value,entryType:Logitem.LITYPE_PLANNING);
+          importResult.then((int value) {
+            if(value != 1)
+            {
+              doAlert(context,"${Logitem.lastError}\n\nAny preceding rows got in without trouble.");
+            }
+            //should do in any event
+            if(zeState != null)
+            {
+              zeState.loadCategoryData();
+            }
+
+          });
+
+        });
+        break;
+      case 1 : //Logitem.doExport(loggingRange.isoFrom(),loggingRange.isoTo());
+        Future<String> result = Logitem.getFileToWrite(bc:context);
+        result.then((value) async {
+          if (value != null)
+          {
+            /*
+          value contains the "path" portion of a localFileURL to be created
+          doExport() will write to this file directly
+          */
+            //doAlert(context,"Target URL is $value");
+            //await Logitem.doExport(value, loggingRange.isoFrom(), loggingRange.isoTo());
+            if(Logitem.lastError != null  && Logitem.lastError != "")
+            {
+              doAlert(context,"result of getFileToWrite():${Logitem.lastError}.");
+            }
+            else
+            {
+              await Logitem.doExport(value, myRange.isoFrom(), myRange.isoTo());
+              if(Logitem.lastError != null && Logitem.lastError != "")
+              {
+                doAlert(context,"FAILED at doExport():${Logitem.lastError}.");
+              }
+
+
+            }
+          }
+        });
+        break;
+      default:
+        {
+          doAlert(context,"Menu item ${seleccion+1} is missing");
+        }
     }
   }
 
