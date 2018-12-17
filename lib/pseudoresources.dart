@@ -299,3 +299,8 @@ String monthEnd(DateTime monthAtHand)
   List<String> textual = holder.toString().split(" ");
   return textual[0];
 }
+
+bool isISODate(String inDate)
+{
+  return patterns[0].hasMatch(inDate);
+}

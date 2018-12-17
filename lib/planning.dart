@@ -1597,10 +1597,13 @@ class _ItemPageformState extends State<PlanitemPageform> with PageState {
                           "Date: ",
                           Datademunger.fromISOtoUS(widget.chosen.thedate),
                           ((String value){
-
-                            setState(() {
+                            if(isISODate(value)) {
+                              widget.chosen.thedate = value;
+                            }
+                            else {
                               widget.chosen.thedate=Datademunger.fromUStoISO(value);
-                            });
+                            }
+                            setState(() {});
                           })
                       )
                     /*
