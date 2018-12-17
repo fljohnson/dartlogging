@@ -1072,8 +1072,9 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
                         "Date: ",
                         Datademunger.fromISOtoUS(chosen.thedate),
                         ((String value){
-                          chosen.thedate=Datademunger.fromUStoISO(value);
-                          setState(() {});
+                          setState(() {
+                            chosen.thedate=Datademunger.fromUStoISO(value);
+                          });
                         })
                     )
                   /*

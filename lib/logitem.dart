@@ -735,7 +735,7 @@ int rv = 0;
 
         //if we're here, it's safe to check for preexistence
         List<Map> presence = await database.rawQuery(
-            'SELECT * FROM Logitem where entityType = ? and category = ? and thedate = ? and amount = ? and what = ?',
+            'SELECT * FROM Logitem where entryType = ? and category = ? and thedate = ? and amount = ? and what = ?',
             [entityType,possCategory, possDate, possAmount,possWhat]);
 
         if(presence.length == 0)
