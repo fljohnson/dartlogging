@@ -633,13 +633,15 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
     return Row(
         children:[
           Spacer(
-            flex:2,
+            flex:3,
           ),
+          /*
           Expanded(
             flex:3,
             child: Text("Category",
                                 	style:columnHeaderStyle,),
           ),
+          */
           Expanded(
             flex:2,
             child: Text("Amount",
@@ -675,15 +677,17 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                     child:Row(
                         children:[
                           Expanded(
-                            flex:2,
+                            flex:3,
                             child:Text(lirows[i].title,
                             style:rowStyle(bc)),
                           ),
+                          /*
                           Expanded(
                             flex:3,
                             child:Text(lirows[i].category,
                                 style:rowStyle(bc)),
                           ),
+                          */
                           Expanded(
                             flex:2,
                             child:Text(lirows[i].stramount(),

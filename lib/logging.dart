@@ -1076,6 +1076,15 @@ class _RealItemPageState extends State<RealItemPage> with PageState {
                         "Date: ",
                             workingDate,
                         ((String value){
+                          try {
+                            chosen.thedate = Datademunger.fromUStoISO(value);
+                            workingDate =
+                                Datademunger.fromISOtoUS(chosen.thedate);
+                            doAlert(context,"Working value is $workingDate");
+                          }
+                          catch(ecch) {
+                            doAlert(context, "Processing value $value bombed out:"+ecch.toString());
+                          }
                           setState(() {
                             chosen.thedate=Datademunger.fromUStoISO(value);
                             workingDate = Datademunger.fromISOtoUS(chosen.thedate);
