@@ -86,10 +86,22 @@ class PlanningPage extends PageWidget {
       case 1 :
         //await the "what to export" dialog (this calller needs to be async)
         Future<String> result = Logitem.getFileToWrite();
-        result.then((value) {
+        result.then((value) async {
 
           if (value != null)
           {
+            bool exportGenerals = await askAboutGeneral(context,outerRange.date1,outerRange.date2);
+            //await the "what to export" dialog (this calller needs to be async)
+            if(exportGenerals) {
+              await Logitem.exportGeneralPlanneds(
+                  value, outerRange.isoFrom(), outerRange.isoTo());
+
+              if (Logitem.lastError != null && Logitem.lastError != "") {
+                doAlert(context, "FAILED at exportGeneralPlanneds():${Logitem
+                    .lastError}.");
+                return;
+              }
+            }
             Logitem.doExport(value, outerRange.isoFrom(), outerRange.isoTo(),entryType:Logitem.LITYPE_PLANNING);
           }
           else
@@ -923,7 +935,19 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
             }
             else
             {
+              bool exportGenerals = await askAboutGeneral(context,myRange.date1,myRange.date2);
               //await the "what to export" dialog (this calller needs to be async)
+              if(exportGenerals) {
+                await Logitem.exportGeneralPlanneds(
+                    value, myRange.isoFrom(), myRange.isoTo());
+
+                if (Logitem.lastError != null && Logitem.lastError != "") {
+                  doAlert(context, "FAILED at exportGeneralPlanneds():${Logitem
+                      .lastError}.");
+                  return;
+                }
+              }
+
               await Logitem.doExport(value, myRange.isoFrom(), myRange.isoTo());
               if(Logitem.lastError != null && Logitem.lastError != "")
               {

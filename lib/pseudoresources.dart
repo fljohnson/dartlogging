@@ -275,6 +275,36 @@ void doAlert(BuildContext context,String what) {
   );
 }
 
+Future<bool> askAboutGeneral(BuildContext bc, String d1,String d2) async {
+  String what = "Also export the General Allocations for $d1 to $d2?";
+  bool rv = await showDialog<bool>(
+      context:bc,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Money Logs ran into trouble"),
+          content: SingleChildScrollView(
+              child: Text(what)
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('YES'),
+              onPressed: () {
+                Navigator.pop(context,true);
+              },
+            ),
+            FlatButton(
+              child: Text('NO'),
+              onPressed: () {
+                Navigator.pop(context,false);
+              },
+            )
+          ],
+        );
+      }
+  );
+  return rv;
+}
 
 String monthStart(DateTime monthAtHand)
 {

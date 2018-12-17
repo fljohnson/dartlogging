@@ -16,7 +16,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/logitem.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/logitem.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/planning.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/planning.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/stats.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/stats.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/pseudoresources.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/pseudoresources.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -42,20 +42,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="true">
+      <file leaf-file-name="planning.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/planning.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="925" column="82" selection-start-line="925" selection-start-column="82" selection-end-line="925" selection-end-column="82" />
+            <state relative-caret-position="179">
+              <caret line="95" column="49" selection-start-line="95" selection-start-column="28" selection-end-line="95" selection-end-column="49" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="false">
+      <file leaf-file-name="logitem.dart" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="104">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="149">
+              <caret line="504" column="16" selection-start-line="504" selection-start-column="16" selection-end-line="504" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -63,7 +63,7 @@
       <file leaf-file-name="logging.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/logging.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
+            <state relative-caret-position="11685">
               <caret line="1077" column="26" selection-start-line="1077" selection-start-column="26" selection-end-line="1077" selection-end-column="26" />
               <folding>
                 <element signature="e#860#2050#0" />
@@ -80,8 +80,8 @@
       <file leaf-file-name="pseudoresources.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/pseudoresources.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="160" column="20" selection-start-line="160" selection-start-column="20" selection-end-line="160" selection-end-column="20" />
+            <state relative-caret-position="193">
+              <caret line="298" column="12" selection-start-line="298" selection-start-column="12" selection-end-line="298" selection-end-column="12" />
             </state>
           </provider>
         </entry>
@@ -89,7 +89,7 @@
       <file leaf-file-name="stats.dart" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/stats.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
+            <state relative-caret-position="1665">
               <caret line="118" column="3" selection-start-line="118" selection-start-column="3" selection-end-line="118" selection-end-column="3" />
             </state>
           </provider>
@@ -106,9 +106,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>getR</find>
-      <find>_insertFromCSV</find>
-      <find>_doCSVImport</find>
       <find>logg</find>
       <find>loggingRange</find>
       <find>myR</find>
@@ -135,6 +132,9 @@
       <find>toCurr</find>
       <find>toDollarString</find>
       <find>export</find>
+      <find>categoryD</find>
+      <find>categoryData</find>
+      <find>doE</find>
       <find>case 1</find>
     </findStrings>
     <replaceStrings>
@@ -166,11 +166,11 @@
         <option value="$PROJECT_DIR$/lib/basepage.dart" />
         <option value="$PROJECT_DIR$/lib/filedialogs.dart" />
         <option value="$PROJECT_DIR$/lib/main.dart" />
-        <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
         <option value="$PROJECT_DIR$/lib/logging.dart" />
         <option value="$PROJECT_DIR$/lib/stats.dart" />
-        <option value="$PROJECT_DIR$/lib/logitem.dart" />
+        <option value="$PROJECT_DIR$/lib/pseudoresources.dart" />
         <option value="$PROJECT_DIR$/lib/planning.dart" />
+        <option value="$PROJECT_DIR$/lib/logitem.dart" />
       </list>
     </option>
   </component>
@@ -563,7 +563,14 @@
       <option name="project" value="LOCAL" />
       <updated>1545016406487</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="Reshaped columns in Planning::lowerListView(). Removed botched Logitem.toDollarString() in favor of correct Datademunger.toCurrency(). Planted comment  in  &quot;case 1&quot; forks on Planning..export sections: need dialog to ask if General Allocations should be added (simple yes/no &quot;AlertDialog&quot;). May need to ask similar question on imports too.Marker &quot;*GENERAL ALLOCATION*&quot; proposed&#10;&#10;Forgot that askCupertinoDate() returns ISO dates, and added a check as to whether or not to convert getDateButton()'s output.&#10;Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog.">
+      <created>1545062980692</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1545062980707</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TodoView">
@@ -577,30 +584,30 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1368" height="741" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
-      <window_info id="Build Variants" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
-      <window_info active="true" anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" visible="true" weight="0.3462783" />
-      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
-      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" weight="0.50647247" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info id="Image Layers" order="2" />
+      <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
       <window_info anchor="bottom" id="Flutter Performance" order="8" sideWeight="0.83459216" side_tool="true" weight="0.6611296" />
+      <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.3462783" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49924472" weight="0.32200646" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3349917" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32871974" />
+      <window_info anchor="right" id="Flutter Outline" order="10" weight="0.32930514" />
+      <window_info anchor="bottom" id="Logcat" order="7" weight="0.6694352" />
       <window_info id="Captures" order="2" sideWeight="0.49698794" weight="0.32998455" />
+      <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" weight="0.41465256" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32200646" />
+      <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
+      <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
       <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.1691843" visible="true" weight="0.50647247" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Flutter Inspector" order="9" sideWeight="0.49836066" side_tool="true" weight="0.23338369" />
       <window_info anchor="right" id="Assistant" order="7" weight="0.32930514" />
@@ -612,11 +619,13 @@
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="8" side_tool="true" visible="true" weight="0.32930514" />
       <window_info active="true" anchor="bottom" id="Messages" order="8" sideWeight="0.49471298" visible="true" weight="0.32200646" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32200646" />
     </layout>
     <layout-to-restore>
       <window_info id="Designer" order="2" />
       <window_info anchor="bottom" id="Dart Analysis" order="7" sideWeight="0.49320242" weight="0.34951457" />
       <window_info id="Build Variants" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
       <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49924472" visible="true" weight="0.32200646" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -628,7 +637,6 @@
       <window_info anchor="bottom" id="Android Profiler" order="8" show_stripe_button="false" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.83081573" side_tool="true" weight="0.5066225" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info active="true" anchor="right" x="0" y="0" width="291" height="536" id="Documentation" order="8" side_tool="true" visible="true" weight="0.32930514" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Device File Explorer" order="3" sideWeight="0.50163937" side_tool="true" weight="0.32930514" />
@@ -641,7 +649,7 @@
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.3557047" visible="true" weight="0.41465256" />
       <window_info active="true" anchor="bottom" id="Messages" order="14" sideWeight="0.49471298" visible="true" weight="0.32200646" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info id="Image Layers" order="4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32938856" />
       <window_info anchor="right" id="Palette&#9;" order="4" />
       <window_info anchor="right" id="Theme Preview" order="6" />
       <window_info id="Structure" order="1" sideWeight="0.6442953" side_tool="true" weight="0.41465256" />
@@ -680,7 +688,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="(still struggling with apparent null pointer in debug library)&#10;The upper pane of PlanningPage now displays category data, and on an item click, runs a dialog to get the Amount. Remaining is to write the data to the Planitem table.&#10;--DBTransaction will check for preexistence on date and category (select id), and UPDATE or INSERT per the result of that.&#10;--I then need that isoOffsetDate(ddmonths,ddays,isoFrom), and the SimpleDialog" />
     <MESSAGE value="Random crash during debug seems to have been due to a glitch in the Dart version to which Flutter 0.11.0 was bound &#10;Planitem writes work now&#10;--next is the write to Logitem where the entryType is &quot;planned&quot;" />
     <MESSAGE value="Was unable to change dart-sdk, so adopted a &quot;chatty release&quot; strategy to find out what's going on . As such, spotted and fixed a bug in getPlannedTotals() that seemed to throw off saveCategoryPlan(). Up next: &#10;-Write to Logitem where the entryType is &quot;planned&quot;&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
     <MESSAGE value="Changed Planning to do away with file-scope variable &quot;canister&quot;, added the check for preexistence&#10;&#10;Up next: &#10;-Write to Logitem where the entryType is &quot;planned&quot;&#10;&#10;Further down:&#10;-combine all DDL statements into InitDB() version 1" />
@@ -705,7 +712,8 @@
     <MESSAGE value="Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
     <MESSAGE value="Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
     <MESSAGE value="Forgot that askCupertinoDate() returns ISO dates, and added a check as to whether or not to convert getDateButton()'s output.&#10;Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
-    <option name="LAST_COMMIT_MESSAGE" value="Forgot that askCupertinoDate() returns ISO dates, and added a check as to whether or not to convert getDateButton()'s output.&#10;Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <MESSAGE value="Reshaped columns in Planning::lowerListView(). Removed botched Logitem.toDollarString() in favor of correct Datademunger.toCurrency(). Planted comment  in  &quot;case 1&quot; forks on Planning..export sections: need dialog to ask if General Allocations should be added (simple yes/no &quot;AlertDialog&quot;). May need to ask similar question on imports too.Marker &quot;*GENERAL ALLOCATION*&quot; proposed&#10;&#10;Forgot that askCupertinoDate() returns ISO dates, and added a check as to whether or not to convert getDateButton()'s output.&#10;Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
+    <option name="LAST_COMMIT_MESSAGE" value="Reshaped columns in Planning::lowerListView(). Removed botched Logitem.toDollarString() in favor of correct Datademunger.toCurrency(). Planted comment  in  &quot;case 1&quot; forks on Planning..export sections: need dialog to ask if General Allocations should be added (simple yes/no &quot;AlertDialog&quot;). May need to ask similar question on imports too.Marker &quot;*GENERAL ALLOCATION*&quot; proposed&#10;&#10;Forgot that askCupertinoDate() returns ISO dates, and added a check as to whether or not to convert getDateButton()'s output.&#10;Can't seem to let this one go for the day...armed some diagnostics. Changed columns on lower Planning page.&#10;&#10;Got it right on DB and faux toolbar, trying to cause change of state on LoggingItem edit page&#10;&#10;Whoops...mis-IDd a DB field on import operation, and missed completely on setState() for iOS datebuttons&#10;&#10;First draft of Planning import/export -- does not include gross allocations, call it a final PoC. &#10;Attempt at balancing the faux toolbar on iOS &#10;Fixed a mistake in gigUI that resulted in Pages not being queried for popupItems.&#10;Corrected gigUI to hopefully ditch the cupertinoAdder when the page warrants. All that remains now is to import/export the Planning data&#10;&#10;Forgot to redo LoggingPage's date range button handlers for a coherent state situation&#10;&#10;reworking of iOS export&#10;&#10;Reorganized Logging Page into separate file, gigUI() in main now asks the current page about add button and (in Android) the Popup Menu. Pages themselves answer for the faux iOS Toolbar with CupertinoTabBar&#10;&#10;iOS fixes:&#10;-Logging page now same for both platforms&#10;-Attempt to cause getting of Stats when that page is active&#10;-Aim cupertinoAdder to call the current Page's fabClicked&#10;&#10;Made toDollarString() return a string of the value actually rounded to the nearest penny, thus stopping a &quot;fraction from hell&quot; display&#10;&#10;Need to handle &quot;unknown category&quot; with a SimpleDialog." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1029,16 +1037,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/pseudoresources.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="160" column="20" selection-start-line="160" selection-start-column="20" selection-end-line="160" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/logging.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
+        <state relative-caret-position="11685">
           <caret line="1077" column="26" selection-start-line="1077" selection-start-column="26" selection-end-line="1077" selection-end-column="26" />
           <folding>
             <element signature="e#860#2050#0" />
@@ -1053,22 +1054,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/stats.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
+        <state relative-caret-position="1665">
           <caret line="118" column="3" selection-start-line="118" selection-start-column="3" selection-end-line="118" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+    <entry file="file://$PROJECT_DIR$/lib/pseudoresources.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="193">
+          <caret line="298" column="12" selection-start-line="298" selection-start-column="12" selection-end-line="298" selection-end-column="12" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/planning.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="925" column="82" selection-start-line="925" selection-start-column="82" selection-end-line="925" selection-end-column="82" />
+        <state relative-caret-position="179">
+          <caret line="95" column="49" selection-start-line="95" selection-start-column="28" selection-end-line="95" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/logitem.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="504" column="16" selection-start-line="504" selection-start-column="16" selection-end-line="504" selection-end-column="16" />
         </state>
       </provider>
     </entry>

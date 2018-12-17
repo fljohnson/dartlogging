@@ -16,6 +16,7 @@ import 'package:csv/csv.dart';
 /*
 Find out how Dart handles errors returned by await-ed async functions
 */
+const String GROSS_CATEGORY_MARKER = "**GENERAL ALLOCATION FOR CATEGORY**";
 class Logitem {
   static const String LITYPE_LOGGING="logging";
   static const String LITYPE_PLANNING="planning";
@@ -492,6 +493,36 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
+  static Future<void> exportGeneralPlanneds(String filename, String isoFrom, String isoTo) async {
+    lastError = null;
+    var grosses = await getPlannedTotals(isoFrom,isoTo);
+
+    List<List<dynamic>> rv = [
+      ["Date","What","Amount","Category"]
+    ];
+
+    num amt;
+    for (int i = 0; i < categories.length; i++) {
+      amt = 0.0;
+      var categoryName = categories[i].keys.first.toString();
+      if (grosses.containsKey(categoryName)) {
+        amt = grosses[categoryName];
+      }
+      rv.add([isoFrom,GROSS_CATEGORY_MARKER,amt,categoryName]);
+      //  print("Fire two $i: $categoryName ${theSet[categoryName]}");
+
+    }
+
+    try{
+      final outstring = const ListToCsvConverter().convert(rv);
+      final oot = new File(filename);
+      oot.writeAsString(outstring,mode:FileMode.append,flush:true);
+    }catch(e) {
+      lastError = e.toString();
+      print("failed $lastError");
+    }
+
+  }
   static Future<void> doExport(String filename, String isoFrom, String isoTo, {String entryType=LITYPE_LOGGING}) async {
 	  lastError = null;
     //Future<List<List<dynamic>>> toWrite = _getCSVExportable(isoFrom, isoTo);
@@ -511,7 +542,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
 
 			//final oot = new File(join(docsdir.path,filename));
 			final oot = new File(filename);
-			oot.writeAsStringSync(outstring, flush:true);
+			oot.writeAsStringSync(outstring, mode:FileMode.append,flush:true);
 			}
 		catch(e) {
 			lastError = e.toString();
