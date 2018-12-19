@@ -17,6 +17,7 @@ import 'package:csv/csv.dart';
 Find out how Dart handles errors returned by await-ed async functions
 */
 const String GROSS_CATEGORY_MARKER = "**GENERAL ALLOCATION FOR CATEGORY**";
+
 class Logitem {
   static const String LITYPE_LOGGING="logging";
   static const String LITYPE_PLANNING="planning";
@@ -498,7 +499,8 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     var grosses = await getPlannedTotals(isoFrom,isoTo);
 
     List<List<dynamic>> rv = [
-      ["Date","What","Amount","Category"]
+      ["BEGIN "+ GROSS_CATEGORY_MARKER],
+      ["Date","Amount","Category"]
     ];
 
     num amt;
@@ -508,15 +510,16 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
       if (grosses.containsKey(categoryName)) {
         amt = grosses[categoryName];
       }
-      rv.add([isoFrom,GROSS_CATEGORY_MARKER,amt,categoryName]);
+      rv.add([isoFrom,amt,categoryName]);
       //  print("Fire two $i: $categoryName ${theSet[categoryName]}");
 
     }
+    rv.add(["END " + GROSS_CATEGORY_MARKER]);
 
     try{
       final outstring = const ListToCsvConverter().convert(rv);
       final oot = new File(filename);
-      oot.writeAsString(outstring,mode:FileMode.append,flush:true);
+      oot.writeAsString(outstring+"\n",mode:FileMode.append,flush:true);
     }catch(e) {
       lastError = e.toString();
       print("failed $lastError");
@@ -542,7 +545,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
 
 			//final oot = new File(join(docsdir.path,filename));
 			final oot = new File(filename);
-			oot.writeAsStringSync(outstring, mode:FileMode.append,flush:true);
+			oot.writeAsStringSync(outstring+"\n", mode:FileMode.append,flush:true);
 			}
 		catch(e) {
 			lastError = e.toString();
@@ -585,7 +588,7 @@ static Future<String> exportToExternal(String isoFrom,  String isoTo,{String loc
     return rv;
   }
 
-static Future<int> doIOSImport(String fileContents, {String entryType=LITYPE_LOGGING}) async {
+static Future<int> doIOSImport(String fileContents, {String entryType=LITYPE_LOGGING,BuildContext callerContext}) async {
 int rv = 0;
     lastError = "";
     /*
@@ -603,7 +606,36 @@ int rv = 0;
     try {
       
       readin = fileContents.split("\n");
-      //throw FormatException("got ${readin.length} records");
+      int start = readin.indexOf("BEGIN "+GROSS_CATEGORY_MARKER);
+      int end = -1;
+      if(start>-1)
+      {
+        end = readin.indexOf("END "+GROSS_CATEGORY_MARKER);
+      }
+      if(end <= start)
+      {
+        doAlert(callerContext,"DIDN'T FIND SECTION");
+      }
+      else
+      {
+        end += 1;
+        List<String> grossLines = [];
+        for(int j=start+1;j<end-1;j++)
+        {
+          grossLines.add(readin[j]);
+        }
+        readin.removeRange(start, end);
+        if(entryType == LITYPE_PLANNING) {
+          if(callerContext == null)
+          {
+            throw FormatException("A handler for the planning page import is missing.");
+          }
+          await _doPlanningImport(grossLines, callerContext);
+          if(lastError != null && lastError !=""){
+            return -1;
+          }
+        }
+      }
       await _doCSVImport(readin,entryType);
       if(lastError == "")
       {
@@ -623,7 +655,7 @@ int rv = 0;
     }
     return rv;
 }
-  static Future<int> doImport(String filetoread, {String entityType=LITYPE_LOGGING}) async {
+  static Future<int> doImport(String filetoread, {String entityType=LITYPE_LOGGING,BuildContext callerContext}) async {
     int rv = 0;
     lastError = "";
     final res = await SimplePermissions.requestPermission(Permission.ReadExternalStorage);
@@ -639,7 +671,37 @@ int rv = 0;
       final input = new File(filetoread);
       //readin = await input.readAsString();
       readin = input.readAsLinesSync();
-      await _doCSVImport(readin,entityType);
+      int start = readin.indexOf("BEGIN "+GROSS_CATEGORY_MARKER);
+      int end = -1;
+      if(start>-1)
+      {
+          end = readin.indexOf("END "+GROSS_CATEGORY_MARKER);
+      }
+      if(end <= start)
+      {
+        print("DIDN'T FIND SECTION");
+      }
+      else
+      {
+        end += 1;
+        List<String> grossLines = [];
+        for(int j=start+1;j<end-1;j++)
+        {
+          grossLines.add(readin[j]);
+        }
+        readin.removeRange(start, end);
+        if(entityType == LITYPE_PLANNING) {
+          if(callerContext == null)
+            {
+              throw FormatException("A handler for the planning page import is missing.");
+            }
+          await _doPlanningImport(grossLines, callerContext);
+          if(lastError != null && lastError !=""){
+            return -1;
+          }
+        }
+      }
+      //await _doCSVImport(readin,entityType); //don't put back just yet
       rv = 1; //consider setting this to number of rows actually inserted
     }
     catch(ecch)
@@ -652,7 +714,163 @@ int rv = 0;
     return rv;
   }
 
+  static Future<void> _doPlanningImport(List<String> incsv, BuildContext callerContext) async {
+    List<String> columns = ["Date","Amount","Category"];
+    Map<String,int> indices = Map();
+    List<List<dynamic>> raw = [];
+    for(int j=0;j<incsv.length;j++)
+    {
+      raw.add(CsvToListConverter().convert(incsv[j])[0]);
+    }
+    //make sure all columns are in the header row
+    //indices minds "what data is in which column?"
+    int toGo = columns.length;
+    for(int i=raw[0].length-1;i>=0;i--)
+    {
+      int index = columns.indexOf(raw[0][i]);
+      if(index > -1)
+      {
+        if(!indices.containsKey(raw[0][i]))
+        {
+          indices[raw[0][i]] = i;
+        }
+      }
+      if(columns.indexOf(raw[0][i]) > -1)
+      {
+        toGo--;
+      }
+    }
+    if(toGo > 0)
+    {
+      lastError = 'One of more of columns "Date","Amount","Category" is missing from the chosen file';
+      return; //As Seth Meyers would say, "Ya burnt!"
+    }
+    num possAmount;
+    String possCategory;
+    String possDate;
+    bool shouldInsert;
+    for(int j=1;j<raw.length;j++) {
+      try {
+        possDate = Datademunger.isoifyDate(raw[j][indices["Date"]]);
+        possAmount = raw[j][indices["Amount"]];
+        possCategory = raw[j][indices["Category"]];
+      }
+      catch (e) {
+        //hopefully, it was an Array out-ouf-bounds exception ; this may cover TypeError
+        lastError = e.toString();
+        if(lastError.indexOf("type") >-1 && lastError.indexOf("'num'") > -1 )
+        {
+          lastError = "Problem encountered on line $j:Expected a numeric amount";
+          throw FormatException(lastError);
+        }
+        lastError = "Problem encountered on line $j:"+lastError;
+        //really need to alert the user to screwed-up input, and therefore bail like Mr. Organa
 
+        throw e;
+      }
+
+      //is there a valid category value?
+      if(possCategory == null || possCategory.length ==0)
+      {
+        lastError = "Problem encountered on line $j: Category field is blank";
+        throw FormatException(lastError);
+      }
+      possCategory = possCategory.trim();
+      possDate = possDate.trim();
+      String upcase =possCategory.toUpperCase();
+      possCategory = upcase.substring(0,1) + possCategory.toLowerCase().substring(1);
+      //is the incoming category value among those known to the app?
+      //print("|$possCategory| vs ${categoryNames.length}");
+      if(categoryNames.indexOf(possCategory) == -1)
+      {
+        lastError = "Problem encountered on line $j: unknown category \"$possCategory\"";
+        throw FormatException(lastError);
+      }
+
+      //now, howzabout conflict checking?
+      /*
+      find all entries <=possDate and >= MonthStart(possDate)
+      if there is exactly one, ask whether to replace, combine, or skip
+      if there are two or more, ask which of these, last being the sum of incoming and earliest/largest
+       */
+      var datelets = possDate.split("-");
+
+      List<Map> presence = await database.rawQuery(
+          'SELECT id,thedate,amount FROM Planitem where category = ? and thedate >= ? and thedate <= ? ORDER BY thedate DESC',
+          [possCategory, "${datelets[0]}-${datelets[1]}-01",possDate]);
+
+      shouldInsert = (presence.length == 0);
+
+      if(presence.length > 0) {
+        String textAmount = Datademunger.toCurrency(possAmount,symbol:"\$");
+        String niceDate = Datademunger.fromISOtoUS(possDate);
+
+        List<Widget> opciones = [];
+        for(int j=0;j<presence.length;j++){
+          String line = Datademunger.fromISOtoUS(presence[j]["thedate"])+":"+Datademunger.toCurrency(presence[j]["amount"],symbol:"\$");
+          opciones.add(
+              SimpleDialogOption(
+                onPressed: () { Navigator.pop(callerContext, j); },
+                child:  Text(line),
+              )
+          );
+        }
+        opciones.add(
+            SimpleDialogOption(
+              onPressed: () { Navigator.pop(callerContext, -1); },
+              child:  Text("Import this entry without adding to anything"),
+            )
+        );
+        var action = await showDialog<int>(
+            context: callerContext,
+            builder: (BuildContext context) {
+              return SimpleDialog(
+                title: Text("$possCategory allocation of $textAmount for the period starting $niceDate may combine with one of these"),
+                children: opciones,
+              );
+            }
+        );
+        if(action == -1)
+        {
+          shouldInsert = true;
+        }
+        if(action > -1) {
+          //print("UPDATE Planitem SET amount = ${presence[action]["amount"]+possAmount} WHERE id = ${presence[action]["id"]}");
+
+          await database.transaction((txn) async {
+            try{
+              await txn.rawUpdate("UPDATE Planitem SET amount = ? WHERE id = ?",[presence[action]["amount"]+possAmount,presence[action]["id"]]);
+            }
+            catch(ecch)
+            {
+              lastError = ecch.toString();
+              throw ecch;
+            }
+          });
+
+        }
+
+      }
+      if(shouldInsert)
+      {
+        //print("INSERT INTO Planitem (category,thedate,amount) VALUES($possCategory,$possDate,$possAmount");
+
+        await database.transaction((txn) async {
+          try{
+            await txn.rawInsert("INSERT INTO Planitem (category,thedate,amount) VALUES(?,?,?)",[possCategory,possDate,possAmount]);
+          }
+          catch(ecch)
+          {
+            lastError = ecch.toString();
+            throw ecch;
+          }
+        });
+
+      }
+    }
+
+
+  }
 
   static Future<void> _doCSVImport(List<String> incsv, [String entityType=LITYPE_LOGGING]) async
   {

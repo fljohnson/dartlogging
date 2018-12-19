@@ -67,7 +67,7 @@ class PlanningPage extends PageWidget {
           if(value != null && value != "")
           {
 
-            Future<int> importResult = Logitem.doImport(value,entityType:Logitem.LITYPE_PLANNING);
+            Future<int> importResult = Logitem.doImport(value,entityType:Logitem.LITYPE_PLANNING,callerContext:context);
             importResult.then((int value) {
               if(value == -1)
               {
@@ -901,7 +901,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
         Future<String> result = Logitem.getFileToOpen();
         result.then((value) {
           //doAlert(context,"Will read in $value");
-          Future<int> importResult = Logitem.doIOSImport(value,entryType:Logitem.LITYPE_PLANNING);
+          Future<int> importResult = Logitem.doIOSImport(value,entryType:Logitem.LITYPE_PLANNING,callerContext:context);
           importResult.then((int value) {
             if(value != 1)
             {
