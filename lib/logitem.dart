@@ -648,9 +648,9 @@ int rv = 0;
     }
     catch(ecch)
     {
-     // if(lastError.length == 0) {
-        lastError = ecch.message;
-     // }
+      if(lastError == null ||lastError.length == 0) {
+        lastError = ecch.toString();
+      }
       rv = -1;
     }
     return rv;
@@ -701,13 +701,13 @@ int rv = 0;
           }
         }
       }
-      //await _doCSVImport(readin,entityType); //don't put back just yet
+      await _doCSVImport(readin,entityType); //don't put back just yet
       rv = 1; //consider setting this to number of rows actually inserted
     }
     catch(ecch)
     {
       if(lastError.length == 0) {
-        lastError = ecch.message;
+        lastError = ecch.toString();
       }
       rv = -1;
     }
@@ -923,7 +923,7 @@ int rv = 0;
         }
         catch (e) {
           //hopefully, it was an Array out-ouf-bounds exception ; this may cover TypeError
-          lastError = e.toString();
+          lastError = e.toString()+"values ${raw[i]}";
           if(lastError.indexOf("type") >-1 && lastError.indexOf("'num'") > -1 )
           {
             lastError = "Problem encountered on line $i:Expected a numeric amount";
@@ -995,7 +995,7 @@ int rv = 0;
         }
         else {
           await txn.rawInsert(
-              'INSERT INTO Logitem(what,amount,category,thedate,entryType,details) VALUES(?,?,?,?,?)',
+              'INSERT INTO Logitem(what,amount,category,thedate,entryType,details) VALUES(?,?,?,?,?,?)',
               [title, amount, category, thedate, entityType,details]);
         }
       }
