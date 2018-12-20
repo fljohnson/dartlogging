@@ -52,9 +52,9 @@ class Logitem {
   static Future<bool> blankDB() async {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
-    path = join(databasesPath, "moneylogs.db");
-    //path = join(databasesPath, "moneylogstemp.db");
-    //await deleteDatabase(path); //remove before going live
+    //path = join(databasesPath, "moneylogs.db");
+    path = join(databasesPath, "moneylogstemp.db");
+    await deleteDatabase(path); //remove before going live
     //throw PathException("intentional bombout");
     rv = true;
     return rv;
@@ -926,7 +926,7 @@ int rv = 0;
           lastError = e.toString()+"values ${raw[i]}";
           if(lastError.indexOf("type") >-1 && lastError.indexOf("'num'") > -1 )
           {
-            lastError = "Problem encountered on line $i:Expected a numeric amount";
+            lastError += "Problem encountered on line $i:Expected a numeric amount";
             throw FormatException(lastError);
           }
           lastError = "Problem encountered on line $i:"+lastError;
@@ -1049,7 +1049,8 @@ int rv = 0;
     num numAmount =  int.parse(parts[0]);
     if(parts.length > 1)
     {
-      numAmount += (.01 * int.parse(parts[1].substring(0,2)) );
+      numAmount = num.parse(Datademunger.toCurrency(num.parse(parts[0]+"."+parts[1])));
+      //numAmount += (.01 * int.parse(parts[1].substring(0,2)) );
     }
     await database.transaction((txn) async {
       try {

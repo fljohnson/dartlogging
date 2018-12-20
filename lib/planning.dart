@@ -1129,7 +1129,7 @@ class RealGrossPage extends StatelessWidget {
               child: new TextField(
                 controller: amtController,
                 textAlign: TextAlign.center,
-                inputFormatters: [formatCurrency],
+                //inputFormatters: [formatCurrency],
                 style: largeTextFieldStyle(context),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 onChanged: ((String value){
@@ -1168,15 +1168,19 @@ class OneDecimalPoint extends TextInputFormatter {
 
     var first=newValue.text.indexOf(".");
     var last = newValue.text.lastIndexOf(".");
+    /*
     if(first == last)
     {
       return newValue;
     }
+    */
     var phase1=newValue.text.replaceFirst(".","|");
     var phase2=phase1.replaceAll(".", "");
 
+    var net = Datademunger.toCurrency(num.parse(phase2.replaceFirst("|",".")));
+    print("OUTPUT $net");
     TextEditingValue rv = newValue.copyWith(
-      text: phase2.replaceFirst("|",".")
+      text: net
     );
     return rv;
   }
