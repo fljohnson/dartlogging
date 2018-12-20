@@ -604,8 +604,8 @@ int rv = 0;
     List<String> readin;
 
     try {
-      
       readin = fileContents.split("\n");
+
       int start = readin.indexOf("BEGIN "+GROSS_CATEGORY_MARKER);
       int end = -1;
       if(start>-1)
@@ -624,7 +624,8 @@ int rv = 0;
         {
           grossLines.add(readin[j]);
         }
-        readin.removeRange(start, end);
+        //readin.removeRange(start, end);
+        print("intake ${readin.length} ${readin[0]}");
         if(entryType == LITYPE_PLANNING) {
           if(callerContext == null)
           {
@@ -879,15 +880,26 @@ int rv = 0;
     Map<String,int> indices = Map();
     //List<List<dynamic>> raw = CsvToListConverter().convert(incsv);
     List<List<dynamic>> raw = [];
+    //print("starting parse of ${incsv.length}");
+
     for(int j=0;j<incsv.length;j++)
     {
-      raw.add(CsvToListConverter().convert(incsv[j])[0]);
+      if(incsv[j] == null || incsv[j] == "")
+      {
+        continue;
+      }
+  //    print("rockem \"${incsv[j]}\"");
+      var uhoh = CsvToListConverter().convert(incsv[j]);
+  //    print("about to add ${uhoh[0]}");
+      raw.add(uhoh[0]);
     }
+  //  print("got to raw of ${raw.length}");
     //now, process raw
     //1. Is there a header row?
     int toGo = criticalColumns.length;
     for(int i=raw[0].length-1;i>=0;i--)
     {
+    //  print("looking for column \"${raw[0][i]}\"");
       int index = columns.indexOf(raw[0][i]);
       if(index > -1)
       {
@@ -901,6 +913,7 @@ int rv = 0;
         toGo--;
       }
     }
+   // print("survived finding columns");
     if(toGo > 0)
     {
       lastError = 'One of more of columns "Date","What","Amount","Category" is missing from the chosen file';
@@ -913,6 +926,7 @@ int rv = 0;
     num possAmount;
     String possCategory;
     String possDetails;
+    //print("now bring in $z rows $indices");
     for(int i=1;i<z;i++)
     {
         try {
@@ -923,6 +937,7 @@ int rv = 0;
         }
         catch (e) {
           //hopefully, it was an Array out-ouf-bounds exception ; this may cover TypeError
+      //    print("uhoh: $i vs $z");
           lastError = e.toString()+"values ${raw[i]}";
           if(lastError.indexOf("type") >-1 && lastError.indexOf("'num'") > -1 )
           {
