@@ -52,9 +52,9 @@ class Logitem {
   static Future<bool> blankDB() async {
     bool rv = false;
     var databasesPath = await getDatabasesPath();
-    //path = join(databasesPath, "moneylogs.db");
-    path = join(databasesPath, "moneylogstemp.db");
-    await deleteDatabase(path); //remove before going live
+    path = join(databasesPath, "moneylogs.db");
+    //path = join(databasesPath, "moneylogstemp.db");
+    //await deleteDatabase(path); //remove before going live
     //throw PathException("intentional bombout");
     rv = true;
     return rv;
