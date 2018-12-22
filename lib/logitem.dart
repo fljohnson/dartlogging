@@ -624,7 +624,7 @@ int rv = 0;
         {
           grossLines.add(readin[j]);
         }
-        //readin.removeRange(start, end);
+        readin.removeRange(start, end);
         print("intake ${readin.length} ${readin[0]}");
         if(entryType == LITYPE_PLANNING) {
           if(callerContext == null)
@@ -684,13 +684,16 @@ int rv = 0;
       }
       else
       {
-        end += 1;
+        //end += 1;
         List<String> grossLines = [];
-        for(int j=start+1;j<end-1;j++)
+        for(int j=start+1;j<end;j++)
         {
           grossLines.add(readin[j]);
+
         }
+        print("one end : ${grossLines.last}");
         readin.removeRange(start, end);
+        print("other end: ${readin[0]}");
         if(entityType == LITYPE_PLANNING) {
           if(callerContext == null)
             {

@@ -403,6 +403,7 @@ class _MyHomePageState extends State<MyHomePage>  with SingleTickerProviderState
 
   void _handlePopupMenu(String value, BuildContext context) {
     int seleccion = this._popupItems.indexOf(value);
+    print("on page: ${_tabController.index}");
     if(!pages[_tabController.index].handlePopupChoice(seleccion,context))
       {
         doAlert(context,"Menu item \"$value\" is not defined");
