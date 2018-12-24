@@ -282,7 +282,7 @@ Future<bool> askAboutGeneral(BuildContext bc, String d1,String d2) async {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Money Logs ran into trouble"),
+          title: Text("The Money Logs"),
           content: SingleChildScrollView(
               child: Text(what)
           ),

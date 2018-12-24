@@ -106,7 +106,7 @@ class PlanningPage extends PageWidget {
                 return;
               }
             }
-            Logitem.doExport(value, outerRange.isoFrom(), outerRange.isoTo(),entryType:Logitem.LITYPE_PLANNING);
+            await Logitem.doExport(value, outerRange.isoFrom(), outerRange.isoTo(),entryType:Logitem.LITYPE_PLANNING);
           }
           else
           {
@@ -952,7 +952,7 @@ class _PlanningPageState extends State<PlanningPage> with PageState{
                 }
               }
 
-              await Logitem.doExport(value, myRange.isoFrom(), myRange.isoTo());
+              await Logitem.doExport(value, myRange.isoFrom(), myRange.isoTo(),entryType:Logitem.LITYPE_PLANNING);
               if(Logitem.lastError != null && Logitem.lastError != "")
               {
                 doAlert(context,"FAILED at doExport():${Logitem.lastError}.");
@@ -1170,8 +1170,8 @@ class OneDecimalPoint extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
 
-    var first=newValue.text.indexOf(".");
-    var last = newValue.text.lastIndexOf(".");
+    //zivar first=newValue.text.indexOf(".");
+    //var last = newValue.text.lastIndexOf(".");
     /*
     if(first == last)
     {

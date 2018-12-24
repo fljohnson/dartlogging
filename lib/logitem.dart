@@ -631,7 +631,9 @@ int rv = 0;
           {
             throw FormatException("A handler for the planning page import is missing.");
           }
-          await _doPlanningImport(grossLines, callerContext);
+          if(entryType == LITYPE_PLANNING) {
+			await _doPlanningImport(grossLines, callerContext);
+          }
           if(lastError != null && lastError !=""){
             return -1;
           }
@@ -699,7 +701,11 @@ int rv = 0;
             {
               throw FormatException("A handler for the planning page import is missing.");
             }
-          await _doPlanningImport(grossLines, callerContext);
+          if(entityType == LITYPE_PLANNING) {
+			await _doPlanningImport(grossLines, callerContext);
+          }
+          
+          
           if(lastError != null && lastError !=""){
             return -1;
           }
